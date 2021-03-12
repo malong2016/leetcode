@@ -25,6 +25,12 @@ public class Person {
     private String city;
 
     public static void main(String[] args) {
-
+        //测试break在多重循环的表现
+        for (int i = 0; i < 5; i++) {
+            System.out.println("i = " + i);
+            for (int j = 0; j < 4; j++) {
+                if (i == 1 && j == 2) break;     //测试会不会结束大的循环!!!!~
+            }
+        }
     }
 }

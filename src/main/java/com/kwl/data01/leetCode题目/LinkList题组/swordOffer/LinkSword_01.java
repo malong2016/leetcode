@@ -2,6 +2,8 @@ package com.kwl.data01.leetCode题目.LinkList题组.swordOffer;
 
 import com.kwl.data01.dataStructure.ListNode;
 
+import java.util.Stack;
+
 /**
  * 剑指offer_链表_题组01(每个题组是4个题目)
  *
@@ -16,12 +18,11 @@ public class LinkSword_01 {
      * 描述:给定单向链表的头指针和一个节点指针,定义一个函数在O(1)的时间内删除该节点(假设一定存在,my add)
      * <p>
      * 思路_01:如果存在后继节点,将后继节点的值赋值给deleteNode,然后删除后继节点
-     * 不存在后继节点,1)deleteNode是headNode,直接将headNode置空
+     * 不存在后继节点
+     * 1)deleteNode是headNode,直接将headNode置空
      * 2)不是头节点,扫描链表找到该节点的前继节点,在删除
-     * 注意: 如果直接从头节点扫描找到deleteNode的前继节点进行删除操作,时间复杂度是O(n),不满足题目,
+     * 注意: 如果直接从头节点扫描找到deleteNode的前继节点进行删除操作,时间复杂度是O(n),不满足题目,(这种扫描最好设置一个头节点(无val域),好查找和删除)
      * 所有一定替代删除的节点,直接从后删除!!!!
-     * <p>
-     * 疑问:查看leetcode,这个无法改变链表外部对象设置为null!!
      */
     public static void deleteNode(ListNode headNode, ListNode deleteNode) {
         if (headNode == null || deleteNode == null) return;
@@ -44,7 +45,7 @@ public class LinkSword_01 {
      * 题目2(swordOffer 面试题24):定义一个函数,输入一个链表头节点,反转该链表
      * <p>
      * 思路:  1)头插法构造链表,因为面试链表一般是没有headNode(置null)这种,要构造一个新的头节点,麻烦,一般不使用
-     *       2)原地逆转,保留逆转的后继节点,扫描节点可以继续扫描!!!(注意传入节点为null或者单个节点已经考虑了)
+     * 2)原地逆转,保留逆转的后继节点,扫描节点可以继续扫描!!!(注意传入节点为null或者单个节点已经考虑了)
      */
     public static ListNode reverseList(ListNode headNode) {
         ListNode pre = null;           //p要逆转的node,pre前继节点,pNodeNext是p节点的后继节点
@@ -107,6 +108,7 @@ public class LinkSword_01 {
 
 
 
+
     public static void main(String[] args) {
         ListNode headNode = new ListNode(1);
         ListNode node01 = new ListNode(2);
@@ -117,10 +119,10 @@ public class LinkSword_01 {
         node02.next = node03;         //链表是1-->2-->3-->4
         node03.next = null;
 
-        ListNode head02 = new ListNode(1,null);
-
-        System.out.println("原节点是:");
-        ListNode.printLinkList(headNode);
+//        ListNode head02 = new ListNode(1,null);
+//
+//        System.out.println("原节点是:");
+//        ListNode.printLinkList(headNode);
 //        System.out.println("题目1:删除之后的节点");
 //        deleteNode(headNode, node03);
 //        LinkListNode.printLinkList(headNode);
@@ -134,8 +136,10 @@ public class LinkSword_01 {
 //        System.out.println(findKthToTail(headNode, 3).data);
 
         //题目4 合并二个排序的链表
-        System.out.println("合并二个排序的链表:");
-        ListNode.printLinkList(mergeLinkList(headNode,head02));
+//        System.out.println("合并二个排序的链表:");
+//        ListNode.printLinkList(mergeLinkList(headNode,head02));
+
+
     }
 
 }

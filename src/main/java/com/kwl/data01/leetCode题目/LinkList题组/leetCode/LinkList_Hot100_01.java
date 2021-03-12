@@ -178,19 +178,26 @@ public class LinkList_Hot100_01 {
      * 然后慢指针和快指针一起走,快指针null,慢指针就到删除节点的前驱节点
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null) return null;      //传入头节点是null,就返回null
-        ListNode pHead = new ListNode(0, head);  //设置一个头,不设置会溢出??? todo
-        ListNode fast = head, slow = pHead;
+        //方法二: 设置快慢指针,快指针先走k步(注意是达到第k+1个节点,前面就是k),最后快指针到null,前面有k个数,慢指针是倒数第k个节点
+        if (head == null) return head;
+        ListNode fast = head,slow = head;
         for (int i = 0; i < n; i++) {
-            fast = fast.next;         //注意此时fast和slow差距n+1
+            fast = fast.next;
         }
-        while (fast != null) {
+        while (fast != null) {      //最后fast == null
             slow = slow.next;
             fast = fast.next;
         }
-        //可以删除第一个节点!!!所以必须设置一个pHead(也是为了防止fast溢出),好删除
-        slow.next = slow.next.next;      //slow是倒数第n+1个节点!!!!
-        return pHead.next;
+        return slow;
+    }
+    public ListNode removeNthFromEnd02(ListNode head, int n) {  //代码优化
+        if (head == null) return head;
+        ListNode fast = head,slow = head;
+        for(int i = 0;fast != null;i++){
+            if (i >= n) slow = slow.next; //已经走了k步(0,1,2...k-1)
+            fast = fast.next;
+        }
+        return slow;
     }
 
     public static void main(String[] args) {
