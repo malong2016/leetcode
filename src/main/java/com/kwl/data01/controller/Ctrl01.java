@@ -1,7 +1,6 @@
 package com.kwl.data01.controller;
 
-import com.kwl.data01.algorithm.Recursion;
-import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -10,7 +9,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class Ctrl01 {
-
-
 
 }

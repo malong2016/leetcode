@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 
 /**
- * @author kuang.weilin      我改变了你
+ * @author kuang.weilin
  * @date 2021/2/12
  */
 @Data

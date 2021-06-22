@@ -28,8 +28,8 @@ public class StringTest {
      *     lastIndexOf('我'):  return该元素的最后一个索引
      */
     public static void main(String[] args) {
-//        StringBuilder stringBuilder = new StringBuilder("我是中国人");
-//        stringBuilder.deleteCharAt(0);
+        StringBuilder stringBuilder = new StringBuilder("我是中国人");
+        //        stringBuilder.deleteCharAt(0);
 //        System.out.println(stringBuilder);
     }
 }
