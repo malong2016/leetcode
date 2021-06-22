@@ -21,9 +21,9 @@ public class Recursion {
      * 练习题: leetcode 509,206,344
      */
     public static int jiechen(int n) throws Exception {
-        if (n<0) throw new Exception("负数不存在阶乘,请重新输入!");          //如果n是负数,就抛出异常
-        if (n==1 || n==0) return 1;    //这是递归的出口
-        return n * jiechen(n - 1);         //如果大于1,就递归
+        if (n<0) throw new Exception("负数不存在阶乘,请重新输入!");        
+        if (n==1 || n==0) return 1;    //递归终止的条件
+        return n * jiechen(n - 1);         //递归的拆解和返回值
     }
 
 
