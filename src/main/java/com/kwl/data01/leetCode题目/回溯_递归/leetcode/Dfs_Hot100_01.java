@@ -52,7 +52,7 @@ public class Dfs_Hot100_01 {
         return res;
     }
     void dfs(int[] nums,int first){
-        if(first == nums.length) res.add(new ArrayList<>(outPut));   //如果遍历完成一轮,就添加到res中
+        if(first == nums.length) res.add(new ArrayList<>(outPut));   //如果遍历完成一轮,就添加到res中,在这里就已经做完了
         for (int i = first; i < nums.length; i++) {
             Collections.swap(outPut, first, i);
             dfs(nums, first+1);
