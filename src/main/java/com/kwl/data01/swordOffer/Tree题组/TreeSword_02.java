@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.Tree题组.swordOffer;
+package com.kwl.data01.swordOffer.Tree题组;
 
 import com.kwl.data01.dataStructure.TreeNode;
 import com.kwl.data01.dataStructure.题目Struct.TreeWithFather;
@@ -12,7 +12,7 @@ import java.util.Queue;
  * @author kuang.weilin
  * @date 2021/2/18
  */
-public class TreeSword_03 {
+public class TreeSword_02 {
 
     /**
      * 题目1(swordOffer面试题8): 二叉树的下一个节点
@@ -86,16 +86,5 @@ public class TreeSword_03 {
             i++;
         }
         return root;
-    }
-
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        TreeNode rootleft = new TreeNode(3);
-        root.right = rootleft;
-        rootleft.left = new TreeNode(4);
-        rootleft.right = new TreeNode(5);
-        System.out.println("题目2(swordOffer 面试题37):序列化二叉树");
-        System.out.println(serialize(root));
     }
 }

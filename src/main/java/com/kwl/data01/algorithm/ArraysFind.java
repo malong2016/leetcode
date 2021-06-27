@@ -29,7 +29,7 @@ public class ArraysFind {
     }
 
     /**
-     * 顺序查找
+     * 顺序查找 temple
      * 时间复杂度 o(n)
      */
     public static int orderFind(int[] arr, int targetValue) {

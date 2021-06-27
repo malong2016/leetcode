@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.Other题组.swordOffer;
+package com.kwl.data01.swordOffer.Other题组;
 
 /**
  * 其他题组2

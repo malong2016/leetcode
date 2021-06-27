@@ -110,7 +110,7 @@ public class TreeNode {
                 stack.push(root);
                 root = root.left;       //将左边的依次入栈
             }
-            root = stack.pop();
+            root = stack.pop();           //这里是出最后的左
             System.out.println(root.val);
             root = root.right;
         }

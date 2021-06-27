@@ -13,7 +13,7 @@ public class Dfs_Hot100_01 {
      * 描述: 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
      * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
      * <p>
-     * eg:nums = [1,2,3]  --> [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+     * eg:nums = [1,2,3]  --> [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
      * nums = [0]   --> [[],[0]]
      */
     public static List<List<Integer>> subsets(int[] nums) {
@@ -110,17 +110,17 @@ public class Dfs_Hot100_01 {
 
     public static void main(String[] args) {
         Dfs_Hot100_01 skt = new Dfs_Hot100_01();
-//        System.out.println("题目1(leetcode 78题): 子集:");
-//        System.out.println(subsets(new int[]{1, 2, 3}));
+        System.out.println("题目1(leetcode 78题): 子集:");
+        System.out.println(subsets(new int[]{1, 2, 3}));
 
 //        System.out.println("题目2(leetcode 46): 全排列:");
 //        System.out.println(new Dfs_Hot100_01().permute(new int[]{1,2,3}));
 
 //        System.out.println("题目3(leetcode 39): 组合总和:");
 //        System.out.println(skt.combinationSum(new int[]{2,7,6,3,5,1}, 9));
-
-        System.out.println("题目4(leetcode 22): 括号生成");
-        System.out.println(skt.generateParenthesis(3));
+//
+//        System.out.println("题目4(leetcode 22): 括号生成");
+//        System.out.println(skt.generateParenthesis(3));
     }
 
 

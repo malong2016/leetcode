@@ -1,0 +1,233 @@
+package com.kwl.data01.swordOffer.String题组;
+
+import java.util.*;
+
+/**
+ * 剑指offer_字符串(String)题组01 本题组一共是7到题目
+ *
+ *
+ * 题目1(swordOffer 面试题17): 打印从1到最大的n位数
+ * 题目2(swordOffer 面试题38): 字符串的排列
+ * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
+ * 题目4(swordOffer 面试题50题目1):字符串中第一个出现的一次字符
+ * 题目5(swordOffer 面试题58题目2):左旋转字符串
+ * 题目6(swordOffer 面试题58题目1):翻转字符串(单词的顺序)
+ * 题目7(leetcode 79): 单词搜索
+ *
+ * @author kuang.weilin
+ * @date 2021/2/14
+ */
+public class StringSword_01 {
+
+
+    /**
+     * 题目1(swordOffer 面试题17): 打印从1到最大的n位数
+     * <p>
+     * 思路01(基础解): 最大Math.pow(10,n)-1
+     */
+    public static int[] printToMaxOfNDigits(int n) {
+        int max = (int) (Math.pow(10,n) - 1);
+        int res[] = new int[max];
+        for (int i = 0; i < max; i++)  res[i] = i+1;
+        return res;
+    }
+
+
+    /**
+     * 题目2(swordOffer 面试题38): 字符串的排列
+     * 描述: 输入一个字符串,打印出该字符串中字符的所有排序。
+     * 例如: 输入字符串abc,打印字符a,b,c所排列出来的所有字符串是
+     * abc,acb,bac,bca,cab,cba
+     * <p>
+     * 思路01(leetcode):回溯法解决,排序数量是n!
+     */
+    List<String> res = new LinkedList<>();
+    char[] c;
+    public String[] permutation(String s) {
+        c = s.toCharArray();
+        dfs(0);
+        return res.toArray(new String[res.size()]);
+    }
+    void dfs(int x) {
+        if(x == c.length - 1) {
+            res.add(String.valueOf(c));      // 添加排列方案
+            return;
+        }
+        HashSet<Character> set = new HashSet<>();
+        for(int i = x; i < c.length; i++) {
+            if(set.contains(c[i])) continue; // 重复，因此剪枝
+            set.add(c[i]);
+            swap(i, x);                      // 交换，将 c[i] 固定在第 x 位
+            dfs(x + 1);                      // 开启固定第 x + 1 位字符
+            swap(i, x);                      // 恢复交换
+        }
+    }
+    void swap(int a, int b) {
+        char tmp = c[a];
+        c[a] = c[b];
+        c[b] = tmp;
+    }
+
+
+
+
+    /**
+     * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
+     * 描述: 请从字符串中寻找一个最长的不包括重复字符的子字符串,计算该最长子字符的长度。
+     * 假设字符串中只包含'a'~'z'的字符。
+     * 方法一: HashMap
+     * 方法二: HashSet
+     */
+    public static int lengthOfLongestSubString(String str) {
+        Map<Character,Integer> map = new HashMap<>();
+        int left = 0, right = 0, res = 0;
+        while (right < str.length()){
+            if (map.containsKey(str.charAt(right))){
+                left = Math.max(left, map.get(str.charAt(right)) + 1);
+            }
+            res = Math.max(res, right - left + 1);
+            map.put(str.charAt(right), right);
+            right++;
+        }
+        return res;
+    }
+
+    /**
+     * 题目4(swordOffer 面试题50题目1):字符串中第一个出现的一次字符
+     * 描述: 字符串中寻找出第一个只出现的一次字符。如输入"abaccdeff",就输出"b"
+     *
+     *
+     *
+     * 思路01(暴力解,时间复杂度是o(n2)):扫描字符串将每个字符和后面字符进行比较,如果后面字符没有就返回第一个这个字符
+     * 思路02:设置一个HashMap(key,boolean) 不断的加入,boolean判断是否是已经加入,在扫描到第一个true
+     * 思路03(假设是字母最大'z'是122):先将0-123全部设置为new int[123]然后扫描arr[char[i]]++进行计数,第一个arr[char[i]]==1就可以输出
+     */
+    public static char firstNotRepeatingChar(String str) {       //思路02
+        HashMap<Character, Boolean> hashMap = new HashMap<>();
+        char[] charArray = str.toCharArray();
+        for (char c : charArray) {
+            hashMap.put(c, !hashMap.containsKey(c));  //第一次放入hashMap,一定返回true,第二次放入就是重置到false(表明有重复)
+        }
+        for (char c : charArray) {
+            if (hashMap.get(c)) return c;
+        }
+        return ' ';     //如果不存在就返回null
+    }
+
+    public static char firstNotRepeatingChar01(String str) {       //思路03
+        int[] arr = new int[123];
+        char[] charArray = str.toCharArray();
+        for (char c : charArray) {
+            arr[c]++;         //对应字符串转化为int类型进行计数,注意第一次数组为1的值,返回(char)index就是找到的值
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == 1) return (char) i;        //要强制转化,如果写int的变量,如果直接写int字面量就不需要转化
+        }
+        return ' ';     //如果不存在就返回null
+    }
+
+
+    /**
+     * 题目5(swordOffer 面试题58题目2):左旋转字符串
+     * 描述:输入字符串"abcdefg"和数字2,该方法左旋转到cdefgab
+     * <p>
+     * 思路: 把ab cdefg当成二个整体,先翻转ba gfedc 在分别整体翻转 cdefgab
+     */
+    public static String leftRotateString(String str, int n) {
+        if (str == null || str.length() < n || n < 0) return str;    //字符串为null,长度小于n,n小于0,不翻转,返回null
+        char[] charArray = str.toCharArray();     //此时str不可能为null
+        reverse(charArray, 0, n - 1);     //翻转前n个字符
+        reverse(charArray, n, str.length() - 1);  //翻转其他字符
+        reverse(charArray, 0, str.length() - 1); //翻转整体
+
+        return String.valueOf(charArray);
+    }
+
+    /**
+     * 题目1需要的方法,传入字符串和起始index和结束index,进行翻转
+     */
+    public static void reverse(char[] charArray, int begin, int end) {       //翻转字符串,制定起始索引和结束索引
+        int behind = begin, head = end;        //前后指针
+        while (head > behind) {
+            char temp = charArray[behind];
+            charArray[behind] = charArray[head];
+            charArray[head] = temp;
+            behind++;              //前p左移动,后p右移动
+            head--;
+        }
+    }
+
+
+    /**
+     * 题目6(swordOffer 面试题58题目1):翻转字符串(单词的顺序)
+     * 描述: 输入一个英文句子,翻转句子中的单词的顺序,但是单词内字符串的顺序不变
+     * "I am a student." ==> "student. a am I"
+     * <p>
+     * 思路01(二次翻转):先将字符串整体翻转,在每个单词翻转
+     * 在翻转单词时候,pBegin和pEnd同时指向单词开始的地方,没有扫描到空格pEnd++,
+     * 扫描到空格,pEnd--,翻转这个单词,pBegin=pEnd
+     */
+    public static String reverseSentence(String str) {
+
+        char[] charArray = str.toCharArray();
+        int pBegin = 0, pEnd = charArray.length - 1;
+        reverse(charArray, pBegin, pEnd);    //整体翻转
+
+        pBegin = pEnd = 0;      //初始化,开始从开始扫描
+
+        while (pBegin != charArray.length) {
+            if (charArray[pBegin] == ' ') {
+                pBegin++;
+                pEnd++;
+            } else if (pEnd == charArray.length || charArray[pEnd] == ' ') {       //要扫描到字符数组溢出,先判断pEnd == charArray.length
+                reverse(charArray, pBegin, --pEnd);      //pEnd要向前移动一位到非空格
+                pBegin = ++pEnd;          //同时移动到空格
+            } else {
+                pEnd++;
+            }
+        }
+        return String.valueOf(charArray);
+    }
+
+
+    /**
+     * 题目7(leetcode 79): 单词搜索
+     * 描述:给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+     * 同一个单元格内的字母不允许被重复使用。
+     * eg: board =
+     * [
+     *   ['A','B','C','E'],
+     *   ['S','F','C','S'],
+     *   ['A','D','E','E']
+     * ]
+     * 给定 word = "ABCCED", 返回 true
+     * 给定 word = "SEE", 返回 true
+     * 给定 word = "ABCB", 返回 false
+     *
+     * 思路01(回溯法):
+     */
+    public boolean exist(char[][] board, String word) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs09(board,word,i,j,0)) return true;
+            }
+        }
+        return false;
+    }
+    boolean dfs09(char[][] board,String word,int i,int j,int index){
+        //越界&&最后一个值不等于word最后一个值
+        if (i>=board.length || i<0 || j>=board[0].length || j<0 || board[i][j] != word.charAt(index)) return false;
+        if (index == word.length() - 1) return true;      //index如果不断扩大到word.length - 1就可以
+        char temp = board[i][j]; //暂时保存值
+        board[i][j] = '.';     //修改值,复制被重复访问
+        boolean res = dfs09(board,word,i+1,j,index+1) || dfs09(board,word,i-1,j,index+1)||
+                dfs09(board,word,i,j+1,index+1) || dfs09(board,word,i,j-1,index+1);   //从上下左右开始搜索
+        board[i][j] = temp;
+        return res;
+    }
+
+
+
+
+}

@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.Stack题组.swordOffer;
+package com.kwl.data01.swordOffer.Stack题组;
 
 import java.util.Stack;
 
@@ -85,32 +85,5 @@ public class StackSword_01 {
     public static Integer findStackMinValue(Stack<Integer> minValueStack) throws Exception {
         if (minValueStack.isEmpty()) throw new Exception("栈为空,无最小元素");
         return minValueStack.peek();
-    }
-
-
-
-    public static void main(String[] args) throws Exception {
-        System.out.println("题目1(swordOffer 面试题9):用二个栈实现一个队列.队列的声明如下:");
-//        Stack<Integer> stack01 = new Stack<>();
-//        Stack<Integer> stack02 = new Stack<>();
-//
-//        //入队
-//        appendTail(stack01, 1);
-//        appendTail(stack01, 2);
-//        appendTail(stack01, 3);
-//
-//        appendTail(stack02, 4);        //加入原本就有元素
-//
-//        //出队测试
-//        System.out.println("第一次出队:");
-//        System.out.println(deleteHead(stack01, stack02));
-
-        System.out.println("题目3(swordOffer 面试题30):包含min函数的栈");
-        Stack<Integer> mainStack = new Stack<>();
-        Stack<Integer> minValueStack = new Stack<>();    //储存最小值的栈
-        minPush(mainStack,minValueStack,2);
-        minPush(mainStack,minValueStack,1);
-        minPush(mainStack,minValueStack,3);
-        System.out.println("打印一下此时minValueStack的元素:"+minValueStack);
     }
 }

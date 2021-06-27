@@ -52,7 +52,7 @@ public class ArraysSort {
     }
 
     /**
-     * 1 2)交换排序之快速排序(注意数组属于引用,方法里面改变会影响外面)  partition 分割/隔板
+     * 1 2)交换排序之快速排序(注意数组属于引用,方法里面改变会影响外面)  partition 分割/隔板  不考虑null的情况
      */
     public static int[] quickSort(int[] A, int low, int high) {
         if (low < high) {           //如果是只有一个元素就没有必要快速排序,递归结束!!!!
@@ -99,6 +99,8 @@ public class ArraysSort {
     }
     /**
      * 2 2)选择排序之堆排序
+     *
+     * 先建立一个大顶推，然后将堆顶元素和最后元素进行交换。
      */
 
     /**
@@ -149,19 +151,25 @@ public class ArraysSort {
 
 
     /**
-     * 3 3)插入排序之希尔排序(升序)
+     * 3 3)插入排序之希尔排序(升序)  类比二路归并排序
+     *
+     *
+     * eg: [8,9,1,7,2,3,5,4,6,0]
+     * 1) 初始增量gap = length/2 分为五组[8,3] [9,5] [1,4] [7,6] [2,0],对每组进行直接插入排序
+     * 2) gap = length/2/2 分两组[3,1,0,9,7]  [5,6,8,4,2] 进行直接插入排序
+     * 3) gap= 1,分为一组, [0,2,1,4,3,5,7,6,9,8]直接插入排序
      */
     public static void shellSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-        for (int gap = arr.length / 2; gap > 0; gap /= 2) {
+        for (int gap = arr.length / 2; gap > 0; gap /= 2) {     //逐步分组
             for (int i = gap; i < arr.length; i++) {
                 int j = i;
-                int tmp = arr[j];
+                int tmp = arr[j];   //待排序,下面是找位置
                 if (arr[j] < arr[j - gap]) {
                     while (j - gap >= 0 && tmp < arr[j - gap]) {
-                        arr[j] = arr[j - gap];
+                        arr[j] = arr[j - gap];    //移动
                         j -= gap;
                     }
                 }
