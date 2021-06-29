@@ -1,34 +1,35 @@
 package com.kwl.data01;
 
 
+import com.kwl.data01.bean.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 @SpringBootTest
 class Data01ApplicationTests {
 
 
-    public static String longestCommonPrefix(String[] strs) {
-        //大体思路,res= strs[0],然后依次和后面的item比较,进行截取
-        if (strs.length == 0) return "";
-        String res = strs[0];
-        for (int i = 1; i < strs.length; i++) {
-            int j = 0;      //j是扫描指针,同时扫描对比
-            while (j < Math.min(res.length(), strs[i].length()) && res.charAt(j) == strs[i].charAt(j)) {
-                j++;
-            }
-            res = res.substring(0, j);
-            System.out.println("res = " + res);
-            if (res == "") return "";
-        }
-        return "";
+
+
+    int fun01(){
+        Stack<Integer> stack = new Stack<>();
+        stack.push(122);
+        return stack.pop();
     }
 
 
     @Test
     void contextLoads() {
-        int a = 1;
-
+        int a  = 15;
+        System.out.println(a ^ a);  //0
+        System.out.println(a & a);  //15
+        System.out.println(a<<1); //30
+        System.out.println(a>>1); //7
     }
 
 

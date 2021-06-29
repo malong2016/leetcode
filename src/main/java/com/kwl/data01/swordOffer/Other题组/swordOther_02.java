@@ -41,15 +41,15 @@ public class swordOther_02 {
      * 题目2(swordOffer 面试题64): 求1+2+...+n
      * 描述: 求1+2+3+....+n,要求不能使用乘除法,for,while,if,else,switch,case
      * 等关键字以及条件判断语句(A?B:C)
-     *
+     * <p>
      * 思路: 利用&&进行短路终止判断
      */
-   public static int res01 = 0;
+    public static int res01 = 0;
 
     public static int sumNums(int n) {
         boolean x = n > 1 && sumNums(n - 1) > 0;  //当n=1的时候被短路
         res01 += n;
-        return  res01;
+        return res01;
     }
 
 
@@ -61,8 +61,8 @@ public class swordOther_02 {
      */
     public int add(int a, int b) {
         while (b != 0) {       //当进位为0的时候跳出
-            int c = (a&b)<<1;       //c=进位
-            a^=b; //a=非进位和
+            int c = (a & b) << 1;       //c=进位
+            a ^= b; //a=非进位和
             b = c;
         }
         return a;

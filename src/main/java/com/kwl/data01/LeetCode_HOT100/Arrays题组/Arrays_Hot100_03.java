@@ -1,7 +1,4 @@
-package com.kwl.data01.leetCode题目.Arrays题组.leetcode;
-
-import java.util.Arrays;
-import java.util.List;
+package com.kwl.data01.LeetCode_HOT100.Arrays题组;
 
 /**
  * @author kuang.weilin

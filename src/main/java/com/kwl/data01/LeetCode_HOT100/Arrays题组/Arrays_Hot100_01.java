@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.Arrays题组.leetcode;
+package com.kwl.data01.LeetCode_HOT100.Arrays题组;
 
 import java.util.HashMap;
 import java.util.List;

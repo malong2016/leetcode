@@ -52,9 +52,9 @@ public class swordOther_01 {
         return n == 1;
     }
 
-  public static   int getUglyNumber(int index) {     //获取第index个丑数
+    public static int getUglyNumber(int index) {     //获取第index个丑数
         int number = 0;
-        for (int i = 0; i < index;) {
+        for (int i = 0; i < index; ) {
             number++;
             if (isUgly(number)) i++;     //如果是丑数是i++,最后加到1500次,此时就可以输出
         }
@@ -66,11 +66,11 @@ public class swordOther_01 {
         int[] dp = new int[n];
         dp[0] = 1;
         for (int i = 1; i < n; i++) {
-            int n2 = dp[a]*2,n3 = dp[b]*3,n5 = dp[c]*5;
+            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
             dp[i] = Math.min(Math.min(n2, n3), n5);
-            if (dp[i]==n2) a++;
-            if (dp[i]==n3) b++;
-            if (dp[i]==n5) c++;
+            if (dp[i] == n2) a++;
+            if (dp[i] == n3) b++;
+            if (dp[i] == n5) c++;
         }
         return dp[n - 1];
     }
@@ -84,32 +84,27 @@ public class swordOther_01 {
      */
     public static int numberOf1_my(int n) {
         int number = 0;
-        while (n != 0) {
-            if (n%10==1) number++;
-            n/=10;
+        for (int i = 1; i <= n; i++) {
+            int temp = i; //不能改变本身
+            while (temp != 0) {
+                if (temp % 10 == 1) number++;
+                temp /= 10;
+            }
         }
         return number;
     }
+
 
     /**
      * 题目4(swordOffer 面试题60): n个骰子的点数
      * 描述: 把n个骰子扔在地上,所有的骰子朝上的一面点数之和为s,输入n,打印出s的所有可能的值出现的概率
      * 思路01: todo 先系统学习动态规划在来做!!
      */
-
-
+    public double[] dicesProbability(int n) {
+        return null;
+    }
 
     public static void main(String[] args) {
-//        System.out.println("题目1(swordOffer 面试题15): 二进制中1的个数:");
-////        System.out.println(numberOf1(15));
-//        System.out.println(numberOf2(15));
-//
-//        System.out.println("题目2(swordOffer 面试题49):丑数");
-//        System.out.println(getUglyNumber(10));   //传统解
-//        System.out.println(nthUglyNumber(10));        //动态规划
-
-        System.out.println("题目3(swordOffer 面试题43):1~n整数中1出现的次数:");
-        System.out.println(numberOf1_my(111));
-
+        System.out.println(numberOf1_my(12));
     }
 }

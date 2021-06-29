@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.LinkList题组.leetCode;
+package com.kwl.data01.LeetCode_HOT100.LinkList题组;
 
 import com.kwl.data01.dataStructure.ListNode;
 

@@ -5,16 +5,17 @@ import java.util.LinkedList;
 
 /**
  * 剑指offer_数组_题组05(每个题组是4个题目)
- *
- *
+ * <p>
+ * <p>
  * 题目1(swordOffer 面试题11):旋转数组的最小数字
  * 题目2(swordOffer 面试题44):数字序列中某一位数字
  * 题目3(swordOffer 面试题46):把数字翻译成字符串
  * 题目4(swordOffer 面试题47):礼物的最大价值
- *  题目5(swordOffer 面试题63):股票的最大利润
- *  题目6(swordOffer 面试题12):矩阵中的路径
- *  题目7(swordOffer 面试题13): 机器人的运动范围
- *  题目8(swordOffer 面试题59): 队列的最大值
+ * 题目5(swordOffer 面试题63):股票的最大利润
+ * 题目6(swordOffer 面试题12):矩阵中的路径
+ * 题目7(swordOffer 面试题13): 机器人的运动范围
+ * 题目8(swordOffer 面试题59): 队列的最大值
+ *
  * @author kuang.weilin
  * @date 2021/2/19
  */
@@ -71,16 +72,20 @@ public class ArraysSword_03 {
      * 思路01(leetcode 动态规划): f(i) = f(i-2)+f(i-1) 如果Xi-1Xi可以被翻译 f(i) = f(f-1),如果Xi-1Xi不能被翻译
      * 思路02(数字求余): todo等下
      */
-    public static int getTranslationCount(int number) {
-        String s = String.valueOf(number);
-        int a = 1, b = 1;       //a在前,b在后
-        for (int i = 2; i < s.length(); i++) {
-            String tem = s.substring(i - 2, i);
-            int c = tem.compareTo("10") >= 0 && tem.compareTo("25") <= 0 ? a + b : a;     //如果是10<=x<=25之间就是累计前面的f(n-1)+f(n-2)
-            b = a;
-            a = c;
+    public static int getTranslationCount(int num) {
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length() + 1];   //这里要是最后一位对应num,考虑0就是length+1,不考虑就是length
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i < dp.length; i++) {
+            String temp = str.substring(i - 2, i);
+            if (temp.compareTo("10") >= 0 && temp.compareTo("25") <= 0) {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            } else {
+                dp[i] = dp[i - 1];
+            }
         }
-        return a;
+        return dp[str.length()];
     }
 
     /**
@@ -122,14 +127,14 @@ public class ArraysSword_03 {
     }
 
     public static int maxValueRecur(int[][] grid) {   //方法三:递归法.leetcode是超时的
-        return recur(grid,grid.length-1,grid[0].length-1);
+        return recur(grid, grid.length - 1, grid[0].length - 1);
     }
 
     public static int recur(int[][] grid, int m, int n) {
-        if(m==0&&n==0) return grid[m][n];
-        else if(m==0)  return grid[m][n]+recur(grid,m,n-1);   //第一行的情况
-        else if(n==0)  return grid[m][n]+recur(grid,m-1,n);   //第一列的情况
-        else return grid[m][n]+Math.max(recur(grid,m-1,n),recur(grid,m,n-1));
+        if (m == 0 && n == 0) return grid[m][n];
+        else if (m == 0) return grid[m][n] + recur(grid, m, n - 1);   //第一行的情况
+        else if (n == 0) return grid[m][n] + recur(grid, m - 1, n);   //第一列的情况
+        else return grid[m][n] + Math.max(recur(grid, m - 1, n), recur(grid, m, n - 1));
     }
 
 
@@ -168,7 +173,7 @@ public class ArraysSword_03 {
         char[] words = word.toCharArray();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (dfs(board,words,i,j,0)) return true;     //遍历所有可能的点
+                if (dfs(board, words, i, j, 0)) return true;     //遍历所有可能的点
             }
         }
         return false;
@@ -199,27 +204,25 @@ public class ArraysSword_03 {
     }
 
     /**
-     * 题目8(swordOffer 面试题59): 队列的最大值
+     * 题目8(swordOffer 面试题59): 滑动窗口的最大值
      * 描述: 给定一个数组和滑动窗口的大小,找出所有在滑动窗口的最大值
      * {2,3,4,2,6,2,5,1}滑动窗口3 --> 最大值分别是{4,4,6,6,6,5}
      * <p>
      * 思路01:暴力解,时间复杂度是o(n)
-     * 思路02:利用一个双端队列Deque维护,1)仅仅含有窗口内的元素 2)非严格递减
+     * 思路02:利用一个双端队列Deque维护,1)仅仅含有窗口内的元素 2)非严格递减  //todo这个回溯法不算很难
      */
     public int[] maxSildingWindow(int[] nums, int k) {
-        if (nums.length==0||k==0) return new int[0];
+        if (nums.length == 0 || k == 0) return new int[0];
         Deque<Integer> deque = new LinkedList<>();       //定义一个双端队列,removeFirst()/removeLast() 删除对首/对尾的元素
         int[] res = new int[nums.length - k + 1];      //滑动窗口k,那么有nums.length - k + 1种情况,每种情况存储一个最大值
-        for (int j = 0,i=1-k; j <nums.length;i++, j++) {       //i在后,j在前
-            if (i>0&&deque.peekFirst()==nums[i-1]) deque.removeFirst();    //删除deque中对应的num[i-1]
-            while (!deque.isEmpty()&&deque.peekLast()<nums[j]) deque.removeLast(); //保持deque递减
+        for (int j = 0, i = 1 - k; j < nums.length; i++, j++) {       //i在后,j在前
+            if (i > 0 && deque.peekFirst() == nums[i - 1]) deque.removeFirst();    //删除deque中对应的num[i-1]
+            while (!deque.isEmpty() && deque.peekLast() < nums[j]) deque.removeLast(); //保持deque递减
             deque.addLast(nums[j]);
-            if (i>=0) res[i] = deque.peekFirst();     //记录窗口的最大值
+            if (i >= 0) res[i] = deque.peekFirst();     //记录窗口的最大值
         }
-        return res ;
+        return res;
     }
-
-
 
 
 }

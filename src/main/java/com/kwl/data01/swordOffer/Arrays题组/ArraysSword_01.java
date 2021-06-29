@@ -9,10 +9,10 @@ import java.util.HashSet;
  * 题目1(swordOffer 面试题21): 输入一个整数数组,一个方法让奇数在arr的前半部分,偶数在arr的后半部分
  * 题目2(swordOffer 面试题53): 数字在排序数组中出现的次数
  * 题目3(swordOffer 面试题57题目1): 和为s的二个数字
- * 题目4(swordOffer 面试题57题目2):和为s的联系正数序列
+ * 题目4(swordOffer 面试题57题目2):和为s的连续正数序列
  * 题目5(swordOffer 面试题45): 输入一个正整数数组，把数组里所有的数字拼接起来排成一个数,打印能拼接处的所有数字中最小的一个。
  * 题目6(swordOffer 面试题56): 数组中数字出现的次数
- * 题目7(swordOffer 面试题61): 扑克牌的顺子
+ * 题目7(swordOffer 面试题61): 扑克牌中顺子
  *
  * @author kuang.weilin
  * @date 2021/2/13
@@ -132,7 +132,7 @@ public class ArraysSword_01 {
 
 
     /**
-     * 题目4(swordOffer 面试题57题目2):和为s的联系正数序列
+     * 题目4(swordOffer 面试题57题目2):和为s的连续正数序列
      * 描述: 输入一个正数s,打印出所有和为s的连续正数序列(至少要二个数).
      * 例如,输入15,由于1+2+3+4+5=4+5+6=7+8=15,所以打印出3个连续序列1~5 4~6 7~8
      * <p>
@@ -218,25 +218,30 @@ public class ArraysSword_01 {
         }
         return new int[]{a, b};
     }
+    /**
+     * 题目6(swordOffer 面试题56II): 数组中数字出现的次数
+     * 在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+     */
 
     /**
-     * 题目7(swordOffer 面试题61): 扑克牌的顺子
+     * 题目7(swordOffer 面试题61): 扑克牌中顺子
      * 描述: 从扑克牌中抽取5张牌，判断是不是一个顺子，即这5张牌是不是连续的。
-     * 2~10为数字本身，A为1,J为11,,Q是12,K是13,大小王可以看成任意数字
-     * <p>
+     * 2~10为数字本身，A为1,J为11,,Q是12,K是13,大小王是0可以看成任意数字
+     *
+     *
+     * 核心: 1 无重复 2除掉大小王 max - min < 5
      * 思路01(leetcode):核心是五张牌中没有重复元素,除了0之外max-min<5就满足是顺子,
      * 我们利用HashSet对数组中的元素进行判断其是否重复,同时记录除了0之外的最大值和最小值
      * 思路02(leetcode):先对数组进行排序,在arr[i+1]=arr[i]是返回false,max-min<5就满足是顺子,
      */
     public static boolean  isContinuous(int[] arr) {
         HashSet<Integer> hashSet = new HashSet<>();
-        int min = 14, max = 0;      //这个初值要逆向思维，设置max尽可能小值
+        int min = 14, max = 0;
         for (int i : arr) {
             if (i == 0) continue;   //如果是0,就跳出循环,不统计
-            max = Math.max(max, i);  //统计最大值和最小值
+            max = Math.max(max, i);
             min = Math.min(min, i);
-            if (hashSet.contains(i)) return false;   //如果有重复元素就返回false
-            hashSet.add(i);
+            if (!hashSet.add(i)) return false;   //如果有重复元素就返回false
         }
         return max - min < 5;
     }
@@ -245,7 +250,7 @@ public class ArraysSword_01 {
         Arrays.sort(arr);
         int joker = 0;       //这个记录非0的第一个index
         for (int i = 0; i < 4; i++) {
-            if (arr[i] == 0) joker++;
+            if (arr[i] == 0) joker++;       //joker只有二张牌
             else if (arr[i] == arr[i+1]) return false;
         }
         return arr[4] - arr[joker] < 5;

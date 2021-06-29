@@ -20,11 +20,22 @@ public class Person {
 
     private String id;
 
-    private String name;
+    private String name,name01;
 
     private String city;
 
-  static   List<List<Integer>> res = new ArrayList<>();
+    private Student student;
+
+    public double myPow(double x, int n) {
+        double res = 1;
+        for (int i = 0; i < n; i++) {
+            res = res * x;
+        }
+        return res;
+    }
+
+
+
 
     /**
      * 三数之和大体思路

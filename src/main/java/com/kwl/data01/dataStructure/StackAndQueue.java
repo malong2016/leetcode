@@ -42,25 +42,29 @@ public class StackAndQueue {
      * remove(): 移除头部,等价于poll()         --如果是null,会抛出异常
      * add():添加尾部,等价于offer()
      *
-     * remove(o): 移除制定元素(是一个链表实现,比普通队列更加强大)
+     * remove(元素): 移除制定元素,不能移除索引
      * element():拿到头部
      *
      */
 
 
     /**
-     * 3 双端队列(Deque):  队首和队尾都可以执行入队和出队的操作  (也可以当stack栈使用,拥有push/pop方法)
+     * 4 双端队列(Deque):  队首和队尾都可以执行入队和出队的操作  (注意: 也可以当stack栈使用,拥有push/pop方法)
      *
-     * 1)  push()/pop(): 模拟stack  push():每次都添加到队列队首!!!pop()就是正常的出队
-     * 2) 模拟普通Queue,  offer/offerLast   poll()/pollFirst()
+     * * remove(元素): 移除制定元素,不能移除索引
+     *
+     *
+     *模拟stack和普通队列和双端队列
+     * 1)  push()/pop(): 模拟stack  push():每次都添加到队列队首!!!pop()就是正常的队首出队
+     * 2) 模拟普通Queue   offer/offerLast   poll()/pollFirst()
      *                   add/addLast        remove()/removeFirst()
-     * 3) 模拟双端Queue, offerFirst()/addFirst      pollLast()/removeLast        从队首入队，队尾出队
+     * 3) 模拟双端Queue, offerFirst()/addFirst()    pollLast()/removeLast()        从队首入队，队尾出队
      */
 
     /**
      * 4 LinkedList:     --更加强大,可以使用双端队列
      * get(index)获取到链表指定的元素
-     * remove("元素值"/index)
+     * remove("元素值"/index)     --索引和元素都可以
      */
     public static void main(String[] args) {
 
@@ -77,5 +81,6 @@ public class StackAndQueue {
         linkedList.offer("张三02");
         linkedList.remove();
         System.out.println(linkedList);
+
     }
 }

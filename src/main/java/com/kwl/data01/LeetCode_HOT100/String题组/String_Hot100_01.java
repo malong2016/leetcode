@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.String题组;
+package com.kwl.data01.LeetCode_HOT100.String题组;
 
 import java.util.Arrays;
 import java.util.Stack;
@@ -9,7 +9,7 @@ import java.util.Stack;
  * @author kuang.weilin
  * @date 2021/2/8
  */
-public class String_01 {
+public class String_Hot100_01 {
 
 
     /**
@@ -72,22 +72,7 @@ public class String_01 {
         return stringBuilder.length()==0;
     }
 
-    /**
-     * 题目02:请实现一个函数,把字符串中每个空格都替换成%20
-     * 例如: "we are happy" 输出为 "we%20are%20happy"
-     */
-    /**
-     * 02-01 思路：使用stringBuilder去做
-     */
-    public static String replaceBlank01(String str){
-        StringBuilder stringBuilder = new StringBuilder(str);
-        for (int i = 0; i < stringBuilder.length(); i++) {
-            if (stringBuilder.charAt(i) == ' ') {                     //遍历stringBuilder如果为' '就替换
-                stringBuilder.replace(i,i+1,"%20");
-            }
-        }
-        return stringBuilder.toString();
-    }
+
 
     /**
      * 02-02 思路: 使用传统的字符串,每次扫描到空格,把字符串右移动2个空格
@@ -127,6 +112,6 @@ public class String_01 {
 
     public static void main(String[] args) {
 //        System.out.println(String_01.replaceBlank01("we  are happy"));
-        System.out.println(String_01.replaceBlank03("we are happy"));
+        System.out.println(String_Hot100_01.replaceBlank03("we are happy"));
     }
 }

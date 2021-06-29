@@ -6,9 +6,6 @@ package com.kwl.data01.dataStructure.题目Struct;
  * @author kuang.weilin
  * @date 2021/2/19
  */
-//@Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 public class ComplexLinkList {
 
     public int data;            //数据域

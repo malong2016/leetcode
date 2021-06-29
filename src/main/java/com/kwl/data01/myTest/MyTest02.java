@@ -3,6 +3,8 @@ package com.kwl.data01.myTest;
 
 //import com.sun.org.apache.xpath.internal.operations.String;
 
+import com.kwl.data01.dataStructure.TreeNode;
+
 import java.util.*;
 
 /**
@@ -12,12 +14,21 @@ import java.util.*;
 public class MyTest02 {
 
 
+//    reverse(chars, begin, --end);
+//    reverse(chars, begin, end--);区别
+
+   static void   fun01(int a){
+        System.out.println("a = " + a);
+    }
+
 
 
     public static void main(String[] args) {
-        HashMap<String, String> hashMap = new HashMap<>();
-        System.out.println(hashMap.get("12"));
-
+       int a = 100;
+       int b = 2;
+        int arr[] = {99, 98, 100};
+        System.out.println(arr[--b]==98);
+        System.out.println(arr[b--]==98);
     }
 
 }

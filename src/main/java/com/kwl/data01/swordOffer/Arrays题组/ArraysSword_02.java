@@ -85,13 +85,13 @@ public class ArraysSword_02 {
      * eg: 输入{1,-2,3,10,-4,7,2,-5} 最大子数组是{3,10,-4,7,2}
      * 输出该子数组的和是18
      * <p>
-     * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取max(i-1)
+     * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
     public static int FindGreatestSumOfSumOfSubArray(int[] arr) {
         int res = arr[0];    //默认是res是arr[0]
         for (int i = 1; i < arr.length; i++) {
-            arr[i] += Math.max(arr[i - 1], 0);      //当前index最大子数组之和,比较上一个,如果为0,就舍弃,为正数就接着
+            arr[i] += Math.max(arr[i - 1], 0);
             res = Math.max(arr[i], res);
         }
         return res;
@@ -129,11 +129,12 @@ public class ArraysSword_02 {
 
     /**
      * 题目5(swordOffer 面试题3题目一): 数组中重复的数字(可以修改数组)
-     * 描述: 在一个长度为n的数组中所有数字都是在0~n-1范围内。数组中某些数字是
+     * 描述: 在一个长度为n的数组中所有数字都是在0~n-1范围内。数组中某些数字是  （解题思路num[i] = i一一对应，找出第二个一一对应就是重复值）
      * 重复的，但是不知道有几个数字是重复的，也不知道每个数字重复了几次。请
      * 找出数组中任意的一个重复的数字。例如，如果输入长度为为7的数组{2,3,1,0,2,5,3}
      * 那么对应输出的重复的数字是2或者3
-     * <p>
+     *
+     *
      * 思路01(leetcode): HashSet不断的加入,遇到重复的元素就输出
      * 思路02(leetcode): 原地交换,将这个元素换到对应的index下（value = 2,换到index=2下）,如果遇到arr[num[i]]=num[i]就输出num[i]
      */
@@ -144,12 +145,12 @@ public class ArraysSword_02 {
                 i++;
                 continue;
             }
-            if (nums[nums[i]] == nums[i]) return nums[i]; //这说明对应的位置上存在num[i] = i
-            int temp = nums[i];       //同时记录下a的值和b的下标
+            if (nums[nums[i]] == nums[i]) return nums[i];
+            int temp = nums[i];
             nums[i] = nums[temp];
             nums[temp] = temp;
         }
-        return -1;     //找不到就返回-1
+        return -1;
     }
 
     /**
@@ -170,13 +171,13 @@ public class ArraysSword_02 {
      * {4, 7, 10, 13}
      * {6, 8, 11, 15}
      * <p>
-     * 思路01: 从有下角(i,j)开始遍历,如果该值>targetValue,i--,如果该值<targetValue,j++
+     * 思路01: 从左下角(i,j)开始遍历,如果该值>targetValue,i--,如果该值<targetValue,j++
      */
     public static boolean findNumberIn2DArray(int[][] arr, int targetValue) {
-        if (arr==null) return false;        //传入null,返回false
+        if (arr==null) return false;
         int i = arr.length - 1, j = 0;
         while (i >= 0 && j < arr[0].length) {
-            if (arr[i][j] > targetValue) i--;           //二维数组第一个是行,第二个是列
+            if (arr[i][j] > targetValue) i--;
             else if (arr[i][j] < targetValue) j++;
             else return true;
         }

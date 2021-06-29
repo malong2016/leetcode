@@ -16,7 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Student {
 
-    private String id;
+    private String stuId;
 
     private String name;
 }

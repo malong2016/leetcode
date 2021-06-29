@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.Arrays题组.leetcode;
+package com.kwl.data01.LeetCode_HOT100.Arrays题组;
 
 /**
  * leetcode热题HOT100_数组_题组02(每个题组是4个题目)

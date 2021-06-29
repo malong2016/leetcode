@@ -1,4 +1,4 @@
-package com.kwl.data01.leetCode题目.动态规划.leetcode;
+package com.kwl.data01.LeetCode_HOT100.动态规划;
 
 /**
  * @author kuang.weilin
