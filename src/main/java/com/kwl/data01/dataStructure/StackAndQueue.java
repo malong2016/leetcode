@@ -55,7 +55,7 @@ public class StackAndQueue {
      *
      *
      *模拟stack和普通队列和双端队列
-     * 1)  push()/pop(): 模拟stack  push():每次都添加到队列队首!!!pop()就是正常的队首出队
+     * 1)  push()/pop(): 模拟stack  push():每次都添加到队列队首!!!pop()就是正常的队首出队  （效果和poll一样）
      * 2) 模拟普通Queue   offer/offerLast   poll()/pollFirst()
      *                   add/addLast        remove()/removeFirst()
      * 3) 模拟双端Queue, offerFirst()/addFirst()    pollLast()/removeLast()        从队首入队，队尾出队
@@ -65,6 +65,8 @@ public class StackAndQueue {
      * 4 LinkedList:     --更加强大,可以使用双端队列
      * get(index)获取到链表指定的元素
      * remove("元素值"/index)     --索引和元素都可以
+     *
+     * 5 ArrayList:  只有普通的add()和remove(index/元素) 一般在回溯算法的时候都是使用LinkedList
      */
     public static void main(String[] args) {
 
@@ -74,13 +76,18 @@ public class StackAndQueue {
         Queue<String> queue = new LinkedList<>();
         //Deque(双端队列)
         Deque<String> deque = new LinkedList<>();
+        deque.add("张三");
+        deque.add("张三01");
+        deque.add("张三01");
+
+
         //加强版双端队列
-        LinkedList<String> linkedList = new LinkedList<>();
-        linkedList.offer("张三");
-        linkedList.offer("张三01");
-        linkedList.offer("张三02");
-        linkedList.remove();
-        System.out.println(linkedList);
+//        LinkedList<String> linkedList = new LinkedList<>();
+//        linkedList.offer("张三");
+//        linkedList.offer("张三01");
+//        linkedList.offer("张三02");
+//        linkedList.remove();
+//        System.out.println(linkedList);
 
     }
 }

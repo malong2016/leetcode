@@ -14,21 +14,38 @@ import java.util.*;
 public class MyTest02 {
 
 
-//    reverse(chars, begin, --end);
-//    reverse(chars, begin, end--);区别
-
-   static void   fun01(int a){
-        System.out.println("a = " + a);
+    //广发 输入2进制转化为16进制
+    public String toHexValue (int num) {
+        long a = fac(num);
+        String res = "";
+        res = Long.toHexString(a);
+        return res;
     }
-
-
+    public long fac(int n){     //先求出n!
+        if (n == 0) return 1;
+        else return n * fac(n - 1);
+    }
 
     public static void main(String[] args) {
-       int a = 100;
-       int b = 2;
-        int arr[] = {99, 98, 100};
-        System.out.println(arr[--b]==98);
-        System.out.println(arr[b--]==98);
+        MyTest02 myTest02 = new MyTest02();
+        System.out.println(myTest02.toHexValue(4));
+        System.out.println(myTest02.toHexValue(10));
+
     }
+
+    //广发输入json进行个人信息的脱敏计算
+    public String maskJsonMsg (String jsonMsg) {
+
+        Map<String, String> map = new HashMap<>();
+        String[] str = jsonMsg.split(",");
+        for (String str01 : str){
+            String[] str02 = str01.split(":");
+            map.put(str02[0],str02[1]);
+        }
+        return null;
+    }
+
+
+
 
 }

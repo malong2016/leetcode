@@ -1,4 +1,4 @@
-package com.kwl.data01.swordOffer.Stack题组;
+package com.kwl.data01.swordOffer.StackAndQueue;
 
 import java.util.Stack;
 
@@ -8,7 +8,7 @@ import java.util.Stack;
  * @author kuang.weilin
  * @date 2021/2/14
  */
-public class StackSword_01 {
+public class StackAndQueue_01 {
 
     /**
      * 题目1(swordOffer 面试题9):用二个栈实现一个队列.队列的声明如下:
@@ -83,4 +83,12 @@ public class StackSword_01 {
         if (minValueStack.isEmpty()) throw new Exception("栈为空,无最小元素");
         return minValueStack.peek();
     }
+
+
+    /**
+     * 题目4(swordOffer 面试题59-II):队列的最大值
+     * 请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
+     * 若队列为空，pop_front 和 max_value 需要返回 -1
+     */
+    //参考com.kwl.data01.dataStructure.题目Struct.MaxQueue
 }

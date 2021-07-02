@@ -94,7 +94,7 @@ public class ListNode {
      */
     public static ListNode getMidNodeByFastAndSlow(ListNode head) {
         ListNode fast = head, slow = head;
-        while (fast != null && fast.next != null) {
+        while (fast != null && fast.next != null) {    //到最后一个节点或者跳出
             fast = fast.next.next;
             slow = slow.next;
         }
@@ -102,26 +102,7 @@ public class ListNode {
     }
 
 
-    public static void main(String[] args) {
-//        System.out.println("头插法创建链表");
-//        LinkListNode headNode = createLinkListByHead(new int[]{1, 2, 3, 7, 8});
 
-//        System.out.println("尾插法创建链表");
-//        ListNode headNode = createLinkListByTail(new int[]{1, 2, 3, 7, 8});
-
-//        System.out.println("正序打印");
-//        printLinkList(headNode);
-
-//        System.out.println("逆序打印");
-//        printListByReverse(headNode);
-
-//        System.out.println("计算链表的节点数:");
-//        System.out.println(countNodeNum(headNode));
-
-        System.out.println("快慢指针寻找中心节点");
-        ListNode head = createLinkListByTail(new int[]{1, 2, 3, 4, 5, 6});
-        System.out.println(getMidNodeByFastAndSlow(head).val);
-    }
 
 
 }

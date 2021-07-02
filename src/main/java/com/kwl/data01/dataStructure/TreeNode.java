@@ -38,27 +38,6 @@ public class TreeNode {
         }
     }
 
-    /**
-     * 递归法-中序遍历
-     */
-    public static void inOrder(TreeNode treeNode) {
-        if (treeNode != null) {
-            inOrder(treeNode.left);
-            System.out.println(treeNode.val);
-            inOrder(treeNode.right);
-        }
-    }
-
-    /**
-     * 递归法-后序遍历
-     */
-    public static void postOrder(TreeNode treeNode) {
-        if (treeNode != null) {
-            postOrder(treeNode.left);
-            postOrder(treeNode.right);
-            System.out.println(treeNode.val);
-        }
-    }
 
     /**
      * 迭代法-前序遍历
@@ -86,35 +65,59 @@ public class TreeNode {
      */
     public static List<Integer> preOrderIter02(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         while (root != null || !stack.isEmpty()) {    //root是遍历指针!!!!
             while (root != null) {
-                list.add(root.val);
+                res.add(root.val);
                 stack.push(root);
                 root = root.left;       //将左边的依次入栈
             }
             root = stack.pop();
             root = root.right;
         }
-        return list;
+        return res;
     }
 
+    /**
+     * 递归法-中序遍历
+     */
+    public static void inOrder(TreeNode treeNode) {
+        if (treeNode != null) {
+            inOrder(treeNode.left);
+            System.out.println(treeNode.val);
+            inOrder(treeNode.right);
+        }
+    }
 
     /**
      * 迭代法-中序遍历
      */
-    public static void inOrderIter(TreeNode root) {
+    public static List<Integer> inOrderIter(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
+        List<Integer> res = new ArrayList<>();
         while (root != null || !stack.isEmpty()) {    //root是遍历指针!!!!
             while (root != null) {
                 stack.push(root);
                 root = root.left;       //将左边的依次入栈
             }
             root = stack.pop();           //这里是出最后的左
-            System.out.println(root.val);
+            res.add(root.val);
             root = root.right;
         }
+        return res;
     }
+
+    /**
+     * 递归法-后序遍历
+     */
+    public static void postOrder(TreeNode treeNode) {
+        if (treeNode != null) {
+            postOrder(treeNode.left);
+            postOrder(treeNode.right);
+            System.out.println(treeNode.val);
+        }
+    }
+
 
 
     /**
@@ -123,7 +126,7 @@ public class TreeNode {
     public List<Integer> postorderTraversal(TreeNode root) {
         LinkedList<Integer> res = new LinkedList<>();
         if (root == null) return res;
-        Deque<TreeNode> stack = new LinkedList<>();
+        LinkedList<TreeNode> stack = new LinkedList<>();
         stack.push(root);
         while (!stack.isEmpty()) {
             root = stack.pop();
@@ -140,17 +143,17 @@ public class TreeNode {
      *
      * @param rootNode
      */
-    public static void levelOrder(TreeNode rootNode) {
+    public static List<Integer> levelOrder(TreeNode rootNode) {
         Queue<TreeNode> queue = new LinkedList<>();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         if (rootNode != null) queue.offer(rootNode);
         while (!queue.isEmpty()) {
             TreeNode treeNode = queue.poll();
-            list.add(treeNode.val);
+            res.add(treeNode.val);
             if (treeNode.left != null) queue.offer(treeNode.left);
             if (treeNode.right != null) queue.offer(treeNode.right);
         }
-        System.out.println("层次遍历的结果是: " + list);
+        return res;
     }
 
     /**
@@ -158,22 +161,21 @@ public class TreeNode {
      *
      * @param rootNode
      */
-    public static void levelOrderAvg(TreeNode rootNode) {
+    public static List<Integer> levelOrderAvg(TreeNode rootNode) {
         Queue<TreeNode> queueTest = new LinkedList<>();
-        List<Integer> list = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
         if (rootNode != null) queueTest.offer(rootNode);
         while (!queueTest.isEmpty()) {
-            int nodeNum = queueTest.size(), total = 0;                   //nodeNum节点数,total该行的总计数
-            for (int i = 0; i < nodeNum; i++) {        //每次出队都是要把该层所有的node都出队
+            int nodeNum = queueTest.size(), total = 0;
+            for (int i = 0; i < nodeNum; i++) {
                 TreeNode pollNode = queueTest.poll();
                 total += pollNode.val;
                 if (pollNode.left != null) queueTest.offer(pollNode.left);
                 if (pollNode.right != null) queueTest.offer(pollNode.right);
             }
-            //求出每一行的平均数,注意:每次while循环都是 1 出栈本层的所有节点,计算平均数 2 入栈下一层所有的节点(本层的所有的孩子节点)
-            list.add(total / nodeNum);
+            res.add(total / nodeNum);
         }
-        System.out.println("每层节点平均值: " + list);
+        return res;
     }
 
     /**
@@ -186,28 +188,4 @@ public class TreeNode {
         copyTree.right = copyTree(root.right);
         return copyTree;
     }
-
-
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(200, new TreeNode(1), new TreeNode(3));    //根节点
-        root.left.left = new TreeNode(12);
-        root.right.right = new TreeNode(13);
-//        inOrder(root);  //中序遍历
-//        System.out.println("========");
-//        inOrderIter(root);
-        preOrder(root);  //前序遍历
-//        System.out.println("===");
-//        preOrderIter(root);
-        System.out.println("...");
-        System.out.println("先序遍历02");
-        System.out.println(preOrderIter02(root));
-//        postOrder(root);  //后序遍历
-//        levelOrder(root);    //层次遍历
-//        levelOrderAvg(root);
-//        System.out.println("复制一棵二叉树: ");
-
-
-    }
-
-
 }

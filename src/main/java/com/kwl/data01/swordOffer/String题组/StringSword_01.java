@@ -8,7 +8,6 @@ import java.util.*;
  * <p>
  * 题目1(swordOffer 面试题17): 打印从1到最大的n位数
  * 题目2(swordOffer 面试题05): 请实现一个函数,把字符串中每个空格都替换成%20
- * 题目2(swordOffer 面试题38): 字符串的排列
  * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
  * 题目4(swordOffer 面试题50题目1):字符串中第一个出现的一次字符
  * 题目5(swordOffer 面试题58题目2):左旋转字符串
@@ -51,46 +50,6 @@ public class StringSword_01 {
         }
         return stringBuilder.toString();
     }
-
-
-    /**
-     * 题目2(swordOffer 面试题38): 字符串的排列
-     * 描述: 输入一个字符串,打印出该字符串中字符的所有排序。
-     * 例如: 输入字符串abc,打印字符a,b,c所排列出来的所有字符串是
-     * abc,acb,bac,bca,cab,cba
-     * <p>
-     * 思路01(leetcode):回溯法解决,排序数量是n!
-     */
-    List<String> res = new LinkedList<>();
-    char[] c;
-
-    public String[] permutation(String s) {
-        c = s.toCharArray();
-        dfs(0);
-        return res.toArray(new String[res.size()]);
-    }
-
-    void dfs(int x) {
-        if (x == c.length - 1) {
-            res.add(String.valueOf(c));      // 添加排列方案
-            return;
-        }
-        HashSet<Character> set = new HashSet<>();
-        for (int i = x; i < c.length; i++) {
-            if (set.contains(c[i])) continue; // 重复，因此剪枝
-            set.add(c[i]);
-            swap(i, x);                      // 交换，将 c[i] 固定在第 x 位
-            dfs(x + 1);                      // 开启固定第 x + 1 位字符
-            swap(i, x);                      // 恢复交换
-        }
-    }
-
-    void swap(int a, int b) {
-        char tmp = c[a];
-        c[a] = c[b];
-        c[b] = tmp;
-    }
-
 
     /**
      * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
@@ -252,6 +211,37 @@ public class StringSword_01 {
         return res;
     }
 
+    /**
+     * 题目8(leetcode 20) 表示数值的字符串
+     * 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+     * <p>
+     * 数值（按顺序）可以分成以下几个部分：
+     * <p>
+     * 若干空格
+     * 一个 小数 或者 整数
+     * （可选）一个 'e' 或 'E' ，后面跟着一个 整数
+     * 若干空格
+     * 小数（按顺序）可以分成以下几个部分：
+     * <p>
+     * （可选）一个符号字符（'+' 或 '-'）
+     * 下述格式之一：
+     * 至少一位数字，后面跟着一个点 '.'
+     * 至少一位数字，后面跟着一个点 '.' ，后面再跟着至少一位数字
+     * 一个点 '.' ，后面跟着至少一位数字
+     * 整数（按顺序）可以分成以下几个部分：
+     * <p>
+     * （可选）一个符号字符（'+' 或 '-'）
+     * 至少一位数字
+     * 部分数值列举如下：
+     * <p>
+     * ["+100", "5e2", "-123", "3.1416", "-1E-16", "0123"]
+     * 部分非数值列举如下：
+     * <p>
+     * ["12e", "1a3.14", "1.2.3", "+-5", "12e+5.4"]
+     */
+    public boolean isNumber(String s) {
+        return false;
+    }
 
 
 }

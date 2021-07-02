@@ -1,5 +1,7 @@
 package com.kwl.data01.swordOffer.动态规划;
 
+import java.util.Arrays;
+
 /**
  * @author kuang.weilin
  * @date 2021/2/23
@@ -10,29 +12,29 @@ public class dpSword_01 {
      * 描述: 给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），
      * 每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？
      * 例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18
-     *
-     *
+     * <p>
+     * <p>
      * 思路01(动态规划法):从下到上进行计算,先计算到f(1)max(绳子长度为1的最大值),f(2)max...f(length)max
      * 状态转移方程式: f(length)max = f(i)max*f(length-i)max
      */
     public int maxProductAfterCutting01(int n) {        //思路01,使用动态规划求解!!!
-        if (n <= 3) return n -1;  //3 = 2 * 1,2 = 1*1;
+        if (n <= 3) return n - 1;  //3 = 2 * 1,2 = 1*1;
         int[] dp = new int[n + 1];
         dp[1] = 1;          //因为如果大于4，不分割1,2，3是更大的，这三种情况要分开讨论
         dp[2] = 2;
         dp[3] = 3;
         for (int i = 4; i < dp.length; i++) {
             // for (int j = 1; j < i; j++) {
-            for (int j = 1; j <= i/2; j++) { //优化，比较前半段就可以了
+            for (int j = 1; j <= i / 2; j++) { //优化，比较前半段就可以了
                 dp[i] = Math.max(dp[i], dp[j] * dp[i - j]);
             }
         }
         return dp[n];
     }
-    
+
 
     /**
-     * 题目3(swordOffer 面试题10题目一):求斐波那契数列的第n项
+     * 题目2(swordOffer 面试题10题目一):求斐波那契数列的第n项
      * 描述: 写一个函数,输入n,求斐波那契(Fibonacci)数列的第n项,斐波那契数列定义如下
      * f(n)={
      * 0   n=0;
@@ -43,7 +45,7 @@ public class dpSword_01 {
      * 思路02: 从下到上的动态规划,求f(3),f(4),f(5)....f(n)
      */
     public static long fibonacci(int n) {
-        if (n == 0 || n == 1)return n;
+        if (n == 0 || n == 1) return n;
         int[] dp = new int[n + 1];
         dp[0] = 0;
         dp[1] = 1;
@@ -62,7 +64,207 @@ public class dpSword_01 {
             p1 = p2;
             p2 = temp;
         }
-        return p2 ;
+        return p2;
+    }
+
+    /**
+     * 题目3(swordOffer 面试题19):正则表达式的匹配
+     * 描述: 请实现一个函数来匹配,'.'代表任意一个字符,'*'代表0个后者任意长度的字符
+     * 判断二个字符是否匹配, 'a.a'和'ab*ac*a'匹配    'aa.a'和'ab*a'不匹配
+     * <p>
+     * 思路01:动态规划
+     */
+    public static boolean match(String s, String p) {
+        int m = s.length() + 1, n = p.length() + 1;
+        boolean[][] dp = new boolean[m][n];
+        dp[0][0] = true;
+        // 初始化首行
+        for (int j = 2; j < n; j += 2)
+            dp[0][j] = dp[0][j - 2] && p.charAt(j - 1) == '*';
+        // 状态转移
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (p.charAt(j - 1) == '*') {
+                    if (dp[i][j - 2]) dp[i][j] = true;                                            // 1.
+                    else if (dp[i][j - 1]) dp[i][j] = true;                                       // 2.
+                    else if (dp[i - 1][j] && s.charAt(i - 1) == p.charAt(j - 2)) dp[i][j] = true; // 3.
+                    else if (dp[i - 1][j] && p.charAt(j - 2) == '.') dp[i][j] = true;             // 4.
+                } else {
+                    if (dp[i - 1][j - 1] && s.charAt(i - 1) == p.charAt(j - 1)) dp[i][j] = true;  // 1.
+                    else if (dp[i - 1][j - 1] && p.charAt(j - 1) == '.') dp[i][j] = true;         // 2.
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    /**
+     * 题目4(swordOffer 面试题49):丑数
+     * 描述: 我们把只含因子2,3,5叫做丑数。求按从小到大的顺序排序的第1500个丑数。
+     * <p>
+     * eg:
+     * 输入: n = 10
+     * 输出: 12
+     * 解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+     * <p>
+     * 思路01(swordOffer 解法): 先判断这个数是不是丑数,然后遍历1~1500(或者n)是丑数+1,一直到1500 (注意这个在leetcode是超时的)
+     * 思路02(leetcode 动态规划):
+     */
+
+    public int nthUglyNumber(int n) {           //dp
+        int a = 0, b = 0, c = 0;
+        int[] dp = new int[n];          //存储n个丑数
+        dp[0] = 1;                      //第一个丑数是0
+        for (int i = 1; i < n; i++) {
+            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
+            dp[i] = Math.min(Math.min(n2, n3), n5);       //求出最小
+            if (dp[i] == n2) a++;     //更新,这里可能有重叠的,不是互斥关系,所以要使用if
+            if (dp[i] == n3) b++;
+            if (dp[i] == n5) c++;
+        }
+        return dp[n - 1];
+    }
+
+    public int nthUglyNumber01(int n) { //暴力解,超时
+        int count = 0;
+        int num = 0;
+        while (count < n) {  //最后count计数到n就结束
+            num++;
+            if (isUgly(num)) count++;
+        }
+        return num;
+    }
+
+    boolean isUgly(int number) {              //判断是否是丑数
+        if (number <= 0) return false;
+        while (number % 2 == 0) number /= 2;
+        while (number % 3 == 0) number /= 3;
+        while (number % 5 == 0) number /= 5;
+        return number == 1;
+    }
+
+
+    /**
+     * 题目5(swordOffer 面试题46):把数字翻译成字符串
+     * 题目: 给定一个数字 0翻译为'a',1翻译为'b',11翻译为'l',25翻译为'z'
+     * 一个数字经常有多个翻译,12258有五种翻译: bccfi,bwfi,bczi,mcfi,mzi
+     * 编写一个函数用来计算一个数字有多少种不同的翻译情况
+     * <p>
+     * 思路01(leetcode 动态规划): f(i) = f(i-2)+f(i-1) 如果Xi-1Xi可以被翻译 f(i) = f(f-1),如果Xi-1Xi不能被翻译
+     * 思路02(数字求余): todo等下
+     */
+    public static int getTranslationCount(int num) {
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length() + 1];   //这里要是最后一位对应num,考虑0就是length+1,不考虑就是length
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i < dp.length; i++) {
+            String temp = str.substring(i - 2, i);
+            if (temp.compareTo("10") >= 0 && temp.compareTo("25") <= 0) {
+                dp[i] = dp[i - 1] + dp[i - 2];
+            } else {
+                dp[i] = dp[i - 1];
+            }
+        }
+        return dp[str.length()];
+    }
+
+    /**
+     * 题目6(swordOffer 面试题60): n个骰子的点数          //todo 注意答案取
+     * 描述: 把n个骰子扔在地上,所有的骰子朝上的一面点数之和为s,输入n,打印出s的所有可能的值出现的概率
+     * 补充描述: 你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+     * <p>
+     * eg:  输入: 1
+     * 输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
+     * 输入: 2
+     * 输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
+     */
+    public double[] dicesProbability(int n) {
+        //因为最后的结果只与前一个动态转移数组有关，所以这里只需要设置一个一维的动态转移数组
+        //原本dp[i][j]表示的是前i个骰子的点数之和为j的概率，现在只需要最后的状态的数组，所以就只用一个一维数组dp[j]表示n个骰子下每个结果的概率。
+        //初始是1个骰子情况下的点数之和情况，就只有6个结果，所以用dp的初始化的size是6个
+        double[] dp = new double[6];
+        //只有一个数组
+        Arrays.fill(dp, 1.0 / 6.0);
+        //从第2个骰子开始，这里n表示n个骰子，先从第二个的情况算起，然后再逐步求3个、4个···n个的情况
+        //i表示当总共i个骰子时的结果
+        for (int i = 2; i <= n; i++) {
+            //每次的点数之和范围会有点变化，点数之和的值最大是i*6，最小是i*1，i之前的结果值是不会出现的；
+            //比如i=3个骰子时，最小就是3了，不可能是2和1，所以点数之和的值的个数是6*i - i + 1，化简：5 * i + 1
+            //当有i个骰子时的点数之和的值数组先假定是temp
+            double[] temp = new double[5 * i + 1];
+            //从i-1个骰子的点数之和的值数组入手，计算i个骰子的点数之和数组的值
+            //先拿i-1个骰子的点数之和数组的第j个值，它所影响的是i个骰子时的temp[j+k]的值
+            for (int j = 0; j < dp.length; j++) {
+                //比如只有1个骰子时，dp[1]是代表当骰子点数之和为2时的概率，它会对当有2个骰子时的点数之和为3、4、5、6、7、8产生影响，
+                // 因为当有一个骰子的值为2时，另一个骰子的值可以为1~6，产生的点数之和相应的就是3~8；比如dp[2]代表点数之和为3，
+                // 它会对有2个骰子时的点数之和为4、5、6、7、8、9产生影响；所以k在这里就是对应着第i个骰子出现时可能出现六种情况，
+                // 这里可能画一个K神那样的动态规划逆推的图就好理解很多
+                for (int k = 0; k < 6; k++) {
+                    //这里记得是加上dp数组值与1/6的乘积，1/6是第i个骰子投出某个值的概率
+                    temp[j + k] += dp[j] * (1.0 / 6.0);
+                }
+            }
+            //i个骰子的点数之和全都算出来后，要将temp数组移交给dp数组，dp数组就会代表i个骰子时的可能出现的点数之和的概率；用于计算i+1个骰子时的点数之和的概率
+            dp = temp;
+        }
+        return dp;
+    }
+
+    /**
+     * 题目7(swordOffer 面试题47):礼物的最大价值
+     * 描述: 给定一个二维数组m*n,每一格都放有一个礼物,每一礼物都有一定的价值,
+     * 从左下角-->每次向右或者向下移动一格-->到达右下角,求最多能拿到多少价值的礼物?
+     * <p>
+     * {1,  10,  3,   8},
+     * {12,  2,  9,   6},
+     * {5,  7,   4,   11},
+     * {3,  7,  16,   5}
+     * <p>
+     * 思路01(leetcode 动态规划): f(i,j) = max|f(i,j-1),f(i-1,j)|+grid(i,j)   注意:(i,j)是坐标是最后达到的地方!!!
+     * 思路01(leetcode 动态规划): 初始化第一行
+     */
+    public static int getMaxValueSolution(int[][] grib) {
+        int m = grib.length, n = grib[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) continue;      //第一行第一列的情况
+                if (i == 0) grib[i][j] += grib[i][j - 1];     //第一行的情况
+                else if (j == 0) grib[i][j] += grib[i - 1][j];
+                else grib[i][j] += Math.max(grib[i][j - 1], grib[i - 1][j]);
+            }
+        }
+        return grib[m - 1][n - 1];
+    }
+
+    public static int getMaxValueSolution01(int[][] grid) {           //不需要每次循环都要判断!!!!执行效率更高
+        int m = grid.length, n = grid[0].length;
+        for (int j = 1; j < n; j++) // 初始化第一行,第一行的长度由多少列决定(grid[0].length)！！！
+            grid[0][j] += grid[0][j - 1];
+        for (int i = 1; i < m; i++) // 初始化第一列,第一列的长度由多少行决定(grid.length)
+            grid[i][0] += grid[i - 1][0];
+        for (int i = 1; i < m; i++)
+            for (int j = 1; j < n; j++)
+                grid[i][j] += Math.max(grid[i][j - 1], grid[i - 1][j]);
+        return grid[m - 1][n - 1];
+    }
+
+    /**
+     * 题8(swordOffer 面试题63):股票的最大利润
+     * 股票价格按照先后顺序放在arr中{9,11,8,5,7,12,16,14} 注意股票是先后时间
+     * 只能在时间前买入,后面卖出才能有最大利润,这个股票最大利润是16-5=11
+     * <p>
+     * 思路: 动态规划
+     */
+    public static int maxDiff(int[] numbers) {
+        if (numbers == null || numbers.length <= 1) return 0;  //传入null或者长度小于1的数组,无法交易股票返回-1
+        int profit = 0;
+        int cost = Integer.MAX_VALUE;      //cost是保存前面数组的最小值,也是股票买入的最低值！！！
+        for (int number : numbers) {
+            cost = Math.min(cost, number);
+            profit = Math.max(profit, number - cost); //当前最大利润和默认的saveLastMaxDiff比较,取较大值
+        }
+        return profit;
     }
 
 

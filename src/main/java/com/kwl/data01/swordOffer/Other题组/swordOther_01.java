@@ -1,5 +1,7 @@
 package com.kwl.data01.swordOffer.Other题组;
 
+import java.util.Arrays;
+
 /**
  * 其他题组1
  *
@@ -36,44 +38,6 @@ public class swordOther_01 {
         return count;
     }
 
-    /**
-     * 题目2(swordOffer 面试题49):丑数
-     * 描述: 我们把只含因子2,3,5叫做丑数。求按从小到大的顺序排序的第1500个丑数。
-     * 例如: 6,8是丑数,但是14不是丑数(包含因子7).习惯我们把1也当做丑数
-     * <p>
-     * 思路01(swordOffer 解法): 先判断这个数是不是丑数,然后遍历1~1500(或者n)是丑数+1,一直到1500
-     * 思路02(leetcode 动态规划):  todo 输入理解
-     */
-    public static boolean isUgly(int n) {
-        if (n <= 0) return false;
-        while (n % 2 == 0) n /= 2;
-        while (n % 3 == 0) n /= 3;
-        while (n % 5 == 0) n /= 5;
-        return n == 1;
-    }
-
-    public static int getUglyNumber(int index) {     //获取第index个丑数
-        int number = 0;
-        for (int i = 0; i < index; ) {
-            number++;
-            if (isUgly(number)) i++;     //如果是丑数是i++,最后加到1500次,此时就可以输出
-        }
-        return number;
-    }
-
-    public static int nthUglyNumber(int n) {
-        int a = 0, b = 0, c = 0;
-        int[] dp = new int[n];
-        dp[0] = 1;
-        for (int i = 1; i < n; i++) {
-            int n2 = dp[a] * 2, n3 = dp[b] * 3, n5 = dp[c] * 5;
-            dp[i] = Math.min(Math.min(n2, n3), n5);
-            if (dp[i] == n2) a++;
-            if (dp[i] == n3) b++;
-            if (dp[i] == n5) c++;
-        }
-        return dp[n - 1];
-    }
 
     /**
      * 题目3(swordOffer 面试题43):1~n整数中1出现的次数
@@ -92,19 +56,5 @@ public class swordOther_01 {
             }
         }
         return number;
-    }
-
-
-    /**
-     * 题目4(swordOffer 面试题60): n个骰子的点数
-     * 描述: 把n个骰子扔在地上,所有的骰子朝上的一面点数之和为s,输入n,打印出s的所有可能的值出现的概率
-     * 思路01: todo 先系统学习动态规划在来做!!
-     */
-    public double[] dicesProbability(int n) {
-        return null;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(numberOf1_my(12));
     }
 }

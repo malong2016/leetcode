@@ -1,11 +1,10 @@
 package com.kwl.data01.swordOffer.Arrays题组;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * 剑指offer_数组_题组01(每个题组是8个题目,本组7个题目)
- *
+ * <p>
  * 题目1(swordOffer 面试题21): 输入一个整数数组,一个方法让奇数在arr的前半部分,偶数在arr的后半部分
  * 题目2(swordOffer 面试题53): 数字在排序数组中出现的次数
  * 题目3(swordOffer 面试题57题目1): 和为s的二个数字
@@ -29,28 +28,24 @@ public class ArraysSword_01 {
      */
     public static void reorderOddEven(int[] arr) {
         if (arr == null || arr.length == 0) return;
-        int pBegin = 0, pEnd = arr.length - 1;
-        while (pBegin < pEnd) {
-            while (pBegin < pEnd && !isEven(arr[pBegin])) pBegin++;     //是奇数就右移动
-            while (pBegin < pEnd && isEven(arr[pEnd])) pEnd--;          //是偶数就左移动
+        int begin = 0, end = arr.length - 1;
+        while (begin < end) {
+            while (begin < end && arr[begin] % 2 == 1) begin++;     //是奇数就右移动
+            while (begin < end && arr[begin] % 2 == 0) end--;          //是偶数就左移动
 
-            if (pBegin < pEnd) {        //pBegin == end时候，不需要交换
-                int temp = arr[pBegin];
-                arr[pBegin] = arr[pEnd];
-                arr[pEnd] = temp;
+            if (begin < end) {        //pBegin == end时候，不需要交换
+                int temp = arr[begin];
+                arr[begin] = arr[end];
+                arr[end] = temp;
             }
         }
     }
 
-    public static boolean isEven(int n) {        //判断是否是偶数,也是一种抽取,如果面试题目改变负数和非负数等等都是可以在这里改变
-        return n % 2 == 0;
-    }
-
     /**
-     * 题目2(swordOffer 面试题53):数字在排序数组中出现的次数
+     * 题目2(swordOffer 面试题53 I):数字在排序数组中出现的次数  todo 暂时只能想到暴力解
      * 描述: 统计一个数字在排序数组中出现的次数。例如,输入排序数组{1,2,3,3,3,3,4,5}和数字3,数组3出现了四次,因此输出4
-     *
-     *
+     * <p>
+     * <p>
      * 思路01(基础解): 先二分查找到3,在左右扫描统计3出现的次数,时间复杂度是o(n)
      * 思路02(最优解,时间复杂度o(log2n)): 先二分查到到3,如果k左边第一个元素不是k(或者改元素下标是0),那么这个元素就是第一个k,返回这个元素的index
      * 左边存在,在递归找左边,找到满足要求
@@ -74,7 +69,7 @@ public class ArraysSword_01 {
         if (start > end) return -1;       //不存在k,返回-1
         int mid = (start + end) / 2;
         if (arr[mid] == k) {
-            if (mid == arr.length - 1 || arr[mid + 1] != k ) return mid; //不能等于
+            if (mid == arr.length - 1 || arr[mid + 1] != k) return mid; //不能等于
             else start = mid + 1;    //向上找
         } else if (arr[mid] > k) {          //左半区找
             end = mid - 1;
@@ -95,6 +90,22 @@ public class ArraysSword_01 {
         return number;        //注意arr如果是null,就返回初始化0
     }
 
+    /**
+     * 题目2(swordOffer 面试题53 II):0～n-1中缺失的数字
+     * 一个长度为n-1的递增排序数组中的所有数字都是唯一的，
+     * 并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+     * <p>
+     * 思路01: 以缺少的值为边界，左半区是nums[i] = i,右半区是num[i] != i 题目转化为求右子数组的首位元素
+     */
+    public int missingNumber(int[] nums) {
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums[mid] == mid) low = mid + 1; //此时中点在左半区，向上半区逼近
+            else high = mid - 1;      //中点是在右半区，下半区逼近
+        }
+        return low;
+    }
 
     /**
      * 题目3(swordOffer 面试题57题目1): 和为s的二个数字
@@ -109,7 +120,7 @@ public class ArraysSword_01 {
     public int[] findNumbersWithSum(int[] nums, int target) {
         if (nums == null || nums.length == 1) return new int[0];
         int begin = 0, end = nums.length - 1;
-        while (begin < end){
+        while (begin < end) {
             int sum = nums[begin] + nums[end];
             if (sum > target) end--;
             else if (sum < target) begin++;
@@ -136,32 +147,29 @@ public class ArraysSword_01 {
      * 描述: 输入一个正数s,打印出所有和为s的连续正数序列(至少要二个数).
      * 例如,输入15,由于1+2+3+4+5=4+5+6=7+8=15,所以打印出3个连续序列1~5 4~6 7~8
      * <p>
-     * 思路01: 标记small,big,如果之和小于s,big++,大于s,small--,等于s,大于
+     * 思路01: 可以使用数学公式求解(首+末)/2=和,反过来推导--参考评论区
+     * 思路02: 利用滑动窗口,如果窗口和s是大于或者等于sum的，那么right--,如果窗口和是小于sum，left++；
      */
-    public static void findContinuousSequence(int sum) {
-        if (sum < 3) return;       //小于3不存在
-        int small = 1;
-        int big = 2;
-        int middle = (1 + sum) / 2;      //>=middle起点之后就不可能存在连续((1+sum)/2比sum一半要大,所以不可能以这个为起点之后)
-        int curSum = small + big;
-
-        while (small < middle) {
-            if (curSum == sum) printContinuousSequence(small, big);
-            while (curSum > sum && small < middle) {       //要加到比sum大,或者直接加到small等于middle
-                curSum -= small;
-                small++;
-                if (curSum == sum) printContinuousSequence(small, big);
+    public int[][] findContinuousSequence(int target) {
+        if (target < 3) return new int[0][0];  //最少要连续二个数,这个不符合条件
+        int left = 1, right = 2, sum = 3;
+        List<int[]> res = new LinkedList<>();      //注意本题目返回的是int[][]所以泛型还是使用int[]好
+        while (left < right) {
+            if (sum == target) {
+                int[] path = new int[right - left + 1];
+                for (int i = left; i < right + 1; i++)
+                    path[i - left] = i;  //把联系的数写入path之中
+                res.add(path);
             }
-            big++;
-            curSum += big;
+            if (sum >= target) {        //先减少后移动
+                sum -= left;
+                left++;
+            } else {                    //先移动,后添加
+                right++;
+                sum += right;
+            }
         }
-    }
-
-    public static void printContinuousSequence(int small, int big) {
-        for (int i = small; i < big + 1; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println("");     //换行
+        return res.toArray(new int[0][]);
     }
 
     /**
@@ -172,69 +180,80 @@ public class ArraysSword_01 {
      * <p>
      * 思路01(leetcode): 本质上是一个排序问题,从小到大的排序
      * x+y>y+x --> x>y   x+y<y+x -->y>x
-     * 我们使用简单的内置函数来处理,如果要使用快速排序,请参考swordOffer和leetcode
+     * 思路02: 有内置函数排序和快速排序二种方法，快速排序参考leetcode的k神！！
      */
-    public static int printMinNumber(int[] arr) {
-        String[] strArr = new String[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            strArr[i] = String.valueOf(arr[i]);   //将int类型转化为string类型进行放入strArr数组中
+    public String printMinNumber(int[] nums) {
+        //对x和y进行拼接字符串,如果x + y >  y + x,那么x > y,反之 x < y
+        //所以我们的思路就是全部转化为string,在利用Java内置的排序函数进行排序，在加入
+        //到StringBuild中去,最后转化为String类型
+        String[] numStr = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            numStr[i] = String.valueOf(nums);   //整型类型转化为String类型
         }
-        Arrays.sort(strArr, (x, y) -> (x + y).compareTo(y + x));    //会改变函数
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String s : strArr) {
-            stringBuilder.append(s);
+        Arrays.sort(numStr, (x, y) -> (x + y).compareTo(y + x)); //对String[]进行排序
+        StringBuilder res = new StringBuilder();
+        for (String string : numStr) {
+            res.append(string);
         }
-        return Integer.valueOf(stringBuilder.toString());
+        return res.toString();
     }
 
     /**
-     * 题目6(swordOffer 面试题56): 数组中数字出现的次数
+     * 题目6(swordOffer 面试题56 I): 数组中数字出现的次数
      * 描述: 一个整型数组中除了二个数字之外,其他数字都出现了二次,请写程序找出这个二个只出现一次的数字
      * 。要求时间复杂度是o(n),空间复杂度是o(1)
      * <p>
-     * 思路01(leetcode):全员进行异或操作就可以,如果二个数相同异或操作之后就会变成0,不同异或操作就会1
-     * 在计算过程中,成对出现的数字所有位会二二抵消为0,最后得到的结果就是那个出现一次的数字
+     * 思路01(leetcode): 全员异或得到x ^ y,在利用循环找出倒数第一个为1的数，利用这个位置进行分组，就可以得到最后的值
+     * 用 00100这种去分组一定是x&y==0这种判断
      * <p>
      * 异或补充: x^0 = x; x^x = 0;
      */
     public static int[] singleNumbers(int[] nums) {
-        int ret = 0;
-        for (int n : nums) {
-            ret ^= n;                  //  这个是拿到a^b
+        int n = 0;
+        for (int num : nums) {
+            n ^= num;            //求出x ^ y
         }
-//        int div = 1;
-//        while ((div & ret) == 0) {
-//            div<<=1;
-//        }
-        int low_bit = ret & (-ret);  //拿到从从右到左,最近的一个1!!! 1000这种,因为是异或,所以这个位a,b一定是不同的
-        int a = 0, b = 0;
-        for (int n : nums) {
-//            if ((div & n) != 0) {
-            if ((low_bit & n) != 0) {   //首先如果数是相同,肯定是分到同一组,连续^(异或)为0,不影响
-                a ^= n;
-            } else {
-                b ^= n;
-            }
+        int m = 1, x = 0, y = 0;
+        while ((m & n) == 0) m <<= 1; //如果等于0(注意不是不等于1!!!)，那么1就继续向左移动,寻找第一位不是1的
+        for (int num : nums) {
+            if ((num & m) == 0) x ^= num;   //分组01
+            else y ^= num;                  //分组02
         }
-        return new int[]{a, b};
+        return new int[]{x, y};
     }
+
     /**
-     * 题目6(swordOffer 面试题56II): 数组中数字出现的次数
+     * 题目6(swordOffer 面试题56 II): 数组中数字出现的次数
      * 在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+     * <p>
+     * 思路01: 使用HashMap进行测试统计
+     * 思路02：todo 利用位运算计算,暂时还没有处理
      */
+    public int singleNumber02(int[] nums) {   //使用HashMap暴力解
+        Map<Integer, Integer> map = new HashMap<>();       //key -- nums的值，value -- nums出现的次数
+        for (int num : nums) {
+            if (map.containsKey(num)) map.put(num, map.get(num) + 1); //以前就存在，次数+1
+            else map.put(num, 1);                 //第一次来,把次数设置为1
+        }
+        System.out.println("map = " + map);
+        for (Integer key : map.keySet()) {
+            if (map.get(key) == 1) return key;
+        }
+        return -1;
+    }
 
     /**
      * 题目7(swordOffer 面试题61): 扑克牌中顺子
      * 描述: 从扑克牌中抽取5张牌，判断是不是一个顺子，即这5张牌是不是连续的。
      * 2~10为数字本身，A为1,J为11,,Q是12,K是13,大小王是0可以看成任意数字
-     *
-     *
+     * <p>
+     * <p>
      * 核心: 1 无重复 2除掉大小王 max - min < 5
      * 思路01(leetcode):核心是五张牌中没有重复元素,除了0之外max-min<5就满足是顺子,
      * 我们利用HashSet对数组中的元素进行判断其是否重复,同时记录除了0之外的最大值和最小值
      * 思路02(leetcode):先对数组进行排序,在arr[i+1]=arr[i]是返回false,max-min<5就满足是顺子,
      */
-    public static boolean  isContinuous(int[] arr) {
+    public static boolean isContinuous(int[] arr) {
         HashSet<Integer> hashSet = new HashSet<>();
         int min = 14, max = 0;
         for (int i : arr) {
@@ -251,8 +270,37 @@ public class ArraysSword_01 {
         int joker = 0;       //这个记录非0的第一个index
         for (int i = 0; i < 4; i++) {
             if (arr[i] == 0) joker++;       //joker只有二张牌
-            else if (arr[i] == arr[i+1]) return false;
+            else if (arr[i] == arr[i + 1]) return false;
         }
         return arr[4] - arr[joker] < 5;
     }
+
+    /**
+     * 题目8(swordOffer 面试题66):  构建乘积数组
+     * <p>
+     * 描述: 给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，
+     * 其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。
+     * <p>
+     * 思路01：第一轮循环求出的b[i]是包括a[0] * a[1] * a[i - 1]
+     * 第二轮反向循环求出的temp是a[a.length - 1] * a[a.length - 2] * a[i+2] * a[i + 1]
+     * b[i] = b[i] * temp 就是返回的结果
+     */
+    public int[] constructArr(int[] a) {
+        if (a.length == 0) return new int[0];
+        int[] b = new int[a.length];
+        b[0] = 1;
+        int temp = 1;
+
+        //计算b: b[i] 代表是a[0,...i - 1]的乘积
+        for (int i = 1; i < a.length; i++) {
+            b[i] = b[i - 1] * a[i - 1];
+        }
+
+        for (int i = a.length - 1; i >= 0; i++) {
+            b[i] = b[i] * temp;
+            temp = temp * a[i];
+        }
+        return b;
+    }
+
 }
