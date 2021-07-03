@@ -65,30 +65,15 @@ public class StackAndQueue_01 {
      * 描述: 定义栈的数据结构,请在该类型中实现一个能够得到栈的最小元素的min函数
      * 在该栈中调用min,push,pop的时间复杂度都是o(1)
      *
-     * 思路01(swordOffer解题): 定义一个辅助栈,每次main栈压入元素,
-     * 在辅助栈也压入最小value(和栈顶元素进行比较,如果小于栈顶,压入本元素,大于，还是压入辅助栈栈顶元素)
-     * ,main栈弹出元素,辅助栈也弹出元素
+     * 参考:com.kwl.data01.dataStructure.题目Struct.MinStack
      */
-    public static void minPush(Stack<Integer> mainStack,Stack<Integer> minValueStack,Integer data){ //压入元素
-        mainStack.push(data);
-        if (minValueStack.isEmpty()) minValueStack.push(data);
-        else minValueStack.push(Math.min(minValueStack.peek(), data));   //和栈顶元素进行比较,比较小的值压入辅助栈
-    }
-    public static void minPop(Stack<Integer> mainStack,Stack<Integer> minValueStack) throws Exception {
-        if (mainStack.isEmpty()) throw new Exception("栈为空,不能弹出元素");
-        mainStack.pop();             //主栈和辅助栈全部弹出元素
-        minValueStack.pop();
-    }
-    public static Integer findStackMinValue(Stack<Integer> minValueStack) throws Exception {
-        if (minValueStack.isEmpty()) throw new Exception("栈为空,无最小元素");
-        return minValueStack.peek();
-    }
-
 
     /**
      * 题目4(swordOffer 面试题59-II):队列的最大值
      * 请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
      * 若队列为空，pop_front 和 max_value 需要返回 -1
+     *
+     *
+     * 参考com.kwl.data01.dataStructure.题目Struct.MaxQueue
      */
-    //参考com.kwl.data01.dataStructure.题目Struct.MaxQueue
 }

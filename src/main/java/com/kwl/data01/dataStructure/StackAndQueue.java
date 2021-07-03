@@ -20,7 +20,7 @@ public class StackAndQueue {
      * search('元素'):返回指定元素的索引(注意索引是从栈低开始从1计算)
      * isEmpty():判断栈是否是空,return boolean
      * size(): return 栈的长度
-     * get(index):获取栈指定Index的值,index是从1开始
+     * get(index):获取栈指定Index的值,index是从0始,注意栈底部是Index是0，而栈顶index是stack.size() - 1;
      * iter: java自带的stack,可以使用for.each进行遍历,不会对原stack进行改变
      * 或者可以边出栈和判断空进行遍历
      * 注意: 如果栈为空,pop()和peek()全部会抛出异常

@@ -3,6 +3,7 @@ package com.kwl.data01.LeetCode_HOT100.LinkList题组;
 import com.kwl.data01.dataStructure.ListNode;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -50,70 +51,15 @@ public class LinkList_Hot100_01 {
         return res.next;
     }
 
-    public static ListNode sortList(ListNode head) {       //冒泡法 超时了!!
-        ListNode p = head;    //扫描指针,单纯的计数
-        ListNode p1, pre;
-        while (p != null) {
-            pre = head;
-            p1 = head.next;     //冒泡的扫描指针 pre在后,p1在前
-            while (p1 != null) {
-                if (pre.val > p1.val) {      //pre的数据大于p1的数据,就交换!!!
-                    int temp = pre.val;
-                    pre.val = p1.val;
-                    p1.val = temp;
-                }
-                pre = p1;    //继续扫描
-                p1 = p1.next;
-            }
-            p = p.next;       //p移动多少次就冒泡多少次
-        }
-        return head;
-    }
-
-    public static ListNode sortList01(ListNode head) {  //选择排序 超时!!!!
-        ListNode p = head;
-        ListNode p1, p1Min;   //p1是无序表的扫描指针,p1Max是记录最大的节点
-        while (p != null) {
-            p1 = p;
-            p1Min = p;
-            while (p1 != null) {
-                if (p1.val < p1Min.val) p1Min = p1;    //指向最小的节点
-                p1 = p1.next;       //扫描
-            }
-            int temp = p.val;     //交换数据
-            p.val = p1Min.val;
-            p1Min.val = temp;
-            p = p.next;
-        }
-        return head;
-    }
-
-
     /**
      * 题目2(leetcode 234题): 判断一个链表是否是回文链表
      * eg:  1 2 2 1是回文链表 1 2 3 1不是回文链表
      * <p>
      * 思路01: 利用快慢指针找到链表的中间节点,后半段链表逆转,在用p1,p2分别扫描二链表进行比较
-     * 思路02(一半链表入栈): 利用快慢指针找到链表的中间节点,前半段入栈,在依次出栈和后半段进行比较
+     * 思路02(一半链表入栈): 利用快慢指针找到链表的中间节点,后半段入栈,在依次出栈和前半段进行比较
      * 思路03:全部链表入栈,在出栈如果能一一对应,就返回true
      */
-    public boolean isPalindrome(ListNode head) {        //全部入栈,在比较
-        Stack<Integer> stack = new Stack<>();
-        ListNode p = head;       //注意后面也是要用到head,如果用head扫描会断链
-        while (p != null) {
-            stack.push(p.val);
-            p = p.next;
-        }
-        p = head;
-        while (p != null) {
-            if (p.val != stack.pop()) return false;
-            p = p.next;
-        }
-        return true;
-    }
-
     public boolean isPalindrome01(ListNode head) {    //找到中点,翻转后半段,在对比?如果是奇数怎么办呢??
-//        if (head==null||head.next==null) return true;   //可以不用
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
@@ -141,13 +87,26 @@ public class LinkList_Hot100_01 {
         return pre;              //pre节点最后指向原链表的表尾
     }
 
+    public boolean isPalindrome(ListNode head) {        //全部入栈,在比较
+        Stack<Integer> stack = new Stack<>();
+        ListNode p = head;       //注意后面也是要用到head,如果用head扫描会断链
+        while (p != null) {
+            stack.push(p.val);
+            p = p.next;
+        }
+        p = head;
+        while (p != null) {
+            if (p.val != stack.pop()) return false;
+            p = p.next;
+        }
+        return true;
+    }
+
 
     /**
      * 题目3(leetcode 160题): 编写一个程序,找出两单链表相交的节点
      */
-    public static ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        //思路: 先到达末尾的p连接上宁外一条链表,因为移动的节点是一样的
-        if (headA == null || headB == null) return null;
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         ListNode p1 = headA, p2 = headB;
         while (p1 != p2) {
             p1 = p1 == null ? headB : p1.next;
@@ -156,7 +115,7 @@ public class LinkList_Hot100_01 {
         return p1;
     }
 
-    public static ListNode fun01(ListNode headA, ListNode headB) { //如果非common节点val和next相同,会报错
+    public ListNode fun01(ListNode headA, ListNode headB) { //如果非common节点val和next相同,会报错
         if (headA == null || headB == null) return null;
         HashSet<ListNode> hashSet = new HashSet<>();
         while (headA != null) {
@@ -180,7 +139,7 @@ public class LinkList_Hot100_01 {
     public ListNode removeNthFromEnd(ListNode head, int n) {
         //方法二: 设置快慢指针,快指针先走k步(注意是达到第k+1个节点,前面就是k),最后快指针到null,前面有k个数,慢指针是倒数第k个节点
         if (head == null) return head;
-        ListNode fast = head,slow = head;
+        ListNode fast = head, slow = head;
         for (int i = 0; i < n; i++) {
             fast = fast.next;
         }
@@ -190,34 +149,118 @@ public class LinkList_Hot100_01 {
         }
         return slow;
     }
+
     public ListNode removeNthFromEnd02(ListNode head, int n) {  //代码优化
         if (head == null) return head;
-        ListNode fast = head,slow = head;
-        for(int i = 0;fast != null;i++){
+        ListNode fast = head, slow = head;
+        for (int i = 0; fast != null; i++) {
             if (i >= n) slow = slow.next; //已经走了k步(0,1,2...k-1)
             fast = fast.next;
         }
         return slow;
     }
 
-    public static void main(String[] args) {
-//        ListNode head = new ListNode(3);
-//        head.next = new ListNode(2);
-//        head.next.next = new ListNode(1);
-//        head.next.next.next = new ListNode(4);
-//        System.out.println("题目1(leetcode 148题): 排序链表:");
-////        sortList(head);
-//        sortList01(head);
-//        ListNode.printLinkList(head);
-        System.out.println("题目3(leetcode 160题): 编写一个程序,找出两单链表相交的节点:");
-        ListNode common01 = new ListNode(2);
-        ListNode headA = new ListNode(1);
-        headA.next = common01;
-        ListNode headB = new ListNode(1);
-        headB.next = common01;
-        System.out.println(getIntersectionNode(headA, headB).val);
-        System.out.println("HashSet求解");
-        System.out.println(fun01(headA, headB).val);
+    /**
+     * 题目5(leetcode 21题): 合并二个有序列表
+     * 描述: 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的
+     * <p>
+     * 思路01: 非递归法
+     * 思路02: 递归法
+     */
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
+        ListNode head = new ListNode(-1);
+        ListNode p = head;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                p.next = l1;
+                l1 = l1.next;
+            } else {
+                p.next = l2;
+                l2 = l2.next;
+            }
+            p = p.next;
+        }
+        p.next = l1 == null ? l2 : l1;
+        return head.next;
+    }
+
+    public static ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路01: 递归法
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists01(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists01(l1, l2.next);
+            return l2;
+        }
+    }
+
+    /**
+     * 题目6(leetcode 23题): 合并K个升序链表
+     * 描述: 给你一个链表数组，每个链表都已经按升序排列,请你将所有链表合并到一个升序链表中，返回合并后的链表。
+     * eg: lists = [[1,4,5],[1,3,4],[2,6]]  --> [1,1,2,3,4,4,5,6]
+     * <p>
+     * 思路01(通解): 先二个合并,合并成一个新的,在继续合并
+     * 思路02:分治算法
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) return null;  //传入null或者{},返回null
+        ListNode res = null;
+        for (int i = 0; i < lists.length; i++) {
+            res = mergeTwoLists01(res, lists[i]);          //和返回的链表res不断的合并
+        }
+        return res;
+    }
+
+    /**
+     * 题目7(leetcode 142题): 环形链表 II
+     * 描述: 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+     * 注意: 不允许修改给定的链表
+     * 进阶: 是否可以用空间复杂度o(1)处理这个问题
+     * <p>
+     * 思路01(时间复杂度是o(n)): 利用HashSet不断添加结点到里面,如果有重复就返回false
+     * 思路02: 快慢指针???  todo 理解
+     */
+    public ListNode detectCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while (head != null) {
+            if (!set.add(head)) return head;
+            head = head.next;
+        }
+        return null;    //如果没有环或者传入null,就返回null
+    }
+
+    /**
+     * 题目8(leetcode  2题): 两数相加
+     * 描述: 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照逆序(反过来就是顺序)的方式存储的，并且每个节点只能存储 一位 数字。
+     * 请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头
+     * eg: 2->4->3 和 5->6->4  343+465=807 返回7->0->8
+     * <p>
+     * 思路01: 注意设置头节点，和处理末尾carry
+     */
+    public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if (l1 == null || l2 == null) return null;
+        ListNode res = new ListNode(-1);
+        ListNode p = res;
+        int carry = 0;
+        while (l1 != null || l2 != null) {      //l1 == null && l2 == null就跳出循环
+            int l1Val = 0, l2Val = 0;     //默认值
+            if (l1 != null) {
+                l1Val = l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2Val = l2.val;
+                l2 = l2.next;
+            }
+            int newVal = (l1Val + l2Val + carry) % 10;
+            p.next = new ListNode(newVal);
+            carry = (l1Val + l2Val + carry) / 10;
+            p = p.next;
+        }
+        p.next = carry == 0 ? null : new ListNode(carry);    //有多余的进位就加入,注意这里多余的进位只能是1
+        return res.next;
     }
 
 }

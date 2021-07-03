@@ -35,17 +35,8 @@ public class Dfs_Hot100_01 {
     /**
      * 题目2(leetcode 46): 全排列
      * 描述: 给定一个 没有重复 数字的序列，返回其所有可能的全排列
-     * eg: 输入: [1,2,3] --> {
-     * [1,2,3],
-     * [1,3,2],
-     * [2,1,3],
-     * [2,3,1],
-     * [3,1,2],
-     * [3,2,1]
-     * }
+     * eg: 输入: [1,2,3] --> {[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]}
      */
-
-
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         List<Integer> path = new ArrayList<>();
@@ -65,7 +56,7 @@ public class Dfs_Hot100_01 {
         }
     }
 
-    public List<List<Integer>> permute01(int[] nums) {     //使用visit方法
+    public List<List<Integer>> permuteAndVisit(int[] nums) {     //使用visit[i]方法
         List<List<Integer>> res = new ArrayList<>();
         int[] visited = new int[nums.length];
         backtrack(res, nums, new ArrayList<Integer>(), visited);
@@ -101,16 +92,16 @@ public class Dfs_Hot100_01 {
         List<List<Integer>> res = new ArrayList<>();
         LinkedList<Integer> path = new LinkedList<>();
         Arrays.sort(candidates);
-        dfs01(candidates, target, 0,res,path);
+        dfs01(0, candidates, target, res, path);
         return res;
     }
 
-    void dfs01(int[] nums, int target, int begin,List<List<Integer>> res, LinkedList<Integer> path) {      //回溯
+    void dfs01(int index, int[] nums, int target, List<List<Integer>> res, LinkedList<Integer> path) {      //回溯
         if (target == 0) res.add(new LinkedList<>(path));
-        for (int i = begin; i < nums.length; i++) {
-            if (target - nums[i] < 0) break;   //结束本次循环的条件,也是回溯中的剪枝!!!,因为已经排序,所有自己拼接不了,后面的数也拼接不了!!!
+        for (int i = index; i < nums.length; i++) {
+            if (target - nums[i] < 0) break;   //已经排序,本nums[i]排序不来，后面也排序不来
             path.add(nums[i]);
-            dfs01(nums, target - nums[i], i,res,path); //因为可以重复,所有继续从i开始寻找
+            dfs01(i, nums, target - nums[i], res, path); //因为可以重复,所有继续从i开始寻找
             path.removeLast();
         }
     }
@@ -120,26 +111,85 @@ public class Dfs_Hot100_01 {
      * 描述: 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
      * eg: n = 3 -->  ["((()))","(()())","(())()","()(())","()()()"]
      */
-    private List<String> res03 = new ArrayList<>();
-
 
     public List<String> generateParenthesis(int n) {
-        dfs("", n, 0, 0);
-        return res03;
+        List<String> res = new LinkedList<>();
+        dfs("", n, 0, 0, res);
+        return res;
     }
 
-    public void dfs(String ans, int n, int lc, int rc) {
+    public void dfs(String ans, int n, int lc, int rc, List<String> res) {
         // 剪枝 右边扣号数量大于左边
         if (rc > lc || lc > n) return;
         // 满足结果
-        if (lc == n && lc == rc) res03.add(ans);
+        if (lc == n && lc == rc) res.add(ans);
         // 遍历+递归
-        dfs(ans + '(', n, lc + 1, rc);
-        dfs(ans + ')', n, lc, rc + 1);
+        dfs(ans + '(', n, lc + 1, rc, res);
+        dfs(ans + ')', n, lc, rc + 1, res);
     }
 
-    public static void main(String[] args) {
-        Dfs_Hot100_01 dfs_hot100_01 = new Dfs_Hot100_01();
-        dfs_hot100_01.permute01(new int[]{1, 2, 3});
+    /**
+     * 题目5(leetcode 15题):三数之和
+     * 描述: 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+     * eg: nums = [-1,0,1,2,-1,-4] --> [[-1,-1,2],[-1,0,1]]
+     * <p>
+     * 思路01: 暴力解
+     * 思路02: 排序+遍历+回溯+剪枝
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        return null;
+    }
+
+    /**
+     * 题目6(leetcode 79题): 单词搜索
+     * 描述: 给定一个二维网格和一个单词，找出该单词是否存在于网格中
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+     * 同一个单元格内的字母不允许被重复使用。
+     * eg: board = [
+     *    ['A','B','C','E'],
+     *    ['S','F','C','S'],
+     *    ['A','D','E','E']
+     * ]
+     * 给定 word = "ABCCED", 返回 true  给定 word = "SEE", 返回 true
+     *
+     * 思路01: 回溯法
+     */
+    /**
+     * 题目7(leetcode 79): 单词搜索
+     * 描述:给定一个二维网格和一个单词，找出该单词是否存在于网格中。
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+     * 同一个单元格内的字母不允许被重复使用。
+     * eg: board =
+     * [
+     * ['A','B','C','E'],
+     * ['S','F','C','S'],
+     * ['A','D','E','E']
+     * ]
+     * 给定 word = "ABCCED", 返回 true
+     * 给定 word = "SEE", 返回 true
+     * 给定 word = "ABCB", 返回 false
+     * <p>
+     * 思路01(回溯法):
+     */
+    public boolean exist(char[][] board, String word) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs09(board, word, i, j, 0)) return true;
+            }
+        }
+        return false;
+    }
+
+    boolean dfs09(char[][] board, String word, int i, int j, int index) {
+        //越界&&最后一个值不等于word最后一个值
+        if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word.charAt(index))
+            return false;
+        if (index == word.length() - 1) return true;      //index如果不断扩大到word.length - 1就可以
+        char temp = board[i][j]; //暂时保存值
+        board[i][j] = '.';     //修改值,复制被重复访问
+        boolean res = dfs09(board, word, i + 1, j, index + 1) || dfs09(board, word, i - 1, j, index + 1) ||
+                dfs09(board, word, i, j + 1, index + 1) || dfs09(board, word, i, j - 1, index + 1);   //从上下左右开始搜索
+        board[i][j] = temp;
+        return res;
     }
 }

@@ -10,93 +10,61 @@ public class Arrays_Hot100_02 {
 
 
     /**
-     * 题目1(leetcode 33题): 搜索旋转数组
-     * 描述: 升序排列的整数数组 nums 在预先未知的某个点上进行了旋转（例如， [0,1,2,4,5,6,7] 经旋转后可能变为 [4,5,6,7,0,1,2] ）。
-     * 请你在数组中搜索 target ，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。
+     * 题目1(leetcode 896题): 如果数组是单调递增或单调递减的，那么它是单调的。
+     * 描述: 前后可以等于!!! 可以顺序或者到顺
+     * eg: [1,2,2,3]  --> true   [1,3,2] -- false
      * <p>
-     * eg: nums = [4,5,6,7,0,1,2], target = 0  --> 4
-     * <p>
-     * 思路:二分查找,先二分数组,肯定存在一个有序,一个无序(通过首尾指针判断),不断缩小范围,使得target在有序表中!!
+     * 思路01(一次遍历):先设置inc = true,des = true, 如果遇到arr[i]>arr[i+1] 就把inc设置为false,反之把des设置为false,
+     * 最后inc||des,有一个为true就是true
+     * 思路02(二次遍历): 同时验证是升序或者是降序,满足其一就可以return isSorted(A, true) || isSorted(A, false);
      */
-    public int search(int[] nums, int target) {
-        return 0;
+    public boolean isMonotonic(int[] A) {
+        if (A == null) return true;
+        boolean inc = true, des = true;
+        for (int i = 0; i < A.length - 1; i++) {
+            if (A[i] > A[i + 1]) inc = false;
+            if (A[i] < A[i + 1]) des = false;
+        }
+        return inc || des;
     }
+    /**
+     * 题目2(leetcode 35题): 搜索插入位置  todo 折半插入leetcode35题
+     * 描述: 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+     * 注意: 你可以假设数组中无重复元素。
+     */
 
     /**
-     * 题目2(leetcode 34题): 在排序数组中查找元素的第一个和最后一个位置  (类似swordOffer 面试题53)
-     * 描述: 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置
-     * 如果数组中不存在目标值 target，返回 [-1, -1]。
-     * 进阶: 你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？
-     * eg: nums = [5,7,7,8,8,10], target = 8 --> [3,4]
+     * 题目3(leetcode 55题): 跳跃游戏  todo 折半插入leetcode35题
+     * 描述: 给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     * 判断你是否能够到达最后一个下标。
      * <p>
-     * 思路01: 顺序查找,时间复杂度是o(n)
-     * 思路02: 二分查找,时间复杂度是o(log2n)
-     * 查到startindex,如果startindex-1的value不等于target,就是,如果等于,继续向下查找
-     * endindex也差不多
+     * eg01:
+     * 输入：nums = [2,3,1,1,4]
+     * 输出：true
+     * 解释：可以先跳 1 步，从下标 0 到达下标 1, 然后再从下标 1 跳 3 步到达最后一个下标。
+     * eg02:
+     * 输入：nums = [3,2,1,0,4]
+     * 输出：false
+     * 解释：无论怎样，总会到达下标为 3 的位置。但该下标的最大跳跃长度是 0 ， 所以永远不可能到达最后一个下标。
+     * <p>
+     * 思路01(官方解): 想要跳到最后一个那么在该点的nums[i] + i >= nums.length - 1 (这里是nums.length - 1个空隙)
+     * 不断维护maxIndex,当扫描到当前i,先进行比较，通过后再继续判断和维护
      */
-    public static int[] searchRange(int[] nums, int target) {
-        if (nums == null) return null;
-        return new int[]{getStartIndex(nums,target),getEndIndex(nums,target)};
-    }
-
-    public static int getStartIndex(int[] nums, int target) {      //第一个值没有找到[5,7,7,8,8,10]
-        int begin = 0, end = nums.length - 1;
-        while (begin <= end) {
-            int mid = (begin + end) / 2;
-            if (nums[mid] == target) {
-                if (mid == begin || nums[mid - 1] != target) return mid; //说明这个是第一个索引
-                else end = mid - 1;
-            } else if (nums[mid] > target) {
-                end = mid - 1;
-            } else {
-                begin = mid + 1;
+    public boolean canJump(int[] nums) {
+        //顺序扫描nums,维护最大跳跃maxIndex,如果扫描到i,先判断如果小于maxIndex,直接
+        //返回break,如果大于等于，继续判断维护
+        //核心是nums[i] + i >= nums.length -1就成功了
+        int maxIndex = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if(i > maxIndex) break; //不能跳到i，那么就一定不能跳到nums.length-1
+            else {
+                if (nums[i] + i >= nums.length -1) return true;    //当前i能跳跃到末尾，就返回true,不能跳到继续维护
+                maxIndex = Math.max(maxIndex, nums[i] + i);
             }
         }
-        return  -1;       //没有找到,返回-1
-    }
-
-    public static int getEndIndex(int[] nums,int target) {
-        int begin = 0, end = nums.length - 1;
-        while (begin <= end) {
-            int mid = (begin + end) / 2;
-            if (nums[mid] == target) {
-                if (mid == end || nums[mid + 1] != target) return mid; //说明这个是最后一个索引
-                else begin = mid + 1;
-            } else if (nums[mid] > target) {    //下半区查找
-                end = mid - 1;
-            } else {                  //上半区查找
-                begin = mid + 1;
-            }
-        }
-        return  -1;       //没有找到,返回-1
-    }
-    /**
-     * 题目3(leetcode 560题): 和为k的子数组
-     * 描述: 给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
-     * eg: 输入: nums = [1,1,1], k = 2  --> 输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
-     */
-    public int subarraySum(int[] nums, int k) {
-        return 0;
-    }
-
-    /**
-     * 题目4(leetcode 79题): 单词搜索
-     * 描述: 给定一个二维网格和一个单词，找出该单词是否存在于网格中
-     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
-     * 同一个单元格内的字母不允许被重复使用。
-     * eg: board = [
-     *    ['A','B','C','E'],
-     *    ['S','F','C','S'],
-     *    ['A','D','E','E']
-     * ]
-     * 给定 word = "ABCCED", 返回 true  给定 word = "SEE", 返回 true
-     */
-    public boolean exist(char[][] board, String word) {
         return false;
     }
 
-    public static void main(String[] args) {
-        System.out.println("题目2(leetcode 34题): 在排序数组中查找元素的第一个和最后一个位置  (类似swordOffer 面试题53):");
-        System.out.println(getStartIndex(new int[]{5, 7, 7, 8, 8, 10}, 8));
-    }
+
 }
