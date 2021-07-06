@@ -5,14 +5,6 @@ import java.util.LinkedList;
 
 /**
  * 剑指offer_数组_题组03(每个题组是4个题目)
- * <p>
- * <p>
- * 题目1(swordOffer 面试题11):旋转数组的最小数字
- * 题目2(swordOffer 面试题44):数字序列中某一位数字
- * 题目4(swordOffer 面试题47):礼物的最大价值
- * 题目5(swordOffer 面试题63):股票的最大利润
- * 题目6(swordOffer 面试题12):矩阵中的路径
- * 题目7(swordOffer 面试题13): 机器人的运动范围
  *
  * @author kuang.weilin
  * @date 2021/2/19
@@ -20,7 +12,7 @@ import java.util.LinkedList;
 public class ArraysSword_03 {
 
     /**
-     * 题目1(swordOffer 面试题11):旋转数组的最小数字
+     * 题目1(swordOffer 第11题):旋转数组的最小数字
      * 描述: 输入一个递增的arr,将最开始的若干个元素搬到数组的末尾
      * {3,4,5,1,2} 是 {1,2,3,4,5}的一个旋转数组
      * <p>
@@ -30,7 +22,7 @@ public class ArraysSword_03 {
      * arr[mid]<arr[j] j = mid(注意可能是mid,所以不能mid-1)
      * arr[mid]=arr[j] j--
      */
-    public static int spanMin(int[] nums) {
+    public  int spanMin(int[] nums) {
         if (nums == null) return -1; //如果arr是null,就返回null
         int low = 0, high = nums.length - 1;
         while (low < high) {
@@ -43,12 +35,12 @@ public class ArraysSword_03 {
     }
 
     /**
-     * 题目2(swordOffer 面试题44):数字序列中某一位数字
+     * 题目2(swordOffer 第44题): 数字序列中某一位的数字
      * 描述: 数字以0123456789101112131415....的序列化到一个字符序列中
      * 在这个序列中第5位(从0开始计算)是5,第13位是1,第19位是4.
      * 请写一个函数,求任意第n位对应的数字
      */
-    public static int digitAtIndex(int n) {
+    public  int digitAtIndex(int n) {
         int digit = 1;            //是几位数(位数)
         long start = 1;          //从哪一位开始 (一定是long)
         long count = 9;         //本组存在几位数 (1~9, 10~99, 100~999)(一定是long)
@@ -64,55 +56,7 @@ public class ArraysSword_03 {
 
 
     /**
-     * 题目5(swordOffer 面试题12):矩阵中的路径
-     * 描述: 给定一个n*m的矩阵,可以从任意一格开始沿着上下左右移动一格,但是如果已经经过了某一格就不能再次
-     * 进入这个格子。
-     * 设计一个函数,给定一个路径,判断这个矩阵是否包括这个路径,如果包括返回true,否则返回false
-     * <p>
-     * 下面是矩阵举例图:
-     * {a ,b ,t ,g}
-     * {c ,f ,c ,s}
-     * {j ,d ,e ,h}
-     * <p>
-     * 思路01(leetcode): 深度优先搜索(DFS)+剪枝(在搜索中,遇到这条路不可能和目标字符串匹配的情况,立刻返回,被叫做可行性的剪枝)
-     */
-    public static boolean hasPath(char[][] board, String word) {
-        char[] words = word.toCharArray();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (dfs(board, words, i, j, 0)) return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean dfs(char[][] board, char[] word, int i, int j, int k) {
-        if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word[k])
-            return false;    //越界是直接返回false
-        if (k == word.length - 1) return true;
-        board[i][j] = '\0';    //设置为空字符
-        boolean res = dfs(board, word, i + 1, j, k + 1) || dfs(board, word, i - 1, j, k + 1) ||
-                dfs(board, word, i, j + 1, k + 1) || dfs(board, word, i, j - 1, k + 1);
-        board[i][j] = word[k]; //board[i][j]一定是等于word[k]的
-        return res;
-    }
-
-    /**
-     * 题目6(swordOffer 面试题13): 机器人的运动范围
-     * 描述: 地上有一个m*n的方格。一个机器人在坐标为(0,0)的格子开始运动,每次可以
-     * 左,右,上,下的运动一格,但是不能进入行坐标和列坐标的数位大于k的格子。
-     * eg: 当k为18的时候,机器人能进入(35,38),因为是3+5+3+7=18,但是不能进入(35,38)
-     * 因为是3+5+3+8 = 19
-     * 设计一个函数,求机器人能到达多少个格子.
-     * <p>
-     * 思路01(leetcode): 使用回溯法(dfs)解决问题
-     */
-    public static int movingCount(int[][] nums) {
-        return 0;
-    }
-
-    /**
-     * 题目7(swordOffer 面试题59): 滑动窗口的最大值
+     * 题目7(swordOffer 第59题-I): 滑动窗口的最大值
      * 描述: 给定一个数组和滑动窗口的大小,找出所有在滑动窗口的最大值
      * {2,3,4,2,6,2,5,1}滑动窗口3 --> 最大值分别是{4,4,6,6,6,5}    //从k开始都有一个滑动窗口，res的长度是length-k+1
      * <p>

@@ -9,7 +9,7 @@ import java.util.*;
 public class Dfs_Hot100_01 {
 
     /**
-     * 题目1(leetcode 78题): 子集
+     * 题目1(leetcode 第78题): 子集
      * 描述: 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
      * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
      * <p>
@@ -33,7 +33,7 @@ public class Dfs_Hot100_01 {
     }
 
     /**
-     * 题目2(leetcode 46): 全排列
+     * 题目2(leetcode 第46题): 全排列
      * 描述: 给定一个 没有重复 数字的序列，返回其所有可能的全排列
      * eg: 输入: [1,2,3] --> {[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]}
      */
@@ -64,7 +64,6 @@ public class Dfs_Hot100_01 {
     }
 
     private void backtrack(List<List<Integer>> res, int[] nums, ArrayList<Integer> tmp, int[] visited) {
-        System.out.println("我是全排列tmp = " + tmp);
         if (tmp.size() == nums.length) {
             res.add(new ArrayList<>(tmp));
             return;
@@ -129,32 +128,6 @@ public class Dfs_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 15题):三数之和
-     * 描述: 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
-     * eg: nums = [-1,0,1,2,-1,-4] --> [[-1,-1,2],[-1,0,1]]
-     * <p>
-     * 思路01: 暴力解
-     * 思路02: 排序+遍历+回溯+剪枝
-     */
-    public List<List<Integer>> threeSum(int[] nums) {
-        return null;
-    }
-
-    /**
-     * 题目6(leetcode 79题): 单词搜索
-     * 描述: 给定一个二维网格和一个单词，找出该单词是否存在于网格中
-     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
-     * 同一个单元格内的字母不允许被重复使用。
-     * eg: board = [
-     *    ['A','B','C','E'],
-     *    ['S','F','C','S'],
-     *    ['A','D','E','E']
-     * ]
-     * 给定 word = "ABCCED", 返回 true  给定 word = "SEE", 返回 true
-     *
-     * 思路01: 回溯法
-     */
-    /**
      * 题目7(leetcode 79): 单词搜索
      * 描述:给定一个二维网格和一个单词，找出该单词是否存在于网格中。
      * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
@@ -192,4 +165,82 @@ public class Dfs_Hot100_01 {
         board[i][j] = temp;
         return res;
     }
+
+
+    /**
+     * 题目6(leetcode 第72题) 编辑距离
+     * 描述: 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+     * 你可以对一个单词进行如下三种操作：
+     * 插入一个字符
+     * 删除一个字符
+     * 替换一个字符。
+     * 输入：word1 = "horse", word2 = "ros"
+     * 输出：3
+     * 解释：
+     * horse -> rorse (将 'h' 替换为 'r')
+     * rorse -> rose (删除 'r')
+     * rose -> ros (删除 'e')
+     * <p>
+     * 思路: 动态规划,初始值是dp[0][i] = i,dp[j][0]
+     * 状态转移方程见下
+     */
+    public int minDistance(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        if (m * n == 0) return m + n;  //有一个等于,最低是返回宁外一个
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i < m + 1; i++) dp[i][0] = i;
+        for (int i = 0; i < n + 1; i++) dp[0][i] = i;
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
+//                int k1 = dp[i - 1][j] + 1;                    //官方最优解
+//                int k2 = dp[i][j - 1] + 1;
+//                int k3 = dp[i - 1][j - 1];
+//                if (word1.charAt(i - 1) != word2.charAt(j -1)) k3++;     //注意单词的索引要小1！！我们dp是从1开始的
+//                dp[i][j] = Math.min(k1, Math.min(k2, k3));
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {            //评论区最优解
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j - 1], dp[i][j - 1]), dp[i - 1][j]) + 1;
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    /**
+     * 题目7(leetcode 第494题): 目标和
+     * 描述: 给你一个整数数组 nums 和一个整数 target 。
+     * 向数组中的每个整数前添加 '+' 或 '-' ，然后串联起所有整数，可以构造一个 表达式 ：
+     * 例如，nums = [2, 1] ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 "+2-1" 。
+     * 返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
+     * <p>
+     * 输入：nums = [1,1,1,1,1], target = 3
+     * 输出：5
+     * 解释：一共有 5 种方法让最终目标和为 3 。
+     * -1 + 1 + 1 + 1 + 1 = 3
+     * +1 - 1 + 1 + 1 + 1 = 3
+     * +1 + 1 - 1 + 1 + 1 = 3
+     * +1 + 1 + 1 - 1 + 1 = 3
+     * +1 + 1 + 1 + 1 - 1 = 3
+     * <p>
+     * 思路01(官方回溯法):  见下面
+     * 思路02(动态规划): 见官方解答  todo 还是01背包问题
+     */
+    int count01 = 0;
+
+    public int findTargetSumWays(int[] nums, int target) {
+        dfs(nums, target, 0, 0);
+        return count01;
+    }
+
+    void dfs(int[] nums, int target, int index, int sum) {
+        if (index == nums.length) {
+            if (sum == target) count01++;
+        } else {
+            dfs(nums, target, index + 1, sum - nums[index]);
+            dfs(nums, target, index + 1, sum + nums[index]);
+        }
+    }
+
+
 }

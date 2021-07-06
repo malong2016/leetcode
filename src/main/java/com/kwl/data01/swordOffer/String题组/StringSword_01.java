@@ -3,16 +3,6 @@ package com.kwl.data01.swordOffer.String题组;
 import java.util.*;
 
 /**
- * 剑指offer_字符串(String)题组01 本题组一共是7到题目
- * <p>
- * <p>
- * 题目1(swordOffer 面试题17): 打印从1到最大的n位数
- * 题目2(swordOffer 面试题05): 请实现一个函数,把字符串中每个空格都替换成%20
- * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
- * 题目4(swordOffer 面试题50题目1):字符串中第一个出现的一次字符
- * 题目5(swordOffer 面试题58题目2):左旋转字符串
- * 题目6(swordOffer 面试题58题目1):翻转字符串(单词的顺序)
- * 题目7(leetcode 79): 单词搜索
  *
  * @author kuang.weilin
  * @date 2021/2/14
@@ -21,12 +11,12 @@ public class StringSword_01 {
 
 
     /**
-     * 题目1(swordOffer 面试题17): 打印从1到最大的n位数
+     * 题目1(swordOffer 第17题): 打印从1到最大的n位数
      * <p>
      * 思路01(基础解): 最大Math.pow(10,n)-1
      * 思路02(大数打印法,参考leetcode): todo
      */
-    public static int[] printToMaxOfNDigits(int n) {
+    public  int[] printToMaxOfNDigits(int n) {
         int max = (int) (Math.pow(10, n) - 1);
         int res[] = new int[max];          //注意是返回值,res[]不能有空隙
         for (int i = 0; i < max; i++) res[i] = i + 1;
@@ -35,10 +25,10 @@ public class StringSword_01 {
 
 
     /**
-     * 题目2(swordOffer 面试题05): 请实现一个函数,把字符串中每个空格都替换成%20
+     * 题目2(swordOffer 第05题): 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
      * 例如: "we are happy" 输出为 "we%20are%20happy"
      */
-    public static String replaceBlank01(String str) {
+    public  String replaceBlank01(String str) {
         StringBuilder stringBuilder = new StringBuilder(str);
 //        for (int i = 0; i < stringBuilder.length(); i++) {
 //            if (stringBuilder.charAt(i) == ' ') {                     //遍历stringBuilder如果为' '就替换
@@ -52,14 +42,14 @@ public class StringSword_01 {
     }
 
     /**
-     * 题目3(swordOffer 面试题48):最长不含重复字符的子字符串
+     * 题目3(swordOffer 第48题): 最长不含重复字符的子字符串
      * 描述: 请从字符串中寻找一个最长的不包括重复字符的子字符串,计算该最长子字符的长度。
      * 假设字符串中只包含'a'~'z'的字符。
      * 方法一: HashMap
      * 方法二: HashSet
      * 方法三: 使用new int[128] A~Z 65 到90   a~z 97~122
      */
-    public static int lengthOfLongestSubString(String str) {
+    public  int lengthOfLongestSubString(String str) {
         Map<Character, Integer> map = new HashMap<>();
         int left = 0, right = 0, res = 0;
         while (right < str.length()) {
@@ -74,7 +64,7 @@ public class StringSword_01 {
     }
 
     /**
-     * 题目4(swordOffer 面试题50题目1):字符串中第一个出现的一次字符
+     * 题目4(swordOffer 第50题): 第一个只出现一次的字符
      * 描述: 字符串中寻找出第一个只出现的一次字符。如输入"abaccdeff",就输出"b"
      * <p>
      * <p>
@@ -83,7 +73,7 @@ public class StringSword_01 {
      * 思路02:设置一个HashMap(key,boolean) 不断的加入,boolean判断是否是已经加入,在扫描到第一个true
      * 思路03(假设是字母最大'z'是122):先将0-123全部设置为new int[123]然后扫描arr[char[i]]++进行计数,第一个arr[char[i]]==1就可以输出
      */
-    public static char firstNotRepeatingChar(String str) {       //思路02
+    public  char firstNotRepeatingChar(String str) {       //思路02
         HashMap<Character, Boolean> hashMap = new HashMap<>();
         char[] charArray = str.toCharArray();
         for (char c : charArray) {
@@ -95,7 +85,7 @@ public class StringSword_01 {
         return ' ';     //如果不存在就返回null
     }
 
-    public static char firstNotRepeatingChar01(String str) {       //思路03
+    public  char firstNotRepeatingChar01(String str) {       //思路03
         int[] arr = new int[123];
         char[] charArray = str.toCharArray();
         for (char c : charArray) {
@@ -109,7 +99,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目5(swordOffer 面试题58题目2):左旋转字符串
+     * 题目5(swordOffer 第58题-II): 左旋转字符串
      * 描述:输入字符串"abcdefg"和数字2,该方法左旋转到cdefgab
      * <p>
      * 思路01(swordOffer官方解法): 把ab cdefg当成二个整体,先翻转ba gfedc 在分别整体翻转 cdefgab
@@ -140,7 +130,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目6(swordOffer 面试题58题目1):翻转字符串(单词的顺序)
+     * 题目6(swordOffer 第58题-I): 翻转字符串(单词的顺序)
      * 描述: 输入一个英文句子,翻转句子中的单词的顺序,但是单词内字符串的顺序不变
      * "I am a student." ==> "student. a am I"
      * <p>

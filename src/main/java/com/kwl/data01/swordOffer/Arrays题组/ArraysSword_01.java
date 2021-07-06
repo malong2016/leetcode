@@ -4,14 +4,6 @@ import java.util.*;
 
 /**
  * 剑指offer_数组_题组01(每个题组是8个题目,本组7个题目)
- * <p>
- * 题目1(swordOffer 面试题21): 输入一个整数数组,一个方法让奇数在arr的前半部分,偶数在arr的后半部分
- * 题目2(swordOffer 面试题53): 数字在排序数组中出现的次数
- * 题目3(swordOffer 面试题57题目1): 和为s的二个数字
- * 题目4(swordOffer 面试题57题目2):和为s的连续正数序列
- * 题目5(swordOffer 面试题45): 输入一个正整数数组，把数组里所有的数字拼接起来排成一个数,打印能拼接处的所有数字中最小的一个。
- * 题目6(swordOffer 面试题56): 数组中数字出现的次数
- * 题目7(swordOffer 面试题61): 扑克牌中顺子
  *
  * @author kuang.weilin
  * @date 2021/2/13
@@ -19,7 +11,7 @@ import java.util.*;
 public class ArraysSword_01 {
 
     /**
-     * 题目1(swordOffer 面试题21):输入一个整数数组,一个方法让奇数在arr的前半部分,偶数在arr的后半部分
+     * 题目1(swordOffer 第21题): 调整数组顺序使奇数位于偶数前面
      * <p>
      * 思路01:暴力解,就是顺序扫描数组,遇到奇数就让前面的数前面向后移动一位,在将这个数插入到开头
      * 时间复杂度是0(n2)不推荐
@@ -42,7 +34,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目2(swordOffer 面试题53 I):数字在排序数组中出现的次数  todo 暂时只能想到暴力解
+     * 题目2(swordOffer 第53题-I): 数字在排序数组中出现的次数  todo 暂时只能想到暴力解
      * 描述: 统计一个数字在排序数组中出现的次数。例如,输入排序数组{1,2,3,3,3,3,4,5}和数字3,数组3出现了四次,因此输出4
      * <p>
      * <p>
@@ -91,7 +83,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目2(swordOffer 面试题53 II):0～n-1中缺失的数字
+     * 题目2(swordOffer 第53题-II): 0～n-1中缺失的数字
      * 一个长度为n-1的递增排序数组中的所有数字都是唯一的，
      * 并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
      * <p>
@@ -108,7 +100,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目3(swordOffer 面试题57题目1): 和为s的二个数字
+     * 题目3(swordOffer 第57题-I): 和为s的二个数字
      * 描述:输入一个递增排序的数组和一个数字s(s>0),在数组中查找二个数,
      * 使得他们的和正好是s。如果有多对数字的和等于s,就输出任意一对就可以
      * eg: {1,2,4,7,11,15}和数字15 => 输入 {4,11} (因为4+11=15)
@@ -143,7 +135,7 @@ public class ArraysSword_01 {
 
 
     /**
-     * 题目4(swordOffer 面试题57题目2):和为s的连续正数序列
+     * 题目4(swordOffer 第57题-II): 和为s的连续正数序列
      * 描述: 输入一个正数s,打印出所有和为s的连续正数序列(至少要二个数).
      * 例如,输入15,由于1+2+3+4+5=4+5+6=7+8=15,所以打印出3个连续序列1~5 4~6 7~8
      * <p>
@@ -173,7 +165,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目5(swordOffer 面试题45)
+     * 题目5(swordOffer 第45题): 把数组排成最小的数
      * 描述: 输入一个正整数数组，把数组里所有的数字拼接起来排成一个数,
      * 打印能拼接处的所有数字中最小的一个。
      * eg: 输入数组{3,32,321}就打印出这三个数字能排成的最小数字321323
@@ -199,7 +191,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目6(swordOffer 面试题56 I): 数组中数字出现的次数
+     * 题目6(swordOffer 第56题-I): 数组中数字出现的次数
      * 描述: 一个整型数组中除了二个数字之外,其他数字都出现了二次,请写程序找出这个二个只出现一次的数字
      * 。要求时间复杂度是o(n),空间复杂度是o(1)
      * <p>
@@ -223,7 +215,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目6(swordOffer 面试题56 II): 数组中数字出现的次数
+     * 题目6(swordOffer 第56题-II): 数组中数字出现的次数
      * 在一个数组 nums 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
      * <p>
      * 思路01: 使用HashMap进行测试统计
@@ -243,7 +235,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目7(swordOffer 面试题61): 扑克牌中顺子
+     * 题目7(swordOffer 第61题): 扑克牌中的顺子
      * 描述: 从扑克牌中抽取5张牌，判断是不是一个顺子，即这5张牌是不是连续的。
      * 2~10为数字本身，A为1,J为11,,Q是12,K是13,大小王是0可以看成任意数字
      * <p>
@@ -253,7 +245,7 @@ public class ArraysSword_01 {
      * 我们利用HashSet对数组中的元素进行判断其是否重复,同时记录除了0之外的最大值和最小值
      * 思路02(leetcode):先对数组进行排序,在arr[i+1]=arr[i]是返回false,max-min<5就满足是顺子,
      */
-    public static boolean isContinuous(int[] arr) {
+    public  boolean isContinuous(int[] arr) {
         HashSet<Integer> hashSet = new HashSet<>();
         int min = 14, max = 0;
         for (int i : arr) {
@@ -265,7 +257,7 @@ public class ArraysSword_01 {
         return max - min < 5;
     }
 
-    public static boolean isContinuous01(int[] arr) {
+    public  boolean isContinuous01(int[] arr) {
         Arrays.sort(arr);
         int joker = 0;       //这个记录非0的第一个index
         for (int i = 0; i < 4; i++) {
@@ -276,7 +268,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目8(swordOffer 面试题66):  构建乘积数组
+     * 题目8(swordOffer 第66题): 构建乘积数组
      * <p>
      * 描述: 给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，
      * 其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。

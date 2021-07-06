@@ -13,7 +13,7 @@ import java.util.Map;
 public class Arrays_Hot100_01 {
 
     /**
-     * 题目1(leetcode 1题):二数之和
+     * 题目1(leetcode 第1题): 两数之和
      * 描述: 给定一个整数数组 nums 和一个整数目标值 target，请你在该数组中找出和为目标值的那两个整数,并返回它们的数组下标。
      * 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。你可以按任意顺序返回答案
      * eg: 输入：nums = [2,7,11,15], target = 9
@@ -21,20 +21,17 @@ public class Arrays_Hot100_01 {
      * 解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1]
      * <p>
      * 思路01: 暴力解
-     * 思路02: 将nums[i]和i写入到HashMap之中
+     * 思路02: 将nums[i]和i写入到HashMap之中,牺牲空间换时间
      */
-    public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> map = new HashMap<>();
-        int[] index = new int[2];
+    public int[] twoSum(int[] nums, int target) {  //先把i,nums[i]加入到map中,进行判断
+        Map<Integer,Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(target - nums[i])) {
-                index[0] = map.get(target - nums[i]);
-                index[1] = i;
-                return index;
+            if(map.containsKey(target - nums[i])){     //这里是符合条件的i和j
+                return new int[]{i, map.get(target - nums[i])};
             }
-            map.put(nums[i], i);
+            map.put(nums[i],i);
         }
-        return index;
+        return null;
     }
 
     /**
@@ -43,33 +40,6 @@ public class Arrays_Hot100_01 {
      */
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         return 1;
-    }
-
-    /**
-     * 题目3(leetcode 53题):最大子序列
-     * 描述: 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
-     * eg: nums = [-2,1,-3,4,-1,2,1,-5,4]  -->连续子数组 [4,-1,2,1] 的和最大，为 6
-     * <p>
-     * 思路01: 设置一个pre维护,当前数的前序,然后pre+arr[i]和arr[i]比较,取最大值
-     * 用max记录最大值
-     */
-    public int maxSubArray(int[] nums) {   //直接累计
-        int pre = 0, max = nums[0];
-        for (int num : nums) {
-            pre = pre > 0 ? pre + num : num;
-            max = Math.max(max, pre);
-        }
-        return max;
-    }
-    public int maxSubArray01(int[] nums) {    //dp法
-        int[] dp = new int[nums.length];
-        dp[0] = nums[0];
-        int res = nums[0];
-        for (int i = 1; i < dp.length; i++) {
-            dp[i] = Math.max(dp[i - 1], 0) + nums[i];
-            res = Math.max(res, dp[i]);
-        }
-        return res;
     }
 
 
@@ -103,7 +73,7 @@ public class Arrays_Hot100_01 {
     }
 
     /**
-     * 题目6(leetcode 560题): 和为k的子数组
+     * 题目6(leetcode 第560题): 和为k的子数组
      * 描述: 给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
      * eg: 输入: nums = [1,1,1], k = 2  --> 输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
      */
@@ -125,7 +95,7 @@ public class Arrays_Hot100_01 {
     }
 
     /**
-     * 题目8(leetcode 647题): 回文子串
+     * 题目8(leetcode 第647题): 回文子串
      * 描述:给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。
      * 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
      * eg:输入："aaa" --> 输出：6  (6个回文子串: "a", "a", "a", "aa", "aa", "aaa")

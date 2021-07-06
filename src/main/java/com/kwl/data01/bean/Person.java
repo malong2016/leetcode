@@ -20,7 +20,7 @@ public class Person {
 
     private String id;
 
-    private String name,name01;
+    private String name, name01;
 
     private String city;
 

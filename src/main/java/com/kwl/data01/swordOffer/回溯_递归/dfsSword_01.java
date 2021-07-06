@@ -1,4 +1,4 @@
-package com.kwl.data01.swordOffer.回溯算法;
+package com.kwl.data01.swordOffer.回溯_递归;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,14 +12,14 @@ public class dfsSword_01 {
 
 
     /**
-     * 题目1(swordOffer 面试题38): 字符串的排列
+     * 题目1(swordOffer 第38题): 字符串的排列
      * 描述: 输入一个字符串,打印出该字符串中字符的所有排序。
      * 例如: 输入字符串abc,打印字符a,b,c所排列出来的所有字符串是
      * abc,acb,bac,bca,cab,cba
      * <p>
      * <p>
      * 思路01(K神): 常规进行回溯,注意我们把s转化为chars[],然后进行交换，最后添加又把chars[]转化回来
-     * 思路02(评论区高赞): 利用visit和set去重
+     * 思路02(评论区高赞): 利用visit和set去重  todo visit!!![]
      */
     public String[] permutation(String s) {
         char[] chars = s.toCharArray();

@@ -5,16 +5,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * 剑指offer_数组_题组02(每个题组是8个题目,本组8个题目)
- * <p>
- * 题目1(swordOffer 面试题39): 数组中次数超过一半的数字
- * 题目2(swordOffer 面试题40): 最小的k个数
- * 题目3(swordOffer 面试题42): 连续子数组的最大和
- * 题目4(swordOffer 面试题29): 顺时针打印矩阵(是一个二维数组)
- * 题目5(swordOffer 面试题3题目一): 数组中重复的数字(可以修改数组)
- * 题目6(swordOffer 面试题3题目二): 数组中重复的数字(不修改数组)
- * 题目7(swordOffer 面试题4): 二维数组中的查找
- *
  * @author kuang.weilin
  * @date 2021/2/17
  */
@@ -22,14 +12,14 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目1(swordOffer 面试题39): 数组中次数超过一半的数字
+     * 题目1(swordOffer 第39题): 数组中出现次数超过一半的数字
      * 描述: 数组中出现次数超过数组长度一半，请找出这个数字(一定存在)
      * <p>
      * 思路01:利用HashMap逐个统计,最后遍历
      * 思路02(最优解):摩尔投票法找出众数,设置一个x,扫描下一个,如果等于vote++,不等于vote--
      * vote变成0之后,换数
      */
-    public static int moreThanHalfNum(int[] arr) {    //思路2
+    public  int moreThanHalfNum(int[] arr) {    //思路2
         int res = 0, votes = 0, count = 0;
         for (int num : arr) {
             if (votes == 0) res = num;
@@ -43,14 +33,14 @@ public class ArraysSword_02 {
     }
 
     /**
-     * 题目2(swordOffer 面试题40): 最小的k个数
+     * 题目2(swordOffer 第40题): 最小的k个数
      * 输入n个整数,找出其中最小的k个数。例如，输入4,5,1,6,2,7,3,8这8个数字，最小的4个数字是1、2、3、4
      * <p>
      * 思路01:先排序,前k个就是最小的k个数
      * 思路02: 堆排序方法
      * 思路03：快速排序方法
      */
-    public static int[] getLeastNumbers(int[] arr, int k) {
+    public  int[] getLeastNumbers(int[] arr, int k) {
         int[] vec = new int[k];
         if (k == 0) return vec;
         PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {      //这是java堆排序的数据结构
@@ -76,7 +66,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目3(swordOffer 面试题42): 连续子数组的最大和
+     * 题目3(swordOffer 第42题): 连续子数组的最大和
      * 描述: 输入一个整型数组，数组中存在正数和负数。数组中的一个或者连续多个整数
      * 组成一个子数组。求所有子数组的和的最大值。要求时间复杂度是o(n)
      * eg: 输入{1,-2,3,10,-4,7,2,-5} 最大子数组是{3,10,-4,7,2}
@@ -85,7 +75,7 @@ public class ArraysSword_02 {
      * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
-    public static int FindGreatestSumOfSumOfSubArray(int[] arr) {
+    public  int FindGreatestSumOfSumOfSubArray(int[] arr) {
         int res = arr[0];    //默认是res是arr[0]
         for (int i = 1; i < arr.length; i++) {
             arr[i] += Math.max(arr[i - 1], 0);
@@ -95,7 +85,7 @@ public class ArraysSword_02 {
     }
 
     /**
-     * 题目4(swordOffer 面试题29): 顺时针打印矩阵(是一个二维数组)
+     * 题目4(swordOffer 第29题): 顺时针打印矩阵
      * eg:
      * 1  2  3  4
      * 5  6  7  8
@@ -106,7 +96,7 @@ public class ArraysSword_02 {
      * <p>
      * 思路01(leetcode):模拟 t(上) b(下) l(左) r(右) 上下左右四个边界
      */
-    public static int[] printMatrix(int[][] matrix) {
+    public  int[] printMatrix(int[][] matrix) {
         if (matrix.length == 0) return new int[0];
         int t = 0, b = matrix.length - 1, x = 0;               //设置上下的边界
         int l = 0, r = matrix[0].length - 1;                   //设置左右的边界
@@ -126,7 +116,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目5(swordOffer 面试题3题目一): 数组中重复的数字(可以修改数组)
+     * 题目5(swordOffer 第03题): 数组中重复的数字(可以修改数组)
      * 描述: 在一个长度为n的数组中所有数字都是在0~n-1范围内。数组中某些数字是  （解题思路num[i] = i一一对应，找出第二个一一对应就是重复值）
      * 重复的，但是不知道有几个数字是重复的，也不知道每个数字重复了几次。请
      * 找出数组中任意的一个重复的数字。例如，如果输入长度为为7的数组{2,3,1,0,2,5,3}
@@ -136,7 +126,7 @@ public class ArraysSword_02 {
      * 思路01(leetcode): HashSet不断的加入,遇到重复的元素就输出
      * 思路02(leetcode): 原地交换,将这个元素换到对应的index下（value = 2,换到index=2下）,如果遇到arr[num[i]]=num[i]就输出num[i]
      */
-    public static int findRepeatNumber(int[] nums) {
+    public  int findRepeatNumber(int[] nums) {
         int i = 0;
         while (i < nums.length) {
             if (nums[i] == i) {
@@ -153,7 +143,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目6(swordOffer 面试题4): 二维数组中的查找
+     * 题目6(swordOffer 第04题): 二维数组中的查找
      * 描述: 在一个二维数组中,每一行都是按照从左到右的递增顺序排列,每一列都是按照从上到下递增顺序排序。
      * 请完成一个函数,输入这样的一个二维数组和一个整数,判断数组中是否含有这样的整数
      * eg:
@@ -164,7 +154,7 @@ public class ArraysSword_02 {
      * <p>
      * 思路01: 从左下角(i,j)开始遍历,如果该值>targetValue,i--,如果该值<targetValue,j++
      */
-    public static boolean findNumberIn2DArray(int[][] arr, int targetValue) {
+    public  boolean findNumberIn2DArray(int[][] arr, int targetValue) {
         if (arr == null) return false;
         int i = arr.length - 1, j = 0;
         while (i >= 0 && j < arr[0].length) {
@@ -174,8 +164,4 @@ public class ArraysSword_02 {
         }
         return false;
     }
-
-
-
-
 }

@@ -20,13 +20,13 @@ public class BackTracking {
      *
      * 模板是下列:
      *   res = [] # 定义全局变量保存最终结果
-     *   state = [] # 定义状态变量保存当前状态
+     *   path = [] # 定义状态变量保存当前状态
      *   p,q,r # 定义条件变量（一般条件变量就是题目直接给的参数）
      *   def back(状态，条件1，条件2，……):
      *      if # 不满足合法条件（可以说是剪枝）
      *              return
      *      elif # 状态满足最终要求
-     *              res.append(state) # 加入结果
+     *              res.add(state) # 加入结果
      *              return
      *      # 主要递归过程，一般是带有 循环体 或者 条件体
      *      for # 满足执行条件

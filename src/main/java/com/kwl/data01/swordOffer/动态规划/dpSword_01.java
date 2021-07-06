@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class dpSword_01 {
     /**
-     * 题目1(swordOffer 面试题14):剪绳子I
+     * 题目1(swordOffer 第14题-I): 剪绳子
      * 描述: 给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），
      * 每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？
      * 例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18
@@ -34,7 +34,7 @@ public class dpSword_01 {
 
 
     /**
-     * 题目2(swordOffer 面试题10题目一):求斐波那契数列的第n项
+     * 题目2(swordOffer 第10题-I):求斐波那契数列的第n项
      * 描述: 写一个函数,输入n,求斐波那契(Fibonacci)数列的第n项,斐波那契数列定义如下
      * f(n)={
      * 0   n=0;
@@ -44,7 +44,7 @@ public class dpSword_01 {
      * 思路01: 传统递归
      * 思路02: 从下到上的动态规划,求f(3),f(4),f(5)....f(n)
      */
-    public static long fibonacci(int n) {
+    public  long fibonacci(int n) {
         if (n == 0 || n == 1) return n;
         int[] dp = new int[n + 1];
         dp[0] = 0;
@@ -55,7 +55,7 @@ public class dpSword_01 {
         return dp[n];
     }
 
-    public static int fibonacci01(int n) {     //注意:测试需要,要/1000000007求余数
+    public  int fibonacci01(int n) {     //注意:测试需要,要/1000000007求余数
         if (n == 0) return 0;
         if (n == 1) return 1;
         int p1 = 0, p2 = 1;
@@ -68,13 +68,13 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目3(swordOffer 面试题19):正则表达式的匹配
+     * 题目3(swordOffer 第19):正则表达式的匹配
      * 描述: 请实现一个函数来匹配,'.'代表任意一个字符,'*'代表0个后者任意长度的字符
      * 判断二个字符是否匹配, 'a.a'和'ab*ac*a'匹配    'aa.a'和'ab*a'不匹配
      * <p>
      * 思路01:动态规划
      */
-    public static boolean match(String s, String p) {
+    public  boolean match(String s, String p) {
         int m = s.length() + 1, n = p.length() + 1;
         boolean[][] dp = new boolean[m][n];
         dp[0][0] = true;
@@ -99,7 +99,7 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目4(swordOffer 面试题49):丑数
+     * 题目4(swordOffer 第49题): 丑数
      * 描述: 我们把只含因子2,3,5叫做丑数。求按从小到大的顺序排序的第1500个丑数。
      * <p>
      * eg:
@@ -145,7 +145,7 @@ public class dpSword_01 {
 
 
     /**
-     * 题目5(swordOffer 面试题46):把数字翻译成字符串
+     * 题目5(swordOffer 第46题): 把数字翻译成字符串
      * 题目: 给定一个数字 0翻译为'a',1翻译为'b',11翻译为'l',25翻译为'z'
      * 一个数字经常有多个翻译,12258有五种翻译: bccfi,bwfi,bczi,mcfi,mzi
      * 编写一个函数用来计算一个数字有多少种不同的翻译情况
@@ -153,7 +153,7 @@ public class dpSword_01 {
      * 思路01(leetcode 动态规划): f(i) = f(i-2)+f(i-1) 如果Xi-1Xi可以被翻译 f(i) = f(f-1),如果Xi-1Xi不能被翻译
      * 思路02(数字求余): todo等下
      */
-    public static int getTranslationCount(int num) {
+    public  int getTranslationCount(int num) {
         String str = String.valueOf(num);
         int[] dp = new int[str.length() + 1];   //这里要是最后一位对应num,考虑0就是length+1,不考虑就是length
         dp[0] = 1;
@@ -170,7 +170,7 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目6(swordOffer 面试题60): n个骰子的点数          //todo 注意答案取
+     * 题目6(swordOffer 第60题): n个骰子的点数          //todo 注意答案取
      * 描述: 把n个骰子扔在地上,所有的骰子朝上的一面点数之和为s,输入n,打印出s的所有可能的值出现的概率
      * 补充描述: 你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
      * <p>
@@ -212,7 +212,7 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目7(swordOffer 面试题47):礼物的最大价值
+     * 题目7(swordOffer 第47):礼物的最大价值
      * 描述: 给定一个二维数组m*n,每一格都放有一个礼物,每一礼物都有一定的价值,
      * 从左下角-->每次向右或者向下移动一格-->到达右下角,求最多能拿到多少价值的礼物?
      * <p>
@@ -224,7 +224,7 @@ public class dpSword_01 {
      * 思路01(leetcode 动态规划): f(i,j) = max|f(i,j-1),f(i-1,j)|+grid(i,j)   注意:(i,j)是坐标是最后达到的地方!!!
      * 思路01(leetcode 动态规划): 初始化第一行
      */
-    public static int getMaxValueSolution(int[][] grib) {
+    public  int getMaxValueSolution(int[][] grib) {
         int m = grib.length, n = grib[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -237,7 +237,7 @@ public class dpSword_01 {
         return grib[m - 1][n - 1];
     }
 
-    public static int getMaxValueSolution01(int[][] grid) {           //不需要每次循环都要判断!!!!执行效率更高
+    public  int getMaxValueSolution01(int[][] grid) {           //不需要每次循环都要判断!!!!执行效率更高
         int m = grid.length, n = grid[0].length;
         for (int j = 1; j < n; j++) // 初始化第一行,第一行的长度由多少列决定(grid[0].length)！！！
             grid[0][j] += grid[0][j - 1];
@@ -250,13 +250,13 @@ public class dpSword_01 {
     }
 
     /**
-     * 题8(swordOffer 面试题63):股票的最大利润
+     * 题8(swordOffer 第63题): 股票的最大利润
      * 股票价格按照先后顺序放在arr中{9,11,8,5,7,12,16,14} 注意股票是先后时间
      * 只能在时间前买入,后面卖出才能有最大利润,这个股票最大利润是16-5=11
      * <p>
      * 思路: 动态规划
      */
-    public static int maxDiff(int[] numbers) {
+    public  int maxDiff(int[] numbers) {
         if (numbers == null || numbers.length <= 1) return 0;  //传入null或者长度小于1的数组,无法交易股票返回-1
         int profit = 0;
         int cost = Integer.MAX_VALUE;      //cost是保存前面数组的最小值,也是股票买入的最低值！！！
@@ -265,10 +265,5 @@ public class dpSword_01 {
             profit = Math.max(profit, number - cost); //当前最大利润和默认的saveLastMaxDiff比较,取较大值
         }
         return profit;
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(fibonacci(48));
     }
 }

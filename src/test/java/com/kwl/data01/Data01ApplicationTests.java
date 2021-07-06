@@ -1,24 +1,23 @@
 package com.kwl.data01;
 
 
-import com.kwl.data01.LeetCode_HOT100.LinkList题组.LinkList_Hot100_01;
-import com.kwl.data01.bean.Person;
-import com.kwl.data01.dataStructure.Array;
-import com.kwl.data01.dataStructure.ListNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 
 
 @SpringBootTest
 class Data01ApplicationTests {
 
 
-
     @Test
-    void contextLoads() {
+    void test() {     //记住,a--是先取值后自增
+        int a = 10;
+        if (--a < 10) {
+            System.out.println("a = " + a);
+        }
     }
 
 

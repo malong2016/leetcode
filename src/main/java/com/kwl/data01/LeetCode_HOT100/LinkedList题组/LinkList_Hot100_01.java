@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.LinkList题组;
+package com.kwl.data01.LeetCode_HOT100.LinkedList题组;
 
 import com.kwl.data01.dataStructure.ListNode;
 
@@ -52,7 +52,7 @@ public class LinkList_Hot100_01 {
     }
 
     /**
-     * 题目2(leetcode 234题): 判断一个链表是否是回文链表
+     * 题目2(leetcode 第234题): 回文链表
      * eg:  1 2 2 1是回文链表 1 2 3 1不是回文链表
      * <p>
      * 思路01: 利用快慢指针找到链表的中间节点,后半段链表逆转,在用p1,p2分别扫描二链表进行比较
@@ -104,7 +104,7 @@ public class LinkList_Hot100_01 {
 
 
     /**
-     * 题目3(leetcode 160题): 编写一个程序,找出两单链表相交的节点
+     * 题目3(leetcode 160题): 相交链表
      */
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         ListNode p1 = headA, p2 = headB;
@@ -130,7 +130,7 @@ public class LinkList_Hot100_01 {
     }
 
     /**
-     * 题目4(leetcode 19题):删除链表倒数第n个节点
+     * 题目4(leetcode 19题):删除链表的倒数第 N 个结点
      * 进阶: 一趟完成删除
      * 思路01: 先计算链表的长度length,要删除的是length-n+1节点,所以顺序扫描到要删除节点的前驱第length-n个节点
      * 思路02: 设置快慢指针,块指针先走k+1(前面有k+1个节点,到Null之后,fast到slow前面有k+1个,也就是倒数k+1个)
@@ -161,13 +161,13 @@ public class LinkList_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 21题): 合并二个有序列表
+     * 题目5(leetcode 21题): 合并两个有序链表
      * 描述: 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的
      * <p>
      * 思路01: 非递归法
      * 思路02: 递归法
      */
-    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
+    public  ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
         ListNode head = new ListNode(-1);
         ListNode p = head;
         while (l1 != null && l2 != null) {
@@ -184,7 +184,7 @@ public class LinkList_Hot100_01 {
         return head.next;
     }
 
-    public static ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路01: 递归法
+    public  ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路02: 递归法
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         if (l1.val < l2.val) {
@@ -214,7 +214,7 @@ public class LinkList_Hot100_01 {
     }
 
     /**
-     * 题目7(leetcode 142题): 环形链表 II
+     * 题目7(leetcode 第142题): 环形链表 II
      * 描述: 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
      * 注意: 不允许修改给定的链表
      * 进阶: 是否可以用空间复杂度o(1)处理这个问题
@@ -230,9 +230,32 @@ public class LinkList_Hot100_01 {
         }
         return null;    //如果没有环或者传入null,就返回null
     }
+    /**
+     * 题目7(leetcode 第141题): 环形链表
+     * 描述: 给定一个链表，判断链表中是否有环。
+     *
+     * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+     *
+     * 如果链表中存在环，则返回 true 。 否则，返回 false
+     */
+    public boolean hasCycle(ListNode head) {  //快慢指针找
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (slow != fast) {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return true;
+    }
 
     /**
-     * 题目8(leetcode  2题): 两数相加
+     * 题目8(leetcode  第2题): 两数相加
      * 描述: 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照逆序(反过来就是顺序)的方式存储的，并且每个节点只能存储 一位 数字。
      * 请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头
      * eg: 2->4->3 和 5->6->4  343+465=807 返回7->0->8

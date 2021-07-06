@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.LinkList题组;
+package com.kwl.data01.LeetCode_HOT100.LinkedList题组;
 
 import com.kwl.data01.dataStructure.ListNode;
 
@@ -7,6 +7,21 @@ import com.kwl.data01.dataStructure.ListNode;
  * @date 2021/7/3 23:16
  */
 public class LinkList_Hot100_02 {
+
+    /**
+     * 题目1(leetcode 第206题): 反转链表
+     */
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode p = head;
+        while ( p!= null){
+            ListNode temp = p.next;
+            p.next = pre;
+            pre = p;
+            p = temp;
+        }
+        return pre;
+    }
 
 
     /**

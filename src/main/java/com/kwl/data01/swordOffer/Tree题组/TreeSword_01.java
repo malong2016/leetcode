@@ -8,16 +8,6 @@ import java.util.Map;
 
 /**
  * 剑指offer_树(tree)题组01 本题组一共是8到题目
- * <p>
- * 题目1(swordOffer 面试题55):求二叉树的深度
- * 题目2(swordOffer 面试题26):求树的子结构
- * 题目2(swordOffer 面试题7):重建二叉树
- * 题目3(swordOffer 面试题27):二叉树的镜像
- * 题目4(swordOffer 面试题28):对称的二叉树
- * 题目5(swordOffer 面试题54):二叉搜索树的第k大的节点
- * 题目6(swordOffer 面试题36):二叉搜索树和双向链表
- * 题目7(swordOffer 面试题34):二叉树中和为某一值的路径二叉搜索树的后序遍历序列
- * 题目8(swordOffer 面试题33): 二叉搜索树的后序遍历序列
  *
  * @author kuang.weilin
  * @date 2021/2/14
@@ -26,12 +16,12 @@ public class TreeSword_01 {
 
 
     /**
-     * 题目1(swordOffer 面试题55):求二叉树的深度
+     * 题目1(swordOffer 第55题-I): 二叉树的深度
      * <p>
      * 思路01: 利用递归,如果rootNode为null,就返回0.否则就返回左右节点更高的+1
      * 思路02: 利用二叉树层次遍历,参考,求二叉树每层的平均值
      */
-    public static int treeDepth(TreeNode rootNode) {
+    public  int treeDepth(TreeNode rootNode) {
         if (rootNode == null) return 0;
         return Math.max(treeDepth(rootNode.left), treeDepth(rootNode.right)) + 1;
     }
@@ -55,18 +45,18 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目1(swordOffer 面试题55):判断一棵树是否是二叉平衡树
-     * 二叉平衡树的定义: 输入一棵二叉树的根节点，判断该树是不是平衡二叉树。
-     * 如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+     * 题目1(swordOffer 第55题-II):平衡二叉树
+     * 二叉平衡树的定义:输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
      * <p>
      * 思路:
      */
-    public static int isBalanced(TreeNode rootNode) {
-        return 1;
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) return true;
+        return Math.abs(treeDepth(root.left) - treeDepth(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
 
     /**
-     * 题目2(swordOffer 面试题26):求树的子结构   time:2月14号
+     * 题目2(swordOffer 第26题):求树的子结构
      * 描述: 输入二颗二叉树A和B,判断B是不是A的子结构
      */
     public boolean isSubStructure(TreeNode A, TreeNode B) {
@@ -81,15 +71,15 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目2(swordOffer 面试题7):重建二叉树
+     * 题目2(swordOffer 第07题):重建二叉树
      * 描述: 输入某二叉树的前序遍历和中序遍历的结果,请重建该二叉树(不含有重复的元素)
      * <p>
      * 思路01: 前序遍历第一个值就是root节点,遍历中序找到root节点,找到左右子树的长度
      * 就可以在前序遍历中找到左右子树对应的范围,在遍历左右子树,就可以重建二叉树
      */
-    private static Map<Integer, Integer> indexMap;
+    private  Map<Integer, Integer> indexMap;
 
-    public static TreeNode myBuildTree(int[] preorder, int[] inorder, int preorderLeft, int preorderRight, int inorderLeft, int inorderRight) {
+    public  TreeNode myBuildTree(int[] preorder, int[] inorder, int preorderLeft, int preorderRight, int inorderLeft, int inorderRight) {
         if (preorderLeft > preorderRight) return null;
         Integer inorderRoot = indexMap.get(preorder[preorderLeft]);
         int sizeLeftSubTree = inorderRoot - inorderLeft;
@@ -100,7 +90,7 @@ public class TreeSword_01 {
         return root;
     }
 
-    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+    public  TreeNode buildTree(int[] preorder, int[] inorder) {
         //因为数组是非重复的所以可以把中序中index,value放入到Map<Integer,Integer>中,方便用preOrder root快速寻找到中序的节点
         for (int i = 0; i < inorder.length; i++) {
             indexMap.put(inorder[i], i);       //根据前序root去寻找到中序对应节点的index
@@ -111,11 +101,11 @@ public class TreeSword_01 {
     ;
 
     /**
-     * 题目3(swordOffer 面试题27):二叉树的镜像
+     * 题目3(swordOffer 第27题): 二叉树的镜像
      * 描述: 请完成一个函数,输入一棵二叉树,该函数输出它的镜像.
      * 镜像是所有左右节点进行交互
      */
-    public static TreeNode mirrorRecursively(TreeNode root) {
+    public  TreeNode mirrorRecursively(TreeNode root) {
         if (root == null) return null;
 //        TreeNode temp = root.left;                   //k神
 //        root.left = mirrorRecursively(root.right);
@@ -130,17 +120,17 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目4(swordOffer 面试题28):对称的二叉树
+     * 题目4(swordOffer 第28题): 对称的二叉树
      * 描述: 请完成一个函数,来判断一棵二叉树是否是对称的(如果一棵树和他的镜像是一样的,那么它就是对称的)
-     * 思路01:题目2(swordOffer 面试题26):求树的子结构
+     * 思路01:题目2(swordOffer 第26):求树的子结构
      * 分别比较左右子树的value,进行递归
      */
-    public static Boolean isSymmetrical(TreeNode root) {
+    public  Boolean isSymmetrical(TreeNode root) {
         if (root == null) return true;
         return isSymmetrical(root.left, root.right);
     }
 
-    public static Boolean isSymmetrical(TreeNode root01, TreeNode root02) {    //同名方法,比较二颗树是否是镜像
+    public  Boolean isSymmetrical(TreeNode root01, TreeNode root02) {    //同名方法,比较二颗树是否是镜像
         if (root01 == null && root02 == null) return true;        //全部为null,返回true
         if (root01 == null || root02 == null) return false;     //[一个为null,一个不为null]返回false
         //左右子树值相等,左右孩子为镜像
@@ -148,7 +138,7 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目5(swordOffer 面试题54):二叉搜索树的第k大的节点
+     * 题目5(swordOffer 第54题): 二叉搜索树的第k大节点
      * 描述: 给定一个二叉搜索树(左节点<root节点<右节点),请找到其中第k大的节点。
      * <p>
      * 思路01: 利用中序遍历这颗二叉搜索树,得到的顺序就是从小到大的排序,我们先遍历左子树，在遍历右子树
@@ -176,7 +166,7 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目6(swordOffer 面试题36):二叉搜索树和双向链表
+     * 题目6(swordOffer 第36题): 二叉搜索树与双向链表
      * 描述: 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表.(从小到大进行排序)
      * 要求不能创建任何新的节点,只能调节树中结点的指向。
      * <p>
@@ -213,7 +203,7 @@ public class TreeSword_01 {
     }
 
     /**
-     * 题目7(swordOffer 面试题34):二叉树中和为某一值的路径
+     * 题目7(swordOffer 第34题): 二叉树中和为某一值的路径
      * 描述: 输入一棵二叉树和一个整数,打印出二叉树中节点值的和为输入整数的所有路径。
      * 从树的root结点开始向下一直到叶结点所经过的节点形成一条路径
      * <p>
@@ -221,29 +211,28 @@ public class TreeSword_01 {
      */
 
 
-    List<List<Integer>> res01 = new LinkedList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-
     public List<List<Integer>> pathSum(TreeNode root, int target) {  //回溯法遍历找值
-        dfs(root, target);
-        return res01;
+        List<List<Integer>> res = new LinkedList<>();
+        LinkedList<Integer> path = new LinkedList<>();
+        dfs(root, target, res, path);
+        return res;
     }
 
-    void dfs(TreeNode root, int target) {
+    void dfs(TreeNode root, int target, List<List<Integer>> res, LinkedList<Integer> path) {
         if (root != null) {
             path.add(root.val);           //先进行添加
             target -= root.val;
             if (root.left == null && root.right == null && target == 0) {
-                res01.add(new LinkedList<>(path));
+                res.add(new LinkedList<>(path));
             }
-            dfs(root.left, target);
-            dfs(root.right, target);
+            dfs(root.left, target, res, path);
+            dfs(root.right, target, res, path);
             path.removeLast();
         }
     }
 
     /**
-     * 题目8(swordOffer 面试题33): 二叉搜索树的后序遍历序列
+     * 题目8(swordOffer 第33题): 二叉搜索树的后序遍历序列
      * 描述: 输入一个整数数组(该数组没有重复元素)，判断该数组是不是某二叉搜索树的后序遍历
      * 如果是就返回true,如果不是就返回false
      * <p>
@@ -252,11 +241,11 @@ public class TreeSword_01 {
      * 就依次递归左右子树,当左右子树全部返回true,那么这个数组就是二叉搜索树的后序遍历
      * 左子树:(i-1)  右子树:（i...length-2)   root: length-1
      */
-    public  boolean verifySquenceOfBSF(int[] postOrder) {
+    public boolean verifySquenceOfBSF(int[] postOrder) {
         return recur03(postOrder, 0, postOrder.length - 1);
     }
 
-    public  boolean recur03(int[] postOrder, int l, int r) {        //数组和起始index和结束index
+    public boolean recur03(int[] postOrder, int l, int r) {        //数组和起始index和结束index
         if (l >= r) return true;       //注意如果没有右子树, j == m
         int p = l;
         while (postOrder[p] < postOrder[r]) p++;      //这个是找到第一个>=root元素的值,不需要设置边界
@@ -265,14 +254,14 @@ public class TreeSword_01 {
         return p == r && recur03(postOrder, l, m - 1) && recur03(postOrder, m, r - 1);
     }
 
-    public  boolean recur04(int[] postOrder, int l, int r) {        //数组和起始index和结束index
+    public boolean recur04(int[] postOrder, int l, int r) {        //数组和起始index和结束index
         if (l >= r) return true;       //注意如果没有右子树, j == m
         int p = l;
         while (postOrder[p] < postOrder[r]) p++;      //这个是找到第一个>=root元素的值
         for (int i = p; i < r; i++) {
             if (postOrder[i] < postOrder[r]) return false;
         }
-        return recur04(postOrder, l, p-1) && recur04(postOrder, p , r - 1);
+        return recur04(postOrder, l, p - 1) && recur04(postOrder, p, r - 1);
     }
 
 

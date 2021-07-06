@@ -1,8 +1,9 @@
 package com.kwl.data01.myTest;
 
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import com.kwl.data01.LeetCode_HOT100.Tree题组.Tree_Hot100_01;
+import com.kwl.data01.dataStructure.TreeNode;
+
+import java.util.*;
 
 /**
  * @author kuang.weilin
@@ -12,8 +13,4 @@ public class MyTest01 {
 
 
 
-    public static void main(String[] args) {
-        MyTest01 myTest01 = new MyTest01();
-
-    }
 }
