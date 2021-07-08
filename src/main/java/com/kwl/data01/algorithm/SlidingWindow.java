@@ -14,7 +14,4 @@ public class SlidingWindow {
      * leetcode的例题: 209题 长度最小的子数组
      *                1456题 定长子串中的元音的最大数目
      */
-    public static void main(String[] args) {
-
-    }
 }

@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.Arrays题组;
+package com.kwl.data01.HOT100.Arrays题组;
 
 import com.kwl.data01.algorithm.ArraysSort;
 
@@ -14,7 +14,7 @@ public class Arrays_Hot100_02 {
 
 
     /**
-     * 题目1(leetcode 896题): 如果数组是单调递增或单调递减的，那么它是单调的。
+     * 题目01(leetcode 896题): 如果数组是单调递增或单调递减的，那么它是单调的。
      * 描述: 前后可以等于!!! 可以顺序或者到顺
      * eg: [1,2,2,3]  --> true   [1,3,2] -- false
      * <p>
@@ -32,14 +32,14 @@ public class Arrays_Hot100_02 {
         return inc || des;
     }
     /**
-     * 题目2(leetcode 35题): 搜索插入位置  todo 折半插入leetcode35题
+     * 题目02(leetcode 35题): 搜索插入位置  todo 折半插入leetcode35题
      * 描述: 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
      * 注意: 你可以假设数组中无重复元素。
      */
 
 
     /**
-     * 题目3(leetcode 第215题): 数组中的第K个最大元素
+     * 题目03(leetcode 第215题): 数组中的第K个最大元素
      * 描述: 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
      * <p>
      * 思路01: 先排序Arrays.sort(nums);返回  return nums[nums.length-k];
@@ -69,7 +69,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目3(leetcode 第136题): 只出现一次的数字
+     * 题目04(leetcode 第136题): 只出现一次的数字
      * 描述: 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
      * <p>
      * 思路01: res = 0,在遍历数组进行异或,相同会异或为0,最后剩下就是所求的值
@@ -84,7 +84,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目4(leetcode 第238题): 除自身以外数组的乘积 -- 本题和swordOffer 66题一样
+     * 题目05(leetcode 第238题): 除自身以外数组的乘积 -- 本题和swordOffer 66题一样
      */
     public int[] productExceptSelf(int[] nums) {
         int[] res = new int[nums.length];
@@ -101,7 +101,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目4(leetcode 739题): 每日温度
+     * 题目06(leetcode 739题): 每日温度
      * 描述: 请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，
      * 至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替
      * <p>
@@ -141,7 +141,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目4(leetcode 416题): 分割等和子集
+     * 题目07(leetcode 416题): 分割等和子集
      * 描述: 给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
      * <p>
      * eg01:
@@ -160,7 +160,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目5(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
+     * 题目08(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
      * 描述: 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
      * <p>
      * 每行的元素从左到右升序排列。
@@ -182,34 +182,6 @@ public class Arrays_Hot100_02 {
         }
         return false;
     }
-
-    /**
-     * 题目6(leetcode 240题): 岛屿数量
-     * 描述: 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
-     * 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
-     * 注意: 此外，你可以假设该网格的四条边均被水包围。。
-     * <p>
-     * eg:
-     * 输入：grid = [
-     * ["1","1","1","1","0"],
-     * ["1","1","0","1","0"],
-     * ["1","1","0","0","0"],
-     * ["0","0","0","0","0"]
-     * ]
-     * 输出：1
-     * <p>
-     * 思路01: 暴力解
-     */
-    public int numIslands(char[][] grid) {
-        return 0;
-    }
-
-    public static void main(String[] args) {
-
-    }
-    /**
-     * 题目6(leetcode 239题): 岛屿数量
-     */
 
 
 }

@@ -12,9 +12,5 @@ public class UnionFind {
     /**
      * union: 合并二个元素为同一个root节点
      * Find: 找到某个元素的root节点
-     * @param args
      */
-    public static void main(String[] args) {
-
-    }
 }

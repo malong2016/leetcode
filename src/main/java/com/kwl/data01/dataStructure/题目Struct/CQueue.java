@@ -3,10 +3,12 @@ package com.kwl.data01.dataStructure.题目Struct;
 import java.util.Stack;
 
 /**
+ * swordOffer  第09题 - 用两个栈实现队列
+ *
  * @author kuang.weilin
  * @date 2021/7/7 1:07
  */
-public class CQueue {          //剑指 Offer 09. 用两个栈实现队列
+public class CQueue {
 
     Stack<Integer> stack01;
     Stack<Integer> stack02;
@@ -29,7 +31,5 @@ public class CQueue {          //剑指 Offer 09. 用两个栈实现队列
 
         //注意这里stack02可能等于null(就是栈01和栈02同时是null)
         return stack02.isEmpty() ? -1 : stack02.pop();
-        // if (stack02.isEmpty())     return -1;
-        // return (int)stack02.pop();
     }
 }

@@ -31,20 +31,16 @@ public class ArraysSort {
 
 
     /**
-     * 1 1)交换排序之冒泡排序
+     * 1.1 交换排序之冒泡排序
      */
-    public static int[] bubbleSort(int[] arr) {
-        if (arr == null || arr.length <= 1) {  //传入为null,或者数组长度是0或者1,返回本身
-            return arr;
-        }
-        //注意一共要冒泡arr.length-1次,for循环如果从0开始而且是<(小于) n,那么循环次数就是n (n-1+1)
+    public int[] bubbleSort(int[] arr) {             //升序,每次冒泡出最大元素
+        if (arr == null || arr.length <= 1) return arr;
         for (int i = 0; i < arr.length - 1; i++) {
-            //从左向右冒泡,每次冒泡出最大值!!注意第一次来,不需要处理,直接拿倒数第二个数比较
             for (int j = 0; j < arr.length - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {               //如果左边大于右边,交换!!!
-                    int t = arr[j];
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
                     arr[j] = arr[j + 1];
-                    arr[j + 1] = t;
+                    arr[j + 1] = temp;
                 }
             }
         }
@@ -52,26 +48,23 @@ public class ArraysSort {
     }
 
     /**
-     * 1 2)交换排序之快速排序(注意数组属于引用,方法里面改变会影响外面)  partition 分割/隔板  不考虑null的情况
+     * 1.2 交换排序之快速排序
      */
     public static int[] quickSort(int[] A, int low, int high) {
         if (low < high) {           //如果是只有一个元素就没有必要快速排序,递归结束!!!!
-            int pivotpos = partition(A, low, high);        //排好第一趟,而且取出中心pivot
-            quickSort(A, low, pivotpos - 1);         //将左边排好
-            quickSort(A, pivotpos + 1, high);        //将右边排好
+            int mid = partition(A, low, high);        //排好第一趟,而且取出中心pivot
+            quickSort(A, low, mid - 1);         //将左边排好
+            quickSort(A, mid + 1, high);        //将右边排好
         }
         return A;
     }
 
-    /**
-     * 一趟选择排序,返回排序完成之后的基准(pivot)之后的下标索引(index)
-     */
-    public static int partition(int[] A, int low, int high) {
+    public static   int partition(int[] A, int low, int high) {    //partition 分割/隔板
         int pivot = A[low];
         while (low < high) {       //最后low和high双指针汇合结束
-            while (A[high] >= pivot && high > low) high--;    //从high开始扫描,如果大于pivot&&大于low,high指针向左移动
+            while (low < high && A[high] >= pivot) high--;    //从high开始扫描,如果大于pivot&&大于low,high指针向左移动
             A[low] = A[high];               //移动到小于pivot,将这个数赋值给A[low](注意A[low]是已经被交换的数或者pivot,不会覆盖排序字段)
-            while (A[low] <= pivot && high > low) low++;          //同上从左向右扫描,理由同上
+            while (low < high && A[low] <= pivot) low++;          //同上从左向右扫描,理由同上
             A[high] = A[low];
         }
         A[low] = pivot;         //pivot最后存放的位置
@@ -80,10 +73,10 @@ public class ArraysSort {
 
 
     /**
-     * 2 1)选择排序之简单选择排序
+     * 2.1 选择排序之简单选择排序
      * 每次选择出最小的一位,放在最左边,最后按照升序排序
      */
-    public static int[] changeSort(int[] arr) {
+    public  int[] changeSort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int t = i;        //默认记录是本身
             for (int j = i + 1; j < arr.length; j++) {
@@ -98,16 +91,16 @@ public class ArraysSort {
         return arr;
     }
     /**
-     * 2 2)选择排序之堆排序
+     * 2.1 选择排序之堆排序
      *
      * 先建立一个大顶推，然后将堆顶元素和最后元素进行交换。
      */
 
     /**
-     * 3 1)插入排序之直接插入排序(升序)
+     * 3.1 插入排序之直接插入排序(升序)
      * 思路:遍历后面的数组的元素,不断插入到前面已经拍好序的数组
      */
-    public static int[] directInsertSort(int[] arr) {
+    public  int[] directInsertSort(int[] arr) {
         for (int i = 1; i < arr.length; i++) {
             int t = arr[i];       //待插入数字
             int j;
@@ -121,11 +114,11 @@ public class ArraysSort {
     }
 
     /**
-     * 3 2)插入排序之折半插入排序
+     * 3.2 插入排序之折半插入排序
      * 时间复杂度是o(nlog2n)
      * 思路:综合折半查找+插入排序,每次插入前先折半查到到插入位置,然后具体后移动一位,提高时间复杂度
      */
-    public static void halfInsertSout(int[] arr) {         //注意方法能改变待排序数组(数组本质上是引用!!!!)
+    public  void halfInsertSout(int[] arr) {         //注意方法能改变待排序数组(数组本质上是引用!!!!)
         int length = arr.length;
         for (int i = 1; i < length; i++) {
             int temp = arr[i];
@@ -151,18 +144,14 @@ public class ArraysSort {
 
 
     /**
-     * 3 3)插入排序之希尔排序(升序)  类比二路归并排序
-     *
-     *
+     * 3.3 插入排序之希尔排序(升序)  类比二路归并排序
      * eg: [8,9,1,7,2,3,5,4,6,0]
      * 1) 初始增量gap = length/2 分为五组[8,3] [9,5] [1,4] [7,6] [2,0],对每组进行直接插入排序
      * 2) gap = length/2/2 分两组[3,1,0,9,7]  [5,6,8,4,2] 进行直接插入排序
      * 3) gap= 1,分为一组, [0,2,1,4,3,5,7,6,9,8]直接插入排序
      */
-    public static void shellSort(int[] arr) {
-        if (arr == null || arr.length < 2) {
-            return;
-        }
+    public void shellSort(int[] arr) {
+        if (arr == null || arr.length < 2) return;
         for (int gap = arr.length / 2; gap > 0; gap /= 2) {     //逐步分组
             for (int i = gap; i < arr.length; i++) {
                 int j = i;
@@ -176,29 +165,5 @@ public class ArraysSort {
                 arr[j] = tmp;
             }
         }
-    }
-
-
-    public static void main(String[] args) {
-        int A[] = new int[]{23, 12, 66, 2, 100, 7};
-        //1 交换排序-冒泡排序
-//        int[] ints = ArraysSort.bubbleSort(new int[]{23, 12, 66, 2});
-        //1 交换排序-快速排序
-//        int[] quickSort = ArraysSort.quickSort(A, 0, A.length-1);
-//        System.out.println(Arrays.toString(quickSort));       //使用于基本数据类型,其他可以使用:Arrays.toList()
-
-        //2 选择排序-简单选择排序
-//        int[] ints1 = ArraysSort.changeSort(new int[]{23, 12, 66, 8, 2});
-        //2 选择排序-堆排序
-
-
-        //插入排序01 - 简单插入排序
-//        int[] ints = directInsertSort(new int[]{45,2, 12, 66, 23});
-        //插入排序02 - 折半插入排序(时间复杂度是o(nlog2n))
-        halfInsertSout(A);
-        //插入排序 - 希尔排序
-//        shellSort(A);
-//        System.out.println(Arrays.toString(A));
-
     }
 }

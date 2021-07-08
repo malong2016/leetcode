@@ -12,7 +12,7 @@ public class dfsSword_01 {
 
 
     /**
-     * 题目1(swordOffer 第38题): 字符串的排列
+     * 题目01(swordOffer 第38题): 字符串的排列
      * 描述: 输入一个字符串,打印出该字符串中字符的所有排序。
      * 例如: 输入字符串abc,打印字符a,b,c所排列出来的所有字符串是
      * abc,acb,bac,bca,cab,cba

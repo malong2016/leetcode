@@ -1,6 +1,8 @@
 package com.kwl.data01.swordOffer.Arrays题组;
 
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -12,7 +14,7 @@ import java.util.LinkedList;
 public class ArraysSword_03 {
 
     /**
-     * 题目1(swordOffer 第11题):旋转数组的最小数字
+     * 题目01(swordOffer 第11题):旋转数组的最小数字
      * 描述: 输入一个递增的arr,将最开始的若干个元素搬到数组的末尾
      * {3,4,5,1,2} 是 {1,2,3,4,5}的一个旋转数组
      * <p>
@@ -27,15 +29,15 @@ public class ArraysSword_03 {
         int low = 0, high = nums.length - 1;
         while (low < high) {
             int mid = (low + high) / 2;
-            if (nums[mid] > nums[high]) low = mid + 1;    //上半区
+            if (nums[mid] > nums[high]) low = mid + 1;    //上半区,注意这里一定是在上半区，所以mid+1(最差就是high)
             else if (nums[mid] < nums[high]) high = mid;  //下半区，可能就是mid
-            else --high;         //向下逼近
+            else --high;         //向下逼近,mid一定是小于high的
         }
         return nums[high];
     }
 
     /**
-     * 题目2(swordOffer 第44题): 数字序列中某一位的数字
+     * 题目02(swordOffer 第44题): 数字序列中某一位的数字
      * 描述: 数字以0123456789101112131415....的序列化到一个字符序列中
      * 在这个序列中第5位(从0开始计算)是5,第13位是1,第19位是4.
      * 请写一个函数,求任意第n位对应的数字
@@ -56,7 +58,7 @@ public class ArraysSword_03 {
 
 
     /**
-     * 题目7(swordOffer 第59题-I): 滑动窗口的最大值
+     * 题目07(swordOffer 第59题-I): 滑动窗口的最大值
      * 描述: 给定一个数组和滑动窗口的大小,找出所有在滑动窗口的最大值
      * {2,3,4,2,6,2,5,1}滑动窗口3 --> 最大值分别是{4,4,6,6,6,5}    //从k开始都有一个滑动窗口，res的长度是length-k+1
      * <p>
@@ -79,6 +81,39 @@ public class ArraysSword_03 {
             if (i >= 0) res[i] = linkedList.peekFirst();     //记录窗口的最大值
         }
         return res;
+    }
+
+    /**
+     * 题目08(swordOffer 第61题): 扑克牌中的顺子
+     * 描述: 从扑克牌中抽取5张牌，判断是不是一个顺子，即这5张牌是不是连续的。
+     * 2~10为数字本身，A为1,J为11,,Q是12,K是13,大小王是0可以看成任意数字
+     * <p>
+     * <p>
+     * 核心: 1 无重复 2除掉大小王 max - min < 5
+     * 思路01(leetcode):核心是五张牌中没有重复元素,除了0之外max-min<5就满足是顺子,
+     * 我们利用HashSet对数组中的元素进行判断其是否重复,同时记录除了0之外的最大值和最小值
+     * 思路02(leetcode):先对数组进行排序,在arr[i+1]=arr[i]是返回false,max-min<5就满足是顺子,
+     */
+    public  boolean isContinuous(int[] arr) {
+        HashSet<Integer> hashSet = new HashSet<>();
+        int min = 14, max = 0;
+        for (int i : arr) {
+            if (i == 0) continue;   //如果是0,就跳出循环,不统计
+            max = Math.max(max, i);
+            min = Math.min(min, i);
+            if (!hashSet.add(i)) return false;   //如果有重复元素就返回false
+        }
+        return max - min < 5;
+    }
+
+    public  boolean isContinuous01(int[] arr) {
+        Arrays.sort(arr);
+        int joker = 0;       //这个记录非0的第一个index
+        for (int i = 0; i < 4; i++) {
+            if (arr[i] == 0) joker++;       //joker只有二张牌
+            else if (arr[i] == arr[i + 1]) return false;
+        }
+        return arr[4] - arr[joker] < 5;
     }
 
 }

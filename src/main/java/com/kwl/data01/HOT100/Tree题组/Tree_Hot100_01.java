@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.Tree题组;
+package com.kwl.data01.HOT100.Tree题组;
 
 import com.kwl.data01.dataStructure.TreeNode;
 
@@ -13,29 +13,10 @@ import java.util.Queue;
 public class Tree_Hot100_01 {
 
 
-    /**
-     * 题目1(leetcode 543题): 二叉树的直径
-     * 描述: 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
-     * 描述: 就是求每一个节点 左高+右高,最后返回最大的值
-     */
-    int res = 0;        //这个res一定是要写在外面,因为递归是值传递(如果不是引用的化)，会丢失
 
-    public int diameterOfBinaryTree(TreeNode root) { //等于所有节点leftHigh+rightHigh的max值
-        if (root == null) return 0;
-        countTreeHigh(root);
-        return res;
-    }
-
-    int countTreeHigh(TreeNode root) {
-        if (root == null) return 0;
-        int leftHigh = countTreeHigh(root.left);
-        int rightHigh = countTreeHigh(root.right);
-        res = Math.max(leftHigh + rightHigh, res);
-        return Math.max(leftHigh, rightHigh) + 1;
-    }
 
     /**
-     * 题目02(leetcode 第114题): 二叉树展开为链表
+     * 题目01(leetcode 第114题): 二叉树展开为链表
      * 描述: 给你二叉树的根结点 root ，请你将它展开为一个单链表：
      * 1 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
      * 2 展开后的单链表应该与二叉树 先序遍历 顺序相同。
@@ -76,7 +57,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目3(leetcode 第98题): 验证二叉搜索树
+     * 题目02(leetcode 第98题): 验证二叉搜索树
      * 描述: 假设一个二叉搜索树具有如下特征
      * 1 节点的左子树只包含小于当前节点的数。
      * 2 节点的右子树只包含大于当前节点的数。
@@ -107,7 +88,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目4(leetcode 第236题): 二叉树的最近公共祖先   --本题和swordOffer 68 II 重合
+     * 题目03(leetcode 第236题): 二叉树的最近公共祖先   --本题和swordOffer 68 II 重合
      */
     public TreeNode lowestCommonAncestor03(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) return root;        //root本身是null，或者root就是p/q就返回本身
@@ -119,7 +100,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 第437题): 路径总和 III
+     * 题目04(leetcode 第437题): 路径总和 III
      * 描述: 给定一个二叉树，它的每个结点都存放着一个整数值。
      * 找出路径和等于给定数值的路径总数。
      * 路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
@@ -148,7 +129,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 第124题): 二叉树中的最大路径和
+     * 题目05(leetcode 第124题): 二叉树中的最大路径和
      * 描述: 路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
      * 路径和 是路径中各节点值的总和。
      * 给你一个二叉树的根节点 root ，返回其 最大路径和 。
@@ -174,11 +155,11 @@ public class Tree_Hot100_01 {
         if (root == null) return 0;
         int left = Math.max(0, maxGain(root.left));  //如果最大贡献小于0，就舍弃
         int right = Math.max(0, maxGain(root.right));
-        ans = Math.max(res, left + right + root.val);  //当前节点作为父节点，如果大于就更新res
+        ans = Math.max(ans, left + right + root.val);  //当前节点作为父节点，如果大于就更新res
         return root.val + Math.max(left, right);  //该节点不是父节点，而存在父节点时候，只能在左右子树中选最大的
     }
     /**
-     * 题目6(leetcode 第297题): 二叉树的序列化与反序列化              -- 本题和swordOffer 第37题 重复
+     * 题目06(leetcode 第297题): 二叉树的序列化与反序列化              -- 本题和swordOffer 第37题 重复
      * 描述: 序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，
      * 同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
      * 请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，
@@ -228,7 +209,7 @@ public class Tree_Hot100_01 {
         return root;
     }
     /**
-     * 题目7(leetcode 第96题): 不同的二叉搜索树
+     * 题目07(leetcode 第96题): 不同的二叉搜索树
      * 描述: 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。
      * <p>
      * 思路01: 动态规划,注意dp[n]就是n个节点2
@@ -246,7 +227,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目7(leetcode 第208题): 实现 Trie (前缀树)
+     * 题目08(leetcode 第208题): 实现 Trie (前缀树)
      * 描述: Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
      *
      * 请你实现 Trie 类：

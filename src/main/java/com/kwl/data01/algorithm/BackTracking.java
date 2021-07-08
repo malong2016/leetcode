@@ -36,6 +36,4 @@ public class BackTracking {
      *    return res
      * leetcode: 22题(括号生成) 78题(子集) 77题(组合)  46题(全排序)  八皇后问题和树独问题(相对复杂!!!)
      */
-    public static void main(String[] args) {
-    }
 }

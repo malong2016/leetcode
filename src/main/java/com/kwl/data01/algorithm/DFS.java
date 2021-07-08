@@ -17,7 +17,4 @@ public class DFS {
      *
      * leetcode: 938题 78题 200题(经典)
      */
-    public static void main(String[] args) {
-
-    }
 }

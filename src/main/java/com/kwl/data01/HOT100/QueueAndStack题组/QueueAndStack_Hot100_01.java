@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.QueueAndStack题组;
+package com.kwl.data01.HOT100.QueueAndStack题组;
 
 import java.util.Stack;
 
@@ -8,7 +8,7 @@ import java.util.Stack;
  */
 public class QueueAndStack_Hot100_01 {
     /**
-     * 题目1(leetcode 第32题): 最长有效括号  todo 理解最长有效括号
+     * 题目01(leetcode 第32题): 最长有效括号  todo 理解最长有效括号
      * 描述: 给你一个只包含 '(' 和 ')' 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
      * <p>
      * 思路01(my): 利用一个stack,注意底部一定要存放预留一个-1或者最后一个没有被匹配的),以便计算长度
@@ -28,8 +28,9 @@ public class QueueAndStack_Hot100_01 {
         }
         return res;
     }
+
     /**
-     * 题目2(leetcode 第155题): 最小栈
+     * 题目02(leetcode 第155题): 最小栈          --本题和swordOffer 面试题33重合
      * 参考: com.kwl.data01.dataStructure.题目Struct.MinStack
      */
 }

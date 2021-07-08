@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.Greedy题组;
+package com.kwl.data01.HOT100.Greedy题组;
 
 /**
  * @author kuang.weilin

@@ -14,11 +14,8 @@ public class DivideAndConquer {
      * 用到了递归,自己调用了自己
      * 大问题-->分解-->小问题-->小问题的解-->合并
      *
-     * 例子: 归并排序
+     * 例子: 二路归并排序
      *
-     * leetcode题目: 169 53 215题目
+     * leetcode题目: 215题目
      */
-    public static void main(String[] args) {
-
-    }
 }

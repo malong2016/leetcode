@@ -11,7 +11,7 @@ import java.util.List;
 public class dpSword_02 {
 
     /**
-     * 题目0(swordOffer 第10题-II): 青蛙跳台阶问题
+     * 题目01(swordOffer 第10题-II): 青蛙跳台阶问题
      * 描述: 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
      * <p>
      * 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
@@ -73,6 +73,25 @@ public class dpSword_02 {
      */
     public  int movingCount(int[][] nums) {
         return 0;
+    }
+
+    /**
+     * 题目04(swordOffer 第42题): 连续子数组的最大和
+     * 描述: 输入一个整型数组，数组中存在正数和负数。数组中的一个或者连续多个整数
+     * 组成一个子数组。求所有子数组的和的最大值。要求时间复杂度是o(n)
+     * eg: 输入{1,-2,3,10,-4,7,2,-5} 最大子数组是{3,10,-4,7,2}
+     * 输出该子数组的和是18
+     * <p>
+     * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
+     * 大于0就取本值
+     */
+    public  int FindGreatestSumOfSumOfSubArray(int[] arr) {
+        int res = arr[0];    //默认是res是arr[0]
+        for (int i = 1; i < arr.length; i++) {
+            arr[i] += Math.max(arr[i - 1], 0);
+            res = Math.max(arr[i], res);
+        }
+        return res;
     }
 
 }

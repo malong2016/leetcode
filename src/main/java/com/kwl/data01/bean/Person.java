@@ -1,7 +1,6 @@
 package com.kwl.data01.bean;
 
 
-import com.kwl.data01.dataStructure.ListNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,9 +19,11 @@ public class Person {
 
     private String id;
 
-    private String name, name01;
+    private String name;
 
     private String city;
 
     private Student student;
+
+
 }

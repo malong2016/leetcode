@@ -11,7 +11,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目1(swordOffer 第17题): 打印从1到最大的n位数
+     * 题目01(swordOffer 第17题): 打印从1到最大的n位数
      * <p>
      * 思路01(基础解): 最大Math.pow(10,n)-1
      * 思路02(大数打印法,参考leetcode): todo
@@ -25,7 +25,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目2(swordOffer 第05题): 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
+     * 题目02(swordOffer 第05题): 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
      * 例如: "we are happy" 输出为 "we%20are%20happy"
      */
     public  String replaceBlank01(String str) {
@@ -42,7 +42,7 @@ public class StringSword_01 {
     }
 
     /**
-     * 题目3(swordOffer 第48题): 最长不含重复字符的子字符串
+     * 题目03(swordOffer 第48题): 最长不含重复字符的子字符串
      * 描述: 请从字符串中寻找一个最长的不包括重复字符的子字符串,计算该最长子字符的长度。
      * 假设字符串中只包含'a'~'z'的字符。
      * 方法一: HashMap
@@ -62,9 +62,21 @@ public class StringSword_01 {
         }
         return res;
     }
+    public int lengthOfLongestSubstring(String s) {          //new int[128]解法
+        int[] window = new int[128];
+        int l = 0, r = 0, res = 0;
+        while (r < s.length()){
+            while (window[s.charAt(r)] > 0){       //大于0说明有重复的，此时还没有添加进来
+                window[s.charAt(l++)]--;
+            }
+            res = Math.max(res, r - l + 1);
+            window[s.charAt(r++)]++;       //先添加，后面r++
+        }
+        return res;
+    }
 
     /**
-     * 题目4(swordOffer 第50题): 第一个只出现一次的字符
+     * 题目04(swordOffer 第50题): 第一个只出现一次的字符
      * 描述: 字符串中寻找出第一个只出现的一次字符。如输入"abaccdeff",就输出"b"
      * <p>
      * <p>
@@ -99,7 +111,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目5(swordOffer 第58题-II): 左旋转字符串
+     * 题目05(swordOffer 第58题-II): 左旋转字符串
      * 描述:输入字符串"abcdefg"和数字2,该方法左旋转到cdefgab
      * <p>
      * 思路01(swordOffer官方解法): 把ab cdefg当成二个整体,先翻转ba gfedc 在分别整体翻转 cdefgab
@@ -116,7 +128,7 @@ public class StringSword_01 {
     }
 
     /**
-     * 题目1需要的方法,传入字符串和起始index和结束index,进行翻转
+     * 题目01需要的方法,传入字符串和起始index和结束index,进行翻转
      */
     public void reverse(char[] charArray, int begin, int end) {       //翻转字符串,制定起始索引和结束索引
         while (begin < end) {
@@ -130,7 +142,7 @@ public class StringSword_01 {
 
 
     /**
-     * 题目6(swordOffer 第58题-I): 翻转字符串(单词的顺序)
+     * 题目06(swordOffer 第58题-I): 翻转字符串(单词的顺序)
      * 描述: 输入一个英文句子,翻转句子中的单词的顺序,但是单词内字符串的顺序不变
      * "I am a student." ==> "student. a am I"
      * <p>
@@ -161,11 +173,8 @@ public class StringSword_01 {
         return String.valueOf(charArray);
     }
 
-
-
-
     /**
-     * 题目8(leetcode 20) 表示数值的字符串
+     * 题目07(leetcode 20) 表示数值的字符串
      * 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
      * <p>
      * 数值（按顺序）可以分成以下几个部分：

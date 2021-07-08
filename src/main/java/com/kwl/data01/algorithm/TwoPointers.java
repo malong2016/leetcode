@@ -15,7 +15,4 @@ public class TwoPointers {
      *       2）对撞双指针: 二个指针面对面运动
      *       3) 块慢双这指针: 慢指针+块指针
      */
-    public static void main(String[] args) {
-
-    }
 }

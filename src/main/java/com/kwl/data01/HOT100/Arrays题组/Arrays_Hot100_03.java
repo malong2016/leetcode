@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.Arrays题组;
+package com.kwl.data01.HOT100.Arrays题组;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ import java.util.*;
 public class Arrays_Hot100_03 {
 
     /**
-     * 题目1(leetcode 374): 前 K 个高频元素
+     * 题目01(leetcode 第374题): 前 K 个高频元素
      * 描述: 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
      * <p>
      * eg：
@@ -24,7 +24,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目2(leetcode 374): 合并区间
+     * 题目02(leetcode 第374题): 合并区间
      * 描述: 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。
      * 请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
      * <p>
@@ -40,7 +40,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目3(leetcode 207): 课程表
+     * 题目03(leetcode 第207题): 课程表
      * 描述: 你这个学期必须选修 numCourses 门课程，记为 0 到 numCourses - 1 。
      * 在选修某些课程之前需要一些先修课程。 先修课程按数组 prerequisites 给出，其中 prerequisites[i] = [ai, bi] ，表示如果要学习课程 ai 则 必须 先学习课程  bi 。
      * 例如，先修课程对 [0, 1] 表示：想要学习课程 0 ，你需要先完成课程 1 。
@@ -57,7 +57,7 @@ public class Arrays_Hot100_03 {
      * 思路02(dfs)
      */
     /**
-     * 题目4(leetcode 第406题): 根据身高重建队列
+     * 题目04(leetcode 第406题): 根据身高重建队列
      * 描述:
      * 假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每
      * 个 people[i] = [hi, ki] 表示第 i 个人的身高为 hi ，前面 正好 有 ki 个身高大于或等于 hi 的人。
@@ -105,7 +105,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目5(leetcode 第406题): 下一个排列
+     * 题目05(leetcode 第406题): 下一个排列
      * 描述:
      * 实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
      * 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
@@ -157,7 +157,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目6(leetcode 第4题): 寻找两个正序数组的中位数
+     * 题目06(leetcode 第4题): 寻找两个正序数组的中位数
      * 描述: 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
      *
      * eg:
@@ -187,7 +187,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目7(leetcode 312题): 戳气球
+     * 题目07(leetcode 312题): 戳气球
      * 描述: 有 n 个气球，编号为0 到 n - 1，每个气球上都标有一个数字，这些数字存在数组 nums 中。
      * 现在要求你戳破所有的气球。戳破第 i 个气球，你可以获得 nums[i - 1] * nums[i] * nums[i + 1] 枚硬币。
      *  这里的 i - 1 和 i + 1 代表和 i 相邻的两个气球的序号。如果 i - 1或 i + 1 超出了数组的边界，那么就当它是一个数字为 1 的气球。

@@ -1,10 +1,12 @@
 package com.kwl.data01.dataStructure.题目Struct;
 
 /**
+ * leetcode 面试题208 (前缀数的数据结构)
+ *
  * @author kuang.weilin
  * @date 2021/7/6 14:28
  */
-public class Trie {          //本题是leetcode 208题  --前缀数的数据结构
+public class Trie {
 
 
    private Trie[] children;        //前缀树的孩子

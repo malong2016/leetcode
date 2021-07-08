@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.String题组;
+package com.kwl.data01.HOT100.String题组;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +82,7 @@ public class String_Hot100_02 {
     /**
      * 题目04（leetcode 第3题）:无重复字符的最长子串
      * 描述: 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+     * 思路: HashMap/Set/new int[128]
      */
     public int lengthOfLongestSubstring(String s) {
         int res = 0;
@@ -98,9 +99,9 @@ public class String_Hot100_02 {
     }
 
     /**
-     * 题目05（leetcode 第5题）:最长回文子串
+     * 题目05（leetcode 第5题）: 最长回文子串
      * 描述: 给你一个字符串 s，找到 s 中最长的回文子串
-     * 思路: 中心扩展
+     * 思路: 中心扩散
      */
     public String longestPalindrome(String s) {
         String res = "";

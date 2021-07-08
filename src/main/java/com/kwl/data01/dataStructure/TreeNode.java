@@ -51,7 +51,7 @@ public class TreeNode {
         while (!stack.isEmpty()) {
             root = stack.pop();
             res.add(root.val);
-            if (root.right != null) stack.push(root.right);
+            if (root.right != null) stack.push(root.right);      //先入右节点，后出！！
             if (root.left != null) stack.push(root.left);
         }
         return res;
@@ -156,27 +156,6 @@ public class TreeNode {
         return res;
     }
 
-    /**
-     * 利用层次遍历来计算出每层平均值
-     *
-     * @param rootNode
-     */
-    public static List<Integer> levelOrderAvg(TreeNode rootNode) {
-        Queue<TreeNode> queueTest = new LinkedList<>();
-        List<Integer> res = new ArrayList<>();
-        if (rootNode != null) queueTest.offer(rootNode);
-        while (!queueTest.isEmpty()) {
-            int nodeNum = queueTest.size(), total = 0;
-            for (int i = 0; i < nodeNum; i++) {
-                TreeNode pollNode = queueTest.poll();
-                total += pollNode.val;
-                if (pollNode.left != null) queueTest.offer(pollNode.left);
-                if (pollNode.right != null) queueTest.offer(pollNode.right);
-            }
-            res.add(total / nodeNum);
-        }
-        return res;
-    }
 
     /**
      * 复制一棵二叉树
@@ -187,5 +166,10 @@ public class TreeNode {
         copyTree.left = copyTree(root.left);      //要指向,不能创建,是复制指针
         copyTree.right = copyTree(root.right);
         return copyTree;
+    }
+
+    public static void main(String[] args) {
+
+
     }
 }

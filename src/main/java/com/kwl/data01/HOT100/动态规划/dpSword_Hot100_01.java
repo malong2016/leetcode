@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.动态规划;
+package com.kwl.data01.HOT100.动态规划;
 
 import java.util.Arrays;
 import java.util.Stack;
@@ -10,7 +10,7 @@ import java.util.Stack;
 public class dpSword_Hot100_01 {
 
     /**
-     * 题目1(leetcode 第62题): 不同路径
+     * 题目01(leetcode 第62题): 不同路径
      * 描述: 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
      * 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
      * 问总共有多少条不同的路径？
@@ -46,7 +46,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目2(leetcode 第64题): 最小路径和
+     * 题目02(leetcode 第64题): 最小路径和
      * 描述:给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
      * 每次只能[向下或者向右]移动一步。
      * 思路01: 动态规划
@@ -85,7 +85,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目4(leetcode 第221题): 最大正方形
+     * 题目03(leetcode 第221题): 最大正方形
      * 描述: 在一个由 '0' 和 '1' 组成的二维矩阵内，找到只包含 '1' 的最大正方形，并返回其面积。
      * 输入：matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
      * 输出：4
@@ -111,7 +111,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目4(leetcode 第84题): 柱状图中最大的矩形
+     * 题目05(leetcode 第84题): 柱状图中最大的矩形
      * 描述: 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
      * 求在该柱状图中，能够勾勒出来的矩形的最大面积。
      * <p>
@@ -160,7 +160,7 @@ public class dpSword_Hot100_01 {
 
 
         /**
-         * 题目5(leetcode 第85题): 最大矩阵
+         * 题目06(leetcode 第85题): 最大矩阵
          * 给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
          * eg:
          * 输入：matrix = [
@@ -191,7 +191,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 第152题): 乘积最大子数组
+     * 题目07(leetcode 第152题): 乘积最大子数组
      * 描述: 给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
      * <p>
      * eg: [-2,3,-4]  --> 24
@@ -210,7 +210,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目5(leetcode 第121题) 买卖股票的最佳时机
+     * 题目08(leetcode 第121题) 买卖股票的最佳时机
      * 描述: 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
      * 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
      * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
@@ -229,7 +229,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目6(leetcode 第322题): 零钱兑换
+     * 题目09(leetcode 第322题): 零钱兑换
      * 描述: 给定不同面额的硬币 coins 和一个总金额 amount。
      * 编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
      * <p>
@@ -260,14 +260,4 @@ public class dpSword_Hot100_01 {
         }
         return dp[amount] == amount + 1 ? -1 : dp[amount];
     }
-
-
-    public static void main(String[] args) {
-        dpSword_Hot100_01 dpSword_hot100_01 = new dpSword_Hot100_01();
-        System.out.println(dpSword_hot100_01.largestRectangleArea(new int[]{
-                2, 1, 5, 6, 2, 3
-        }));
-    }
-
-
 }

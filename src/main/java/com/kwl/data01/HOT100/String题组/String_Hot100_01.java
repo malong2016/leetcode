@@ -1,4 +1,4 @@
-package com.kwl.data01.LeetCode_HOT100.String题组;
+package com.kwl.data01.HOT100.String题组;
 
 import java.util.*;
 
@@ -40,30 +40,9 @@ public class String_Hot100_01 {
         return s.length() == 0;
     }
 
-    /**
-     * 题目02:找到字符串中所有字母异位词
-     * 描述: 给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
-     * 字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。
-     * 说明: 字母异位词指字母相同，但排列不同的字符串。
-     * 不考虑答案输出的顺序。
-     * <p>
-     * eg:
-     * 输入:
-     * s: "cbaebabacd" p: "abc"
-     * <p>
-     * 输出:
-     * [0, 6]
-     * <p>
-     * 解释:
-     * 起始索引等于 0 的子串是 "cba", 它是 "abc" 的字母异位词。
-     * 起始索引等于 6 的子串是 "bac", 它是 "abc" 的字母异位词。
-     */
-    public List<Integer> findAnagrams(String s, String p) {
-        return null;
-    }
 
     /**
-     * 题目03（leetcode 第394题）: 字符串解码
+     * 题目02（leetcode 第394题）: 字符串解码
      * 描述: 给定一个经过编码的字符串，返回它解码后的字符串。
      * <p>
      * 编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
@@ -108,7 +87,7 @@ public class String_Hot100_01 {
     }
 
     /**
-     * 题目04（leetcode 第76题）:最小覆盖子串
+     * 题目03（leetcode 第76题）:最小覆盖子串
      * 描述: 给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
      * 注意：如果 s 中存在这样的子串，我们保证它是唯一的答案。
      * <p>
@@ -118,7 +97,7 @@ public class String_Hot100_01 {
      * 输入：s = "a", t = "a"
      * 输出："a"
      * <p>
-     * 思路01(官方解): 二个hashMap,设置滑动窗口,需要cheak检查窗口的s是否包括need的字符
+     * 思路01(官方解,见leetcode): 二个hashMap,设置滑动窗口,需要cheak检查窗口的s是否包括need的字符
      * 思路02(评论区高赞): 二个HashMap + vaild验证
      * 思路03(最优解): new int[128] + vaild验证 (这个是最快的)
      */
@@ -154,43 +133,12 @@ public class String_Hot100_01 {
         return resStr;
     }
 
-    public String minWindow01(String s, String t) {
-        String res = "";
-        Map<Character, Integer> windows = new HashMap<>();
-        Map<Character, Integer> need = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            need.put(t.charAt(i), need.getOrDefault(t.charAt(i), 0) + 1); //统计need字符的次数
-        }
-        int left = 0, right = 0, resLen = Integer.MAX_VALUE;    //resLen记录返回长度,刚开始设置为最大值
-        while (right < s.length()) {
-            windows.put(s.charAt(right), windows.getOrDefault(s.charAt(right), 0) + 1);   //将right加入到windows
-//            while (cheak(need, windows) && left <= right) {    //次数left右移动缩小范围
-            while (cheak(need, windows)) {    //次数left右移动缩小范围
-                if (right - left + 1 < resLen) {
-                    resLen = right - left + 1;      //更新返回长度
-                    res = s.substring(left, right + 1);     //截取返回值
-                }
-                windows.put(s.charAt(left), windows.getOrDefault(s.charAt(left), 0) - 1); //把left右移动
-                left++;
-            }
-            right++;
-        }
-        return res;
-    }
-
-    boolean cheak(Map<Character, Integer> need, Map<Character, Integer> windows) {
-        for (Character needKey : need.keySet()) {
-            if (!windows.containsKey(needKey) || windows.get(needKey) < need.get(needKey))     //如果窗口不包含need的值,或者包含的次数比need要小,返回false
-                return false;
-        }
-        return true;        //通过验证就返回true
-    }
     /**
-     * 题目5(leetcode 第438题)  找到字符串中所有字母异位词
+     * 题目04(leetcode 第438题)  找到字符串中所有字母异位词
      * 描述: 给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
      * 字符串只包含小写英文字母，并且字符串 s 和 p 的长度都不超过 20100。
      * 注意:
-     *   字母异位词指字母相同，但排列不同的字符串。
+     *   字母异位词指字母相同，但排列不同的字符串。 （本题相同的是包括的）
      *   不考虑答案输出的顺序。
      * eg:
      *  输入:
@@ -201,7 +149,6 @@ public class String_Hot100_01 {
      * 思路01: 滑动窗口不动的超时！！！
      * 思路02: 双map+vaild比较,windows只放入need中存在的值!!!
      * 思路03: new int[128]单双窗口比较
-     * 思路04: 有更好的解法
      */
     public List<Integer> findAnagrams07(String s, String p) {
         Map<Character, Integer> window = new HashMap<>();

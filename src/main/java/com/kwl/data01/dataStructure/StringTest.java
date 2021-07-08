@@ -29,7 +29,7 @@ public class StringTest {
      */
     public static void main(String[] args) {
         StringBuilder stringBuilder = new StringBuilder("我是中国人");
-        //        stringBuilder.deleteCharAt(0);
-//        System.out.println(stringBuilder);
+        stringBuilder.insert(0, "我是插入的新数组");
+        System.out.println("stringBuilder = " + stringBuilder);
     }
 }

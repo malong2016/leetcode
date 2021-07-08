@@ -12,7 +12,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目1(swordOffer 第39题): 数组中出现次数超过一半的数字
+     * 题目01(swordOffer 第39题): 数组中出现次数超过一半的数字
      * 描述: 数组中出现次数超过数组长度一半，请找出这个数字(一定存在)
      * <p>
      * 思路01:利用HashMap逐个统计,最后遍历
@@ -33,7 +33,7 @@ public class ArraysSword_02 {
     }
 
     /**
-     * 题目2(swordOffer 第40题): 最小的k个数
+     * 题目02(swordOffer 第40题): 最小的k个数
      * 输入n个整数,找出其中最小的k个数。例如，输入4,5,1,6,2,7,3,8这8个数字，最小的4个数字是1、2、3、4
      * <p>
      * 思路01:先排序,前k个就是最小的k个数
@@ -64,28 +64,8 @@ public class ArraysSword_02 {
         return vec;
     }
 
-
     /**
-     * 题目3(swordOffer 第42题): 连续子数组的最大和
-     * 描述: 输入一个整型数组，数组中存在正数和负数。数组中的一个或者连续多个整数
-     * 组成一个子数组。求所有子数组的和的最大值。要求时间复杂度是o(n)
-     * eg: 输入{1,-2,3,10,-4,7,2,-5} 最大子数组是{3,10,-4,7,2}
-     * 输出该子数组的和是18
-     * <p>
-     * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
-     * 大于0就取本值
-     */
-    public  int FindGreatestSumOfSumOfSubArray(int[] arr) {
-        int res = arr[0];    //默认是res是arr[0]
-        for (int i = 1; i < arr.length; i++) {
-            arr[i] += Math.max(arr[i - 1], 0);
-            res = Math.max(arr[i], res);
-        }
-        return res;
-    }
-
-    /**
-     * 题目4(swordOffer 第29题): 顺时针打印矩阵
+     * 题目03(swordOffer 第29题): 顺时针打印矩阵
      * eg:
      * 1  2  3  4
      * 5  6  7  8
@@ -116,7 +96,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目5(swordOffer 第03题): 数组中重复的数字(可以修改数组)
+     * 题目04(swordOffer 第03题): 数组中重复的数字(可以修改数组)
      * 描述: 在一个长度为n的数组中所有数字都是在0~n-1范围内。数组中某些数字是  （解题思路num[i] = i一一对应，找出第二个一一对应就是重复值）
      * 重复的，但是不知道有几个数字是重复的，也不知道每个数字重复了几次。请
      * 找出数组中任意的一个重复的数字。例如，如果输入长度为为7的数组{2,3,1,0,2,5,3}
@@ -143,7 +123,7 @@ public class ArraysSword_02 {
 
 
     /**
-     * 题目6(swordOffer 第04题): 二维数组中的查找
+     * 题目05(swordOffer 第04题): 二维数组中的查找
      * 描述: 在一个二维数组中,每一行都是按照从左到右的递增顺序排列,每一列都是按照从上到下递增顺序排序。
      * 请完成一个函数,输入这样的一个二维数组和一个整数,判断数组中是否含有这样的整数
      * eg:
@@ -163,5 +143,88 @@ public class ArraysSword_02 {
             else return true;
         }
         return false;
+    }
+
+    /**
+     * 题目06(swordOffer 第67题): 把字符串转换成整数
+     * <p>
+     * 说明: 首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
+     * 当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
+     * 该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。
+     * 注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。
+     * 在任何情况下，若函数不能进行有效的转换时，请返回 0。
+     * <p>
+     * <p>
+     * 思路:
+     * 1) 越界情况统计是
+     * res>bndry: 情况一：执行拼接10×res≥2147483650越界
+     * res=bndry,x>7: 情况一：执行拼接10×res≥2147483650越界
+     *
+     * @param str
+     * @return
+     */
+    public int strToInt(String str) {
+        char[] chars = str.trim().toCharArray();
+        if (chars.length == 0) return 0;
+        int res = 0, binay = Integer.MAX_VALUE / 10;
+        int i = 1, sign = 1;   //sign就是判断正负关系,i是从那么开始扫描,默认是正数那么就是从Index = 1 开始扫描
+        if (chars[0] == '-') sign = -1;     //表明这个数是负数
+        else if (chars[0] != '+') i = 0; //如果不是正数,那么就是从0开始扫描,互斥事件
+        for (int j = i; j < chars.length; j++) {
+            if (chars[j] < '0' || chars[j] > '9') break;
+            if (res > binay || res == binay && chars[j] > '7')
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            res = res * 10 + (chars[j] - '0'); //累加到返回值
+        }
+        return sign * res;
+    }
+
+    /**
+     * 题目07(swordOffer 第51): 数组中的逆序对
+     * 描述: 在数组中的两个数字，如果前面一个数字大于后面的数字，
+     * 则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+     * <p>
+     * eg: 输入: [7,5,6,4]
+     * 输出: 5
+     * <p>
+     * 思路01: 暴力解，双循环，超时
+     * 思路02: 二路归并排序
+     */
+    public int reversePairs(int[] nums) { //暴力解
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i; j < nums.length; j++) {
+                if (nums[i] > nums[j]) res++;     //如果前面是大于后面的那么满足逆序对
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 题目08(swordOffer 第66题): 构建乘积数组
+     * <p>
+     * 描述: 给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，
+     * 其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。
+     * <p>
+     * 思路01：第一轮循环求出的b[i]是包括a[0] * a[1] * a[i - 1]
+     * 第二轮反向循环求出的temp是a[a.length - 1] * a[a.length - 2] * a[i+2] * a[i + 1]
+     * b[i] = b[i] * temp 就是返回的结果
+     */
+    public int[] constructArr(int[] a) {
+        if (a.length == 0) return new int[0];
+        int[] b = new int[a.length];
+        b[0] = 1;
+        int temp = 1;
+
+        //计算b: b[i] 代表是a[0,...i - 1]的乘积
+        for (int i = 1; i < a.length; i++) {
+            b[i] = b[i - 1] * a[i - 1];
+        }
+
+        for (int i = a.length - 1; i >= 0; i++) {
+            b[i] = b[i] * temp;
+            temp = temp * a[i];
+        }
+        return b;
     }
 }

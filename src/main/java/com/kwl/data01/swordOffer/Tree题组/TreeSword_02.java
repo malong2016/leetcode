@@ -15,7 +15,7 @@ import java.util.Queue;
  */
 public class TreeSword_02 {
     /**
-     * 题目1(swordOffer 第32题-I) 从上到下打印二叉树
+     * 题目01(swordOffer 第32题-I) 从上到下打印二叉树
      * 描述: [3,9,20,15,7]
      */
     public int[] levelOrder10(TreeNode root) {  //方法一: 使用一个队列
@@ -64,7 +64,7 @@ public class TreeSword_02 {
 
 
     /**
-     * 题目1(swordOffer 第32题-III) 从上到下打印二叉树III
+     * 题目03(swordOffer 第32题-III) 从上到下打印二叉树III
      * <p>
      * 描述: 请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，
      * 第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
@@ -97,7 +97,7 @@ public class TreeSword_02 {
 
 
     /**
-     * 题目2(swordOffer第8): 二叉树的下一个节点
+     * 题目04(swordOffer第8): 二叉树的下一个节点
      * 描述: 给定一棵二叉树和其中一个节点,如果找出中序遍历序列的下一个节点?
      * 树中的节点除了有二个分别指向左右节点的指针,还有一个指向父节点的指针
      * <p>
@@ -122,7 +122,7 @@ public class TreeSword_02 {
     }
 
     /**
-     * 题目3(swordOffer 第37题): 序列化二叉树
+     * 题目05(swordOffer 第37题): 序列化二叉树
      * 描述: 请实现二个函数,分别用来序列化和反序列化!!!
      * leetcode是层序遍历,空指针用null表示,[1,2,null,null]
      * <p>
@@ -170,7 +170,7 @@ public class TreeSword_02 {
     }
 
     /**
-     * 题目3(swordOffer 第68题 - I): 二叉搜索树的最近公共祖先
+     * 题目06(swordOffer 第68题 - I): 二叉搜索树的最近公共祖先
      * 中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，
      * 最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。
      * <p>
@@ -201,7 +201,7 @@ public class TreeSword_02 {
     }
 
     /**
-     * 题目3(swordOffer 第68题 - I): 二叉树的最近公共节点
+     * 题目07(swordOffer 第68题 - I): 二叉树的最近公共节点
      * 思路01: 先序遍历
      */
     public TreeNode lowestCommonAncestor03(TreeNode root, TreeNode p, TreeNode q) {
