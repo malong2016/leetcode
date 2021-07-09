@@ -67,19 +67,20 @@ public class Arrays_Hot100_01 {
     public int[] searchRange(int[] nums, int target) {
         int left = binarySearch(nums, target, true);       //找第一个等于target的数
         int right = binarySearch(nums, target, false) - 1;    //这个是找第一个大于target的数,-1就是最后一个数
-        if (left <= right &&right <= nums.length && nums[left] == target && nums[right] == target){
+        if (left <= right && right <= nums.length && nums[left] == target && nums[right] == target) {
             return new int[]{left, right};
         }
         return new int[]{-1, -1};
     }
-    int binarySearch(int[] nums, int target, boolean flag){
-        int low = 0, high = nums.length -1, res = nums.length;
-        while(low <= high) {
+
+    int binarySearch(int[] nums, int target, boolean flag) {
+        int low = 0, high = nums.length - 1, res = nums.length;
+        while (low <= high) {
             int mid = (low + high) / 2;
-            if (nums[mid] > target || (flag && nums[mid] >= target)){
+            if (nums[mid] > target || (flag && nums[mid] >= target)) {
                 high = mid - 1;
                 res = mid;
-            }else {          //向上找
+            } else {          //向上找
                 low = mid + 1;
             }
         }
@@ -112,10 +113,29 @@ public class Arrays_Hot100_01 {
      * 说明:  1必须在原数组上操作，不能拷贝额外的数组。
      * 2尽量减少操作次数。
      * <p>
-     * 思路01(my): 暴力解,扫描到0,后面元素直接向前移动
+     * 思路01(my): 双指针,把非0换到前面,注意，如果交换把0换到后面，会改变数组的顺序
      */
-    public static void moveZeroes(int[] nums) {
+    public void moveZeroes(int[] nums) {
+        int l = 0, r = 0;
+        while (r < nums.length) {
+            if (nums[r] != 0) {
+                int temp = nums[r];
+                nums[r] = nums[l];
+                nums[l] = temp;
+                l++;
+            }
+            r++;
+        }
     }
+    public void moveZeroes01(int[] nums) {   //不交换
+        int l = 0, r = 0;
+        while (r < nums.length){
+            if (nums[r] != 0) nums[l++] = nums[r];  //非0前面注入到前面
+            r++;
+        }
+        while (l < nums.length) nums[l++] = 0;
+    }
+
 
     /**
      * 题目07(leetcode 第647题): 回文子串
@@ -143,6 +163,7 @@ public class Arrays_Hot100_01 {
             r++;
         }
     }
+
     /**
      * 题目08(leetcode 第448题): 找到所有数组中消失的数字
      * 描述: 给你一个含 n 个整数的数组 nums ，其中 nums[i] 在区间 [1, n] 内。
@@ -150,10 +171,10 @@ public class Arrays_Hot100_01 {
      * eg:
      * 输入：nums = [4,3,2,7,8,2,3,1]
      * 输出：[5,6]
-     *
+     * <p>
      * 输入：nums = [1,1]
      * 输出：[2]
-     *
+     * <p>
      * 思路01（暴力解）: 遍历1~n，从数组中寻找对应的值，如果找不到就加入到list中，时间复杂度是o(n2)
      * 思路02(Set):先把arr加入到hashSet中，在遍历1~n，不在set就加入到队列中
      * 思路03(官方,最优解): 如果遇到就在对应的num-1,对应index处加入+n,在次遍历1~n，如果该index不大于n，就不在数组中
@@ -167,14 +188,14 @@ public class Arrays_Hot100_01 {
             nums[temp] += n;            //这里+n，在上面%n就不会影响后手
         }
         for (int i = 0; i < n; i++) {
-            if (nums[i] <= n)  res.add(i + 1); //注意这里可以==,如果前面是num[i] == 1
+            if (nums[i] <= n) res.add(i + 1); //注意这里可以==,如果前面是num[i] == 1
         }
         return res;
     }
 
     public static void main(String[] args) {
         Arrays_Hot100_01 arrays_hot100_01 = new Arrays_Hot100_01();
-        arrays_hot100_01.findDisappearedNumbers(new int[]{4,3,2,7,8,2,3,1});
+        arrays_hot100_01.findDisappearedNumbers(new int[]{4, 3, 2, 7, 8, 2, 3, 1});
     }
 
 

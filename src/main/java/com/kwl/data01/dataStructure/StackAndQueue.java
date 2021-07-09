@@ -33,13 +33,13 @@ public class StackAndQueue {
      * 2 Queue基本知识(Queue是一个interface,实现子类LinkedList)  --类比数组,加到尾巴，但是取值是取首值
      * offer('元素'):入队
      * poll():出队,return出队的元素
-     * peek():拿到队首元素,如果不存在就return null
+     * peek():拿到队首元素
      * isEmpty():判断队列返回为null,  return boolean
      * size(): return 队列的长度
      * remove("元素"):删除指定元素的值
-     * 注意: 如果队列为空,poll()和peek()都是返回null,不会抛出异常
+     * 注意: if队列为空,poll()和peek()都是返回null,不会抛出异常
      *
-     * remove(): 移除头部,等价于poll()         --如果是null,会抛出异常
+     * remove(): 移除头部,等价于poll()         --if是null,会抛出异常
      * add():添加尾部,等价于offer()
      *
      * remove(元素): 移除制定元素,不能移除索引
@@ -57,6 +57,7 @@ public class StackAndQueue {
      *     3) 模拟双端Queue(队首入队，队尾出队):        offerFirst()/addFirst()    pollLast()/removeLast()
      */
 
+
     /**
      * 5 LinkedList:     --更加强大,可以使用双端队列
      * get(index)获取到链表指定的元素
@@ -65,6 +66,12 @@ public class StackAndQueue {
 
     /**
      * 6 ArrayList:  只有普通的add()和remove(index/元素) 一般在回溯算法的时候都是使用LinkedList
+     */
+
+    /**
+     * 7 优先队列（PriorityQueue）： 默认是建立最小堆
+     *  如果出队，那么会重新进行堆排序，堆顶元素还是最小(最大)值
+     *
      */
     public static void main(String[] args) {
 
@@ -82,6 +89,16 @@ public class StackAndQueue {
         //LinkedList(加强版双端队列)
         LinkedList<String> linkedList = new LinkedList<>();
 
+        //数组类型List
         ArrayList<String> arrayList = new ArrayList<>();
+
+        //优先队列PriorityQueue,默认是最小堆
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(new Comparator<Integer>() {     //传入比较器，可以改变比较的规则
+            @Override
+            public int compare(Integer o1, Integer o2) {
+//                return o2 - o1;
+                return o1 - o2;
+            }
+        });
     }
 }

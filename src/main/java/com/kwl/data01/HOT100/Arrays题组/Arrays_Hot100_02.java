@@ -153,10 +153,49 @@ public class Arrays_Hot100_02 {
      * 输出：false
      * 解释：数组不能分割成两个元素和相等的子集。
      * <p>
-     * 思路01(my): 直接动态规划,0 -1 背包问题，是否能找出一些数，使得这些数的和是sum/2  todo 先学生0/1背包问题
+     * 注意: 当sum是奇数的时候,是不能分割的.target=sum/2 < max不能
+     * 思路01: 二维dp[i][j] i代表nums的index,j代表sum/2的数量,
+     * 思路02: 一维数组dp[i],代表本sum/2的数量
      */
-    public boolean canPartition(int[] nums) {
-        return false;
+    public boolean canPartition(int[] nums) {          //二维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[][] dp = new boolean[n][target + 1];     //当target==0,是直接返回true的
+        for (int i = 0; i < n; i++) {     //初始化i=0/j=0的情况
+            dp[i][0] = true;
+        }
+        dp[0][nums[0]] = true;      //就一个数,nums[0]为分割,其他是false
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < target + 1; j++) {
+                if (j >= nums[i]) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+                } else dp[i][j] = dp[i - 1][j];
+            }
+        }
+        return dp[n - 1][target];
+    }
+
+    public boolean canPartition01(int[] nums) {          //一维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+        for (int i = 0; i < n; i++) {
+            for (int j = target; j >= nums[i]; j--) {
+                dp[j] |= dp[j - nums[i]];       //等于以前求得,和现在的关系
+            }
+        }
+        return dp[dp.length - 1];
     }
 
     /**

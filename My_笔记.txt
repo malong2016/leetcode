@@ -13,5 +13,7 @@ swordOffer没有解决的问题 1题
 
 
 
-leetcode hot100 没有做的题目 14道
+
+leetcode hot100 没有做的题目 10道
+
 swordOffer 没有做的题目 8道

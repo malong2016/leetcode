@@ -17,27 +17,29 @@ public class swordOther_01 {
      * 题目01(swordOffer 第15题): 二进制中1的个数
      * 描述: 请实现一个函数,输入一个整数,输出该数二进制表示中1的个数
      * 例如: 把9表示成二进制1001,有2位是1.因此，如果输入是9，该函数输出是2
+     * 如果是负数，那么就是以余码的形式存在的，也是一样的统计二进制中1的个数
      * <p>
      * 思路01(swordOffer): 设置一个1不断左移动和1,10,100和传入的n进行比较
      * 思路02: (n-1)&n可以吧最右边的1变成0
+     * 思路03: n也可以不断的>>> 右移动，然后和1进行判断!!!
      */
     public  int numberOf1(int n) {
-        int count = 0;
+        int res = 0;
         while (n != 0) {
-            count++;
+            res++;
             n = (n - 1) & n;           //每次进行n-1&n都是把最右边的1变成0
         }
-        return count;
+        return res;
     }
 
-    public static int numberOf2(int n) {
-        int count = 0;
+    public  int numberOf2(int n) {
+        int res = 0;
         int flag = 1;
-        while (flag != 0) {
-            if ((flag & n) != 0) count++;      //注意比较运算符优先级大于&位运算符!!!
-            flag = flag << 1;
+        while (flag != 0) {         //这个可以循环32次
+            if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
+            flag <<=  1;
         }
-        return count;
+        return res;
     }
 
 

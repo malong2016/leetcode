@@ -19,7 +19,7 @@ public class ArraysSword_02 {
      * 思路02(最优解):摩尔投票法找出众数,设置一个x,扫描下一个,如果等于vote++,不等于vote--
      * vote变成0之后,换数
      */
-    public  int moreThanHalfNum(int[] arr) {    //思路2
+    public int moreThanHalfNum(int[] arr) {    //思路2
         int res = 0, votes = 0, count = 0;
         for (int num : arr) {
             if (votes == 0) res = num;
@@ -40,28 +40,12 @@ public class ArraysSword_02 {
      * 思路02: 堆排序方法
      * 思路03：快速排序方法
      */
-    public  int[] getLeastNumbers(int[] arr, int k) {
-        int[] vec = new int[k];
-        if (k == 0) return vec;
-        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {      //这是java堆排序的数据结构
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o2 - o1;
-            }
-        });
-        for (int i = 0; i < k; i++) {    //将前k个数入堆
-            queue.offer(arr[i]);
-        }
-        for (int i = k; i < arr.length; i++) {
-            if (queue.peek() > arr[i]) {      //如果栈顶大于元素,出队,将比较小的数入队
-                queue.poll();
-                queue.offer(arr[i]);
-            }
-        }
-        for (int i = 0; i < k; i++) {
-            vec[i] = queue.poll();
-        }
-        return vec;
+    public int[] getLeastNumbers(int[] arr, int k) { //手写堆排序
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();       //这是小顶推
+        for (int i : arr) priorityQueue.offer(i);      //入队
+        int[] res = new int[k];
+        for (int i = 0; i < k; i++) res[i] = priorityQueue.poll(); //前k个元素出队,得到就是最小的k个数
+        return res;
     }
 
     /**
@@ -76,7 +60,7 @@ public class ArraysSword_02 {
      * <p>
      * 思路01(leetcode):模拟 t(上) b(下) l(左) r(右) 上下左右四个边界
      */
-    public  int[] printMatrix(int[][] matrix) {
+    public int[] printMatrix(int[][] matrix) {
         if (matrix.length == 0) return new int[0];
         int t = 0, b = matrix.length - 1, x = 0;               //设置上下的边界
         int l = 0, r = matrix[0].length - 1;                   //设置左右的边界
@@ -106,7 +90,7 @@ public class ArraysSword_02 {
      * 思路01(leetcode): HashSet不断的加入,遇到重复的元素就输出
      * 思路02(leetcode): 原地交换,将这个元素换到对应的index下（value = 2,换到index=2下）,如果遇到arr[num[i]]=num[i]就输出num[i]
      */
-    public  int findRepeatNumber(int[] nums) {
+    public int findRepeatNumber(int[] nums) {
         int i = 0;
         while (i < nums.length) {
             if (nums[i] == i) {
@@ -134,7 +118,7 @@ public class ArraysSword_02 {
      * <p>
      * 思路01: 从左下角(i,j)开始遍历,如果该值>targetValue,i--,如果该值<targetValue,j++
      */
-    public  boolean findNumberIn2DArray(int[][] arr, int targetValue) {
+    public boolean findNumberIn2DArray(int[][] arr, int targetValue) {
         if (arr == null) return false;
         int i = arr.length - 1, j = 0;
         while (i >= 0 && j < arr[0].length) {
