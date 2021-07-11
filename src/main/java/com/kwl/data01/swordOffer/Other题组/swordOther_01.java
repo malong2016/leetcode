@@ -95,8 +95,34 @@ public class swordOther_01 {
      * 题目04(swordOffer 第16): 数值的整数次方!!! a^b
      * <p>
      * 思路01:直接求
-     * 思路02: todo  块速幂求解
+     * 思路02: x ^ n = x ^ (1b1 + 2b2 + 4b3 + 2 ^ (m-1) bm)  --注意这里是十进制转化为二进制
+     * 注意: Java 代码中 int32 变量 n \in [-2147483648, 2147483647]n∈[−2147483648,2147483647] ，
+     * 因此当 n = -2147483648n=−2147483648 时执行 n = -nn=−n 会因越界而赋值出错。解决方法是先将 nn 存入 long 变量 bb ，后面用 bb 操作即可。
+     * 思路03: todo 递归法
      */
+    public double myPow(double x, int n) {
+        if (x == 0) return 0;
+        long b = n;          //先使用long存储起来
+        double res = 1.0;
+        if (b < 0) {
+            x = 1 / x;
+            b = -b;
+        }
+        while (b != 0) {
+            if ((b & 1) == 1) res *= x;     //这个如果是0也就没有意义,如果是1就累加
+            x *= x;
+            b >>=1;
+        }
+        return res;
+    }
+    public double myPow03(double x, int n) {      //递归法
+        if(n == 0) return 1;
+        if(n == 1) return x;
+        if(n == -1) return 1 / x;
+        double half = myPow(x, n / 2);
+        double mod = myPow(x, n % 2);
+        return half * half * mod;
+    }
     double power01(double base, int exponent) {
         double res = 1;
         for (int i = 0; i < exponent; i++) {

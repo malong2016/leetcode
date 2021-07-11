@@ -68,35 +68,36 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目03(swordOffer 第19):正则表达式的匹配
-     * 描述: 请实现一个函数来匹配,'.'代表任意一个字符,'*'代表0个后者任意长度的字符
-     * 判断二个字符是否匹配, 'a.a'和'ab*ac*a'匹配    'aa.a'和'ab*a'不匹配
-     * <p>
-     * 思路01:动态规划
+     * 题目03(swordOffer 第19题):正则表达式的匹配        --本题和leetcode 第10题一样
+     * 描述: 请实现一个函数用来匹配包含'. '和'*'的正则表达式。
+     * 模式中的字符'.'表示任意一个字符，而'*'表示它前面的字符可以出现任意次（含0次）。
+     * 在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但与"aa.a"和"ab*a"均不匹配。
      */
-    public boolean match(String s, String p) {
-        int m = s.length() + 1, n = p.length() + 1;
-        boolean[][] dp = new boolean[m][n];
+    public boolean isMatch(String s, String p) {
+        int m = s.length(), n = p.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];  //注意这里是包括0的的
         dp[0][0] = true;
-        // 初始化首行
-        for (int j = 2; j < n; j += 2)
-            dp[0][j] = dp[0][j - 2] && p.charAt(j - 1) == '*';
-        // 状态转移
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
+        for (int i = 2; i < n + 1; i += 2) {
+            dp[0][i] = dp[0][i - 2] && p.charAt(i - 1) == '*';  //可以消除掉前面一个值
+        }
+        for (int i = 1; i < m + 1; i++) {
+            for (int j = 1; j < n + 1; j++) {
                 if (p.charAt(j - 1) == '*') {
-                    if (dp[i][j - 2]) dp[i][j] = true;                                            // 1.
-                    else if (dp[i][j - 1]) dp[i][j] = true;                                       // 2.
-                    else if (dp[i - 1][j] && s.charAt(i - 1) == p.charAt(j - 2)) dp[i][j] = true; // 3.
-                    else if (dp[i - 1][j] && p.charAt(j - 2) == '.') dp[i][j] = true;             // 4.
+                    //j多余出来二个值,那么就让*把前面哪个值消失掉
+                    if (dp[i][j - 2]) dp[i][j] = true;
+                        //即让字符 p[j - 2] 多出现 1 次时，能否匹配；
+                    else if (dp[i - 1][j] && s.charAt(i - 1) == p.charAt(j - 2)) dp[i][j] = true;
+                        // 即让字符 '.' 多出现 1 次时，能否匹配；
+                    else if (dp[i - 1][j] && p.charAt(j - 2) == '.') dp[i][j] = true;
                 } else {
-                    if (dp[i - 1][j - 1] && s.charAt(i - 1) == p.charAt(j - 1)) dp[i][j] = true;  // 1.
-                    else if (dp[i - 1][j - 1] && p.charAt(j - 1) == '.') dp[i][j] = true;         // 2.
+                    if (dp[i - 1][j - 1] && s.charAt(i - 1) == p.charAt(j - 1)) dp[i][j] = true;
+                    else if (dp[i - 1][j - 1] && p.charAt(j - 1) == '.') dp[i][j] = true;
                 }
             }
         }
-        return dp[m - 1][n - 1];
+        return dp[m][n];
     }
+
 
     /**
      * 题目04(swordOffer 第49题): 丑数

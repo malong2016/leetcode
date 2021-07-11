@@ -174,6 +174,32 @@ public class ArraysSword_02 {
      * 思路01: 暴力解，双循环，超时
      * 思路02: 二路归并排序
      */
+    public int reversePairs01(int[] nums) { //二路归并解法
+        if (nums == null || nums.length == 1) return 0;
+        int[] temp = new int[nums.length];
+        return mergeSort(nums,temp, 0, nums.length - 1);
+    }
+
+    int mergeSort(int[] nums,int[] temp, int l, int r) {
+        if (l >= r) return 0;
+        int mid = (l + r) / 2;
+        int res = mergeSort(nums, temp,l, mid) + mergeSort(nums, temp,mid + 1, r);
+        int i = l, j = mid + 1;      //指向左右开始的节点
+        for (int k = l; k <= r; k++) {
+            temp[k] = nums[k];
+        }
+        for (int k = l; k <= r; k++) {        //扫描数组，把每次比较较小的放入到前面,也就是升序
+            if (i == mid + 1) {    //i越界了，这里怕nums[i] = nums[j],也就是i和J重合(i一直在移动,j不移动),所以特殊处理
+                nums[k] = temp[j++];
+            } else if (j == r + 1 || temp[i] <= temp[j]) {   //后面大于前面,后面的不用动,注意这里是比较临时的
+                nums[k] = temp[i++];
+            } else {        //前面大于后面，形成逆序对,统计次数，所有mid和i之间都是比J更大，所以mid - i + 1个逆序对
+                nums[k] = temp[j++];
+                res += mid - i + 1;
+            }
+        }
+        return res;
+    }
     public int reversePairs(int[] nums) { //暴力解
         int res = 0;
         for (int i = 0; i < nums.length; i++) {

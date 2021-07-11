@@ -27,6 +27,7 @@ public class dpSword_02 {
         }
         return p2;
     }
+
     /**
      * 题目02(swordOffer 第12题): 矩阵中的路径
      * 描述: 给定一个n*m的矩阵,可以从任意一格开始沿着上下左右移动一格,但是如果已经经过了某一格就不能再次
@@ -40,7 +41,7 @@ public class dpSword_02 {
      * <p>
      * 思路01(leetcode): 深度优先搜索(DFS)+剪枝(在搜索中,遇到这条路不可能和目标字符串匹配的情况,立刻返回,被叫做可行性的剪枝)
      */
-    public  boolean hasPath(char[][] board, String word) {
+    public boolean hasPath(char[][] board, String word) {
         char[] words = word.toCharArray();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
@@ -50,7 +51,7 @@ public class dpSword_02 {
         return false;
     }
 
-    public  boolean dfs(char[][] board, char[] word, int i, int j, int k) {
+    public boolean dfs(char[][] board, char[] word, int i, int j, int k) {
         if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word[k])
             return false;    //越界是直接返回false
         if (k == word.length - 1) return true;
@@ -69,10 +70,21 @@ public class dpSword_02 {
      * 因为是3+5+3+8 = 19
      * 设计一个函数,求机器人能到达多少个格子.
      * <p>
-     * 思路01(leetcode): 使用回溯法(dfs)解决问题
+     * 思路01(leetcode): 使用回溯法(dfs)解决问题,注意这里可以来回走
      */
-    public  int movingCount(int[][] nums) {
-        return 0;
+    public int movingCount(int m, int n, int k) {
+        boolean[][] visit = new boolean[m][n];     //访问过就设置为true,没有访问就是false
+        return dfs(0, 0, m, n, k, visit);
+    }
+
+    int dfs(int i, int j, int m, int n, int k, boolean[][] visit) {
+        //越界,不满足条件或者已经访问过，就返回0
+        if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || (i % 10 + i / 10 + j % 10 + j / 10) > k || visit[i][j]){
+            return 0;
+        }
+        visit[i][j] = true;     //该点已经访问过，设置为true
+        return dfs(i - 1, j, m, n, k, visit) + dfs(i + 1, j, m, n, k, visit)
+                + dfs(i, j - 1, m, n, k, visit) + dfs(i, j + 1, m, n, k, visit) + 1;   //上下左右继续走，累加
     }
 
     /**
@@ -85,7 +97,7 @@ public class dpSword_02 {
      * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
-    public  int FindGreatestSumOfSumOfSubArray(int[] arr) {
+    public int FindGreatestSumOfSumOfSubArray(int[] arr) {
         int res = arr[0];    //默认是res是arr[0]
         for (int i = 1; i < arr.length; i++) {
             arr[i] += Math.max(arr[i - 1], 0);

@@ -12,11 +12,4 @@ import java.util.*;
 class Data01ApplicationTests {
 
 
-
-
-    @Test
-    void test() {
-    }
-
-
 }

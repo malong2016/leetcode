@@ -19,7 +19,7 @@ public class LinkList_Hot100_01 {
      * 题目01(leetcode 第148题): 排序链表
      * 描述: 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表
      * 进阶: 你可以在 O(nlog2n) 时间复杂度和常数级空间复杂度下，对链表进行排序吗？
-     *
+     * <p>
      * 思路01: todo 归并排序,自低到顶的归并排序!!!
      * 思路02: 归并排序,自顶到底的归并排序，利用递归
      * 思路02: todo 快速排序
@@ -165,7 +165,7 @@ public class LinkList_Hot100_01 {
      * 思路01: 非递归法
      * 思路02: 递归法
      */
-    public  ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
         ListNode head = new ListNode(-1);
         ListNode p = head;
         while (l1 != null && l2 != null) {
@@ -182,7 +182,7 @@ public class LinkList_Hot100_01 {
         return head.next;
     }
 
-    public  ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路02: 递归法
+    public ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路02: 递归法
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         if (l1.val < l2.val) {
@@ -228,30 +228,26 @@ public class LinkList_Hot100_01 {
         }
         return null;    //如果没有环或者传入null,就返回null
     }
+
     /**
      * 题目08(leetcode 第141题): 环形链表
      * 描述: 给定一个链表，判断链表中是否有环。
-     *
-     * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
-     *
+     * <p>
+     * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
+     * 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，
+     * 则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+     * <p>
      * 如果链表中存在环，则返回 true 。 否则，返回 false
      */
     public boolean hasCycle(ListNode head) {  //快慢指针找
-        if (head == null || head.next == null) {
-            return false;
-        }
-        ListNode slow = head;
-        ListNode fast = head.next;
-        while (slow != fast) {
-            if (fast == null || fast.next == null) {
-                return false;
-            }
-            fast = fast.next.next;
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;                //这里一定要先走
             slow = slow.next;
+            if (slow == fast) return true;
         }
-        return true;
+        return false;         //如果没有找到就返回null
     }
-
 
 
 }

@@ -28,6 +28,7 @@ public class dpSword_Hot100_02 {
         }
         return max;
     }
+
     public int maxSubArray01(int[] nums) {    //dp法
         int[] dp = new int[nums.length];
         dp[0] = nums[0];
@@ -43,7 +44,7 @@ public class dpSword_Hot100_02 {
      * 题目02(leetcode 第70题): 爬楼梯
      * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
      * 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢
-     *
+     * <p>
      * 使用动态规划求解,本题不需要考虑0
      * 思路01: 设置前置pre
      * 思路02: dp[n]
@@ -58,15 +59,16 @@ public class dpSword_Hot100_02 {
         }
         return b;
     }
+
     public int climbStairs01(int n) {        //dp方法
-        if(n == 1) return 1;
+        if (n == 1) return 1;
         int[] dp = new int[n];      // n阶楼梯存储到n-1索引的数组下
         dp[0] = 1;
         dp[1] = 2;           //如果是2阶楼梯，有二种方法
         for (int i = 2; i < dp.length; i++) {
-            dp[i] = dp[i-1] + dp[i-2];
+            dp[i] = dp[i - 1] + dp[i - 2];
         }
-        return dp[n-1];
+        return dp[n - 1];
     }
 
     /**
@@ -104,23 +106,10 @@ public class dpSword_Hot100_02 {
         return dp[s.length()];
     }
 
-    /**
-     * 题目04(leetcode 第309题): 最佳买卖股票时机含冷冻期
-     * 描述: 给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。​
-     * 设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
-     * 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
-     * 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。。
-     *
-     * 输入: [1,2,3,0,2]
-     * 输出: 3
-     * 解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
-     */
-    public int maxProfit(int[] prices) {
-        return 0;
-    }
+
 
     /**
-     * 题目06(leetcode 第200题): 岛屿数量
+     * 题目04(leetcode 第200题): 岛屿数量
      * 描述: 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
      * 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
      * 注意: 此外，你可以假设该网格的四条边均被水包围。。
@@ -134,21 +123,39 @@ public class dpSword_Hot100_02 {
      * ]
      * 输出：1
      * <p>
-     * 思路01: 暴力解
+     * 思路01: 如果遇到为1，那么就向周围扩散，让值为1变成值为2,在递归上下左右进行扩散
      */
     public int numIslands(char[][] grid) {
-        return 0;
+        int m = grid.length, n = grid[0].length, res = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j);
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+    void dfs(char[][] grid, int i, int j) {
+        int m = grid.length, n = grid[0].length;
+        if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || grid[i][j] != '1') return; //越界或者不等于1就直接返回
+        grid[i][j] = '2';   //如果符合条件,就设置为'2',也代表已经访问
+        dfs(grid, i - 1, j);              //上下左右进行扩散
+        dfs(grid, i + 1, j);
+        dfs(grid, i, j - 1);
+        dfs(grid, i, j + 1);
     }
 
     /**
-     * 题目07(leetcode 第198题):  打家劫舍
+     * 题目05(leetcode 第198题):  打家劫舍
      * 描述:你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，
      * 影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
      * 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
-     *
+     * <p>
      * 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
      * 输出：[[7,4,1],[8,5,2],[9,6,3]]
-     *
+     * <p>
      * 思路01: 核心就是偷前面和不偷前面的,dp[i]维护当前点的最大值
      * dp[i] = dp[i - 1] + dp[i - 2] + nums[i]  (偷前面和不偷前面的)
      */
@@ -167,7 +174,7 @@ public class dpSword_Hot100_02 {
     public int rob02(int[] nums) {          //pre方法
         if (nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
-        int pre = nums[0], cur = Math.max(nums[0],nums[1]);
+        int pre = nums[0], cur = Math.max(nums[0], nums[1]);
         for (int i = 2; i < nums.length; i++) {
             int temp = cur;
             cur = Math.max(cur, pre + nums[i]);     //更新cur,注意这里有i所以要从2~len-1,否则一般是3~len
@@ -177,7 +184,7 @@ public class dpSword_Hot100_02 {
     }
 
     /**
-     * 题目08(leetcode 第337题):  打家劫舍 III
+     * 题目06(leetcode 第337题):  打家劫舍 III
      * 描述:房屋的排列类似于一棵二叉树”。 如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
      * <p>
      * eg:

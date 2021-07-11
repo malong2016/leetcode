@@ -165,53 +165,56 @@ public class LinkSword_01 {
      * 的任意节点或者null
      * <p>
      * 思路01(空间复杂度是o(n)):利用HashMap建立原node和copyNode的一一映射关系,在遍历copyNode把next和random(按照原node的连接)连接上就可以
-     * 思路02(空间复杂度是o(1)):在原链表node后面接上copyNode,扫描原链表,找到random节点,random节点后一个节点也是copyNode!!!
+     * 思路02(空间复杂度是o(1)):在后面接一个节点
      */
-    public  ComplexLinkList complexLinkClone(ComplexLinkList head) {
-        if (head == null) return null;
-        ComplexLinkList cur = head;
-        HashMap<ComplexLinkList, ComplexLinkList> map = new HashMap<>();
-        while (cur != null) {                                        //先构建指针
-            map.put(cur, new ComplexLinkList(cur.data));
-            cur = cur.next;
+    public ComplexLinkList copyRandomList(ComplexLinkList head) {      //HashMap
+        Map<ComplexLinkList, ComplexLinkList> map = new HashMap<>();
+        ComplexLinkList p = head;
+        while (p != null) {                   //构建copy的节点
+            map.put(p, new ComplexLinkList(p.val));       //建立一一映射关系
+            p = p.next;
         }
-        cur = head;    //从新遍历,在构建每一个指针的next和random
-        while (cur != null) {
-            map.get(cur).next = map.get(cur.next);
-            map.get(cur).random = map.get(cur.random);
-            cur = cur.next;
+        p = head;
+        while (p != null) {                      //构建next和ramdom二个指针
+            ComplexLinkList copyNode = map.get(p);
+            copyNode.next = map.get(p.next);
+            copyNode.random = map.get(p.random);
+            p = p.next;
         }
-        return map.get(head);      //返回copy指针的头节点
+        return map.get(head);
     }
 
-    public  ComplexLinkList complexLinkClone02(ComplexLinkList head) {
+    public ComplexLinkList complexLinkClone(ComplexLinkList head) {     //在后面接一个节点
         if (head == null) return null;
-        ComplexLinkList cur = head;
-        while (cur != null) {         //在原链表每个节点后面复制一个data一样的节点
-            ComplexLinkList copyNode = new ComplexLinkList(cur.data);
-            copyNode.next = cur.next;
-            cur.next = copyNode;
-            cur = copyNode.next;     //扫描器要走
+        ComplexLinkList p = head;
+        while (p != null) {                //构建节点和next指针
+            ComplexLinkList copyNode = new ComplexLinkList(p.val);
+            copyNode.next = p.next; //指向p的下一个指针
+            p.next = copyNode;
+            p = p.next.next;
         }
-        cur = head;
-        while (cur != null) {     //对原链表进行扫描
-            if (cur.random!=null) cur.next.random = cur.random.next;     //如果当前node.random为null,就没有next
-            cur = cur.next.next;    //cur.next肯定是不是null(因为是下一个copy节点!!!)
+        p = head;
+        while (p != null) {                //构建random指针
+            ComplexLinkList copyNode = p.next;
+            if (p.random != null) {              //注意,这里如果是null,那么那就是random为null
+                copyNode.random = p.random.next;        //这里p和后一个指针是一一映射的
+            }
+            p = p.next.next;
         }
-
-        //3 拆分二链表
-        cur = head.next;  //当前节点指向新链表
-        ComplexLinkList pre = head;
-        ComplexLinkList res = head.next;       //保存返回的结果node
-        while (cur.next != null) {       //原node和copyNode进行断链处理
-            pre.next = pre.next.next;
-            cur.next = cur.next.next;
-            pre = pre.next;    //倒数第二个节点,控制了cur.next!=null,那么pre.next一定不为null!11
-            cur = cur.next;  //最后扫描到最后一个节点
+        //断链!!!
+        p = head;
+        ComplexLinkList res = p.next; //保存copy链表的第一个节点
+        while (p != null) {             //p在不断的遍历主链
+            ComplexLinkList copyNode = p.next;      //复制的节点
+            p.next = p.next.next;                    //主链断链,注意p.next是复制节点，所以一定是不为null的\
+            if (p.next != null) {       //如果p不是最后一个节点
+                copyNode.next = copyNode.next.next;      //copy链表断链
+            }
+            p = p.next;       //到主链第二个节点
         }
-        pre.next = null;
         return res;
     }
+
 
     /**
      * 题目07(swordOffer 第06题):从尾到头打印链表

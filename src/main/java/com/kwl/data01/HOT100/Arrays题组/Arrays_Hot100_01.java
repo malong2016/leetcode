@@ -33,25 +33,56 @@ public class Arrays_Hot100_01 {
     }
 
     /**
-     * 题目02(leetcode 4题):寻找二个正序数组的中位数,如果中位数是二个,就取平均
+     * 题目02(leetcode 第4题):寻找二个正序数组的中位数,如果中位数是二个,就取平均
      * eg: nums1 = [1,2], nums2 = [3,4]  --> (2+3)/2 = 2.5
      */
-    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        return 1;
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) { //调库
+        int p1 = 0, p2 = 0, len = nums1.length + nums2.length;
+        int left = -1, right = -1;
+        for (int i = 0; i <= len / 2; i++) {
+            left = right;
+            if (p1 < nums1.length && (p2 >= nums2.length || nums1[p1] < nums2[p2])) { //p2越出，或者p1小于p2，移动小的
+                right = nums1[p1++];
+            } else {
+                right = nums2[p2++];
+            }
+        }
+        if ((len & 1) == 0) return (left + right) / 2.0;
+        else return right;
     }
 
 
     /**
-     * 题目03(leetcode 33题): 搜索旋转数组
+     * 题目03(leetcode 第33题): 搜索旋转排序数组
      * 描述: 升序排列的整数数组 nums 在预先未知的某个点上进行了旋转（例如， [0,1,2,4,5,6,7] 经旋转后可能变为 [4,5,6,7,0,1,2] ）。
      * 请你在数组中搜索 target ，如果数组中存在这个目标值，则返回它的索引，否则返回 -1 。
      * <p>
      * eg: nums = [4,5,6,7,0,1,2], target = 0  --> 4
      * <p>
-     * 思路:二分查找,先二分数组,肯定存在一个有序,一个无序(通过首尾指针判断),不断缩小范围,使得target在有序表中!!
+     * 思路:如果中间的数小于最右边的数，则右半段是有序的，若中间数大于最右边数，则左半段是有序的，
+     * 我们只要在有序的半段里用首尾两个数组来判断目标值是否在这一区域内，这样就可以确定保留哪半边了
      */
     public int search(int[] nums, int target) {
-        return 0;
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < nums[high]) {       //上半区是有序的
+                if (nums[mid] < target && target <= nums[high]) {
+                    low = mid + 1;          //向上半区逼近
+                } else {
+                    high = mid - 1;       //向下半区逼近
+                }
+            } else {                   //下半区是有序的
+                if (nums[low] <= target && target < nums[mid]) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+        }
+        return low;
     }
 
     /**
@@ -92,7 +123,24 @@ public class Arrays_Hot100_01 {
      * 描述: 给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
      * eg: 输入: nums = [1,1,1], k = 2  --> 输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
      * 思路01（暴力解）: 双指针扫描
+     * 思路02(前缀和): 使用HashMap对每个index的前缀和次数进行统计，当遍历到当前节点其前缀和是preSum,
+     * 在HashMap查找preSum - k的数量, 注意preSum - preSum + k得到二者相减就是中间k,也就是连续子数组。
+     * 注意在初始化的时候，我们要把HashMap.put(0,1),前缀和为0是1次
      */
+    public int subarraySum01(int[] nums, int k) {      //前缀和
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int preSum = 0, res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            preSum += nums[i];                        //统计当前index的前缀和
+            if (map.containsKey(preSum - k)) {
+                res += map.get(preSum - k);       //拿到前缀和是preSum-k的个数,preSum - (preSum - k)就是k
+            }
+            map.put(preSum, map.getOrDefault(preSum, 0) + 1);     //把当前index的前缀和添加进来
+        }
+        return res;
+    }
+
     public int subarraySum(int[] nums, int k) {      //暴力解
         int res = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -127,9 +175,10 @@ public class Arrays_Hot100_01 {
             r++;
         }
     }
+
     public void moveZeroes01(int[] nums) {   //不交换
         int l = 0, r = 0;
-        while (r < nums.length){
+        while (r < nums.length) {
             if (nums[r] != 0) nums[l++] = nums[r];  //非0前面注入到前面
             r++;
         }
@@ -192,11 +241,4 @@ public class Arrays_Hot100_01 {
         }
         return res;
     }
-
-    public static void main(String[] args) {
-        Arrays_Hot100_01 arrays_hot100_01 = new Arrays_Hot100_01();
-        arrays_hot100_01.findDisappearedNumbers(new int[]{4, 3, 2, 7, 8, 2, 3, 1});
-    }
-
-
 }

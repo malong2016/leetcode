@@ -21,9 +21,14 @@ public class Person {
 
     private String name;
 
-    private String city;
+    private int city;
 
     private Student student;
 
+    public static void main(String[] args) {
+        int a = 12, b = 14;int c = 1;
+        //循环体里面套ifcontinue能否跳出本循环??
+
+    }
 
 }

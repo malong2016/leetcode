@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ComplexLinkList {
 
-    public int data;            //数据域
+    public int val;            //数据域
 
     public ComplexLinkList next;      //指向下一个节点
 
     public ComplexLinkList random;    //指向任意节点
 
-    public ComplexLinkList(int data) {         //构造器
-        this.data = data;
+    public ComplexLinkList(int val) {         //构造器
+        this.val = val;
     }
 }

@@ -172,10 +172,21 @@ public class Arrays_Hot100_04 {
      * 假设 nums 只有 一个重复的整数 ，找出 这个重复的数 。
      * 你设计的解决方案必须不修改数组 nums 且只用常量级 O(1) 的额外空间。
      *
-     * 思路01:
+     * 思路01（HashSet）:不断添加进来，然后不能添加就是重复数.或者使用new int[nums.length]
+     * 思路02(快慢指针，类比链表是否有环): 代码如下
      */
     public int findDuplicate(int[] nums) {
-        return 0;
+        int slow = 0, fast = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);        //第一次相遇,注意快指针一定会追赶上慢指针
+        fast = 0;
+        while (slow != fast) {         //第二次相遇
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
     }
 
     /**

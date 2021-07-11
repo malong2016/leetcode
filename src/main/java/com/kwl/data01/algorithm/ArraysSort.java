@@ -94,7 +94,44 @@ public class ArraysSort {
      * 2.1 选择排序之堆排序
      *
      * 先建立一个大顶推，然后将堆顶元素和最后元素进行交换。
+     * 建立大顶堆，是升序
      */
+    public void heapSort(int[] arr) {            //建立大顶堆
+        int n = arr.length;
+        buildMaxHeap(arr, n);    //建立初始推
+        for (int i = n - 1; i > 0; i--) {   //n - 1次交换
+            int temp = arr[0];                    //将堆顶元素交换到末尾
+            arr[0] = arr[i];
+            arr[i] = temp;
+            adjustDown(arr,0,i -1);   //注意已经相对调节好了,所以这里只需要从0开始调整就可以了
+        }
+    }
+    void buildMaxHeap(int[] arr, int len) {       //找出本堆的最大值，需要len/2次反复建立推
+        //中点index是len/2 - 1,注意这个是长度
+        for (int i = len / 2 - 1; i >= 0; i--) {  //从右孩子节点的len/2 - 1 到0(root节点)
+            adjustDown(arr, i,len);
+        }
+    }
+    /**
+     * 手写大堆排序,这个是调整某个节点使得，下面小的数据交换上来
+     * 如果是子节点那么是2 * i + 1,2 * i + 2;
+     * 注意，在向下调整的时候，可以选择直接swap,这个时候，就不不要循环要递归
+     */
+    public void adjustDown(int[] arr, int k, int len){        //一趟建堆,注意要传入len,多大长度,因为是个逐渐建堆的过程
+        int temp = arr[k];    //保存交换的核心节点
+        for (int i = 2 * k + 1; i < len; i = 2 * i + 1) {    //每次循环i都是指向他的孩子节点
+            if (i + 1 < len && arr[i] < arr[i + 1]) {      //如果存在兄弟节点，而且兄弟节点比自己大,i指向更大的节点
+                i++;
+            }
+            if (temp >= arr[i]) break;      //本节点符合堆排序,直接返回
+            else {
+                arr[k] = arr[i];       //将孩子节点更大的值赋值给父节点
+                k = i;      //指向孩子节点,继续循环,k值时针指向待交换的节点
+            }
+        }
+        arr[k] = temp;      //注意这里index为k的节点，已经交换到上面,所以把暂存的temp复制给k的节点
+    }
+
 
     /**
      * 3.1 插入排序之直接插入排序(升序)

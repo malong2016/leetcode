@@ -1,8 +1,6 @@
 package com.kwl.data01.HOT100.String题组;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author kuang.weilin
@@ -21,9 +19,54 @@ public class String_Hot100_02 {
      * <p>
      * 输入：s = "(a)())()"
      * 输出：["(a())()","(a)()()"]
+     *
+     * 思路01: BFS,注意可以控制本长度节点，也可以不用控制
+     * 思路02: todo 删除无效的括号，dfs
      */
     public List<String> removeInvalidParentheses(String s) {
-        return null;
+        int len = s.length();
+        LinkedList<String> res = new LinkedList<>();
+        Set<String> set = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(s);      //将s入队
+        boolean flag = false;
+        //注意，这里可以不使用size队本长度节点控制(也可以判断,不过会延长时间)，因为本层如果符合，下层一定是不符合的！！偶数—>奇数
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int k = 0; k < size; k++) {       //判断本长度!也可以不判断
+                String pollStr = queue.poll();
+                if (isValid(pollStr)) {
+                    res.addLast(pollStr);
+                    flag = true;        //将本次的flag设置为true
+                }
+                if (flag) {      //如果检测到flag为true,跳出本次循环
+                    continue;
+                }
+                for (int i = 0; i < pollStr.length(); i++) {         //长度为n-1截取的全部入队
+                    String str = "";
+                    if (pollStr.charAt(i) == '(' || pollStr.charAt(i) == ')') { //遇到()就截取左右的字符串
+                        if (i == len - 1) str = pollStr.substring(0, len - 1);
+                        else {
+                            str = pollStr.substring(0, i) + pollStr.substring(i + 1);
+                        }
+                        if (set.add(str)) queue.offer(str); //如果是第一次添加,就添加到里面来,这里是去重
+                    }
+                }
+            }
+            if (flag) break;          //如果本次长度的循环结束，而且，flag为true,就跳出循环，不必判断n-1的情况
+        }
+        if (res.size() == 0) res.add("");
+        return res;
+    }
+
+    public boolean isValid(String s) {       //判断s是否满足括号匹配,注意s可能是含有字母的
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') count++;
+            else if (s.charAt(i) == ')') count--;
+            if (count < 0) return false;
+        }
+        return count == 0;
     }
 
     /**
