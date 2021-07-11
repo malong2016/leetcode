@@ -141,65 +141,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目07(leetcode 416题): 分割等和子集
-     * 描述: 给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
-     * <p>
-     * eg01:
-     * 输入：nums = [1,5,11,5]
-     * 输出：true
-     * 解释：数组可以分割成 [1, 5, 5] 和 [11]
-     * eg02:
-     * 输入：nums = [1,2,3,5]
-     * 输出：false
-     * 解释：数组不能分割成两个元素和相等的子集。
-     * <p>
-     * 注意: 当sum是奇数的时候,是不能分割的.target=sum/2 < max不能
-     * 思路01: 二维dp[i][j] i代表nums的index,j代表sum/2的数量,
-     * 思路02: 一维数组dp[i],代表本sum/2的数量
-     */
-    public boolean canPartition(int[] nums) {          //二维
-        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
-        for (int num : nums) {
-            sum += num;
-            max = Math.max(max, num);
-        }
-        int target = sum / 2;
-        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
-        boolean[][] dp = new boolean[n][target + 1];     //当target==0,是直接返回true的
-        for (int i = 0; i < n; i++) {     //初始化i=0/j=0的情况
-            dp[i][0] = true;
-        }
-        dp[0][nums[0]] = true;      //就一个数,nums[0]为分割,其他是false
-        for (int i = 1; i < n; i++) {
-            for (int j = 1; j < target + 1; j++) {
-                if (j >= nums[i]) {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
-                } else dp[i][j] = dp[i - 1][j];
-            }
-        }
-        return dp[n - 1][target];
-    }
-
-    public boolean canPartition01(int[] nums) {          //一维
-        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
-        for (int num : nums) {
-            sum += num;
-            max = Math.max(max, num);
-        }
-        int target = sum / 2;
-        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
-        boolean[] dp = new boolean[target + 1];
-        dp[0] = true;
-        for (int i = 0; i < n; i++) {
-            for (int j = target; j >= nums[i]; j--) {
-                dp[j] |= dp[j - nums[i]];       //等于以前求得,和现在的关系
-            }
-        }
-        return dp[dp.length - 1];
-    }
-
-    /**
-     * 题目08(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
+     * 题目07(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
      * 描述: 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
      * <p>
      * 每行的元素从左到右升序排列。
@@ -220,6 +162,47 @@ public class Arrays_Hot100_02 {
             else j++;   //更大的值找
         }
         return false;
+    }
+
+    /**
+     * 题目08(leetcode 第621题): 任务调度器
+     * 描述:给你一个用字符数组 tasks 表示的 CPU 需要执行的任务列表。其中每个字母表示一种不同种类的任务。任务可以以任意顺序执行，
+     * 并且每个任务都可以在 1 个单位时间内执行完。在任何一个单位时间，CPU 可以完成一个任务，或者处于待命状态。
+     * 然而，两个 相同种类 的任务之间必须有长度为整数 n 的冷却时间，因此至少有连续 n 个单位时间内 CPU 在执行不同的任务，或者在待命状态。
+     * 你需要计算完成所有任务所需要的 最短时间 。
+     * <p>
+     * 思路: 输入：tasks = ["A","A","A","B","B","B"], n = 2
+     * 输出：8
+     * 解释：A -> B -> (待命) -> A -> B -> (待命) -> A -> B
+     * 在本示例中，两个相同类型任务之间必须间隔长度为 n = 2 的冷却时间，而执行一个任务只需要一个单位时间，所以中间出现了（待命）状态。
+     * <p>
+     * 思路01(构造法): 最大频率数maxExec,res01 = (maxExce - 1) * (n + 1) + maxCount(最大频率的个数), A -> x -> x - > A -> x -> x ->A
+     * 每(n-1)为一组,最后会空出maxCount,res可能比tasks.length小，所以 res =  Max(res01,tasks.length)
+     */
+    public int leastInterval(char[] tasks, int n) {     //hashMap
+        Map<Character, Integer> map = new HashMap<>();
+        int maxTime = Integer.MIN_VALUE;       //最大次数
+        for (char task : tasks) {
+            map.put(task, map.getOrDefault(task, 0) + 1);
+            maxTime = Math.max(maxTime, map.get(task));        //拿到最大次数
+        }
+        int maxCount = 0;      //最大次数的个数
+        for (Integer value : map.values()) {
+            if (value == maxTime) ++maxCount;
+        }
+        return Math.max((maxTime - 1) * (n + 1) + maxCount, tasks.length);
+    }
+    public int leastInterval01(char[] tasks, int n) {        //new int[128]
+        int[] ints = new int[128];
+        for (char task : tasks) {
+            ints[task]++;
+        }
+        Arrays.sort(ints);
+        int count = 0;
+        for (int i = 127; i >=0 && ints[i] == ints[127]  ; i--) {
+            count++;
+        }
+        return Math.max((ints[127] - 1) * (n + 1) + count, tasks.length);
     }
 
 

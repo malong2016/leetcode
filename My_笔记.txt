@@ -1,8 +1,15 @@
-leetcode hot100 没有做的题目 2道
+swordOffer 没有做的题目 2道
 剑指 Offer 43. 1～n 整数中 1 出现的次数
 剑指 Offer 14- II. 剪绳子 II
 剑指 Offer 20. 表示数值的字符串
 
-swordOffer 没有做的题目 2道
+leetcode hot100 没有做的题目 2道
 207. 课程表  --本题是拓扑排序
 399. 除法求值
+
+
+leetcode hot100已经做过的题目
+
+
+swordOffer已经做过的题目
+题目01(swordOffer 第38题): 字符串的排列

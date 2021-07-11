@@ -35,7 +35,7 @@ public class QueueAndStack_Hot100_01 {
      */
 
     /**
-     * 题目02(leetcode 第146题): LRU 缓存机制
+     * 题目03(leetcode 第146题): LRU 缓存机制
      * 运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。
      * 实现 LRUCache 类：
      * LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存

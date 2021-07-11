@@ -6,7 +6,7 @@ package com.kwl.data01.HOT100.Greedy题组;
  */
 public class Greedy_Hot100_01 {
     /**
-     * 题目3(leetcode 第55题): 跳跃游戏
+     * 题目01(leetcode 第55题): 跳跃游戏
      * 描述: 给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
      * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
      * 判断你是否能够到达最后一个下标。

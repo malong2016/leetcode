@@ -80,7 +80,7 @@ public class Arrays_Hot100_04 {
         return res;
     }
 
-    public int longestConsecutive01(int[] nums) {       //动态规划pre!!
+    public int longestConsecutive01(int[] nums) {       //动态规划pre!!不符合本题的时间复杂度
         if (nums == null || nums.length == 0) return 0;
         Arrays.sort(nums);
         int res = 1, pre = 1;    //默认就是nums[0]
@@ -92,46 +92,9 @@ public class Arrays_Hot100_04 {
         return res;
     }
 
-    /**
-     * 题目04(leetcode 第300题): 最长递增子序列
-     * 描述: 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
-     * 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
-     * <p>
-     * 输入：nums = [10,9,2,5,3,7,101,18]
-     * 输出：4
-     * 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
-     * <p>
-     * 思路(动态规划): 双循环,先固定右端j,然后从i从0开始遍历到j-1,如果dp[j] > dp[i]就在对应的dp[i]+1
-     * dp[]初始值都是要设置为1，双循环不断的更新dp
-     */
-    public int lengthOfLIS(int[] nums) {    //从o开始
-        int[] dp = new int[nums.length];
-        int res = Integer.MIN_VALUE;
-        Arrays.fill(dp, 1);       //初始值全部赋值为1
-        for (int j = 0; j < nums.length; j++) {                //j是固定的右端,如果每次都是统计dp[j]的值,只要是前面的值都可以
-            for (int i = 0; i < j; i++) {
-                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);        //这里是dp[j]符合升序才要换!!
-            }
-            res = Math.max(res, dp[j]);
-        }
-        return res;
-    }
-
-    public int lengthOfLIS01(int[] nums) {       //从1开始
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, 1);
-        int res = dp[0];
-        for (int j = 1; j < nums.length; j++) {
-            for (int i = 0; i < j; i++) {
-                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);
-            }
-            res = Math.max(res, dp[j]);
-        }
-        return res;
-    }
 
     /**
-     * 题目05(leetcode 第49题): 字母异位词分组
+     * 题目04(leetcode 第49题): 字母异位词分组
      * 描述: 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
      * <p>
      * 示例:
@@ -166,7 +129,7 @@ public class Arrays_Hot100_04 {
 
 
     /**
-     * 题目06(leetcode 第287题): 寻找重复数
+     * 题目05(leetcode 第287题): 寻找重复数
      * 描述:
      * 给定一个包含 n + 1 个整数的数组 nums ，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。
      * 假设 nums 只有 一个重复的整数 ，找出 这个重复的数 。
@@ -190,7 +153,7 @@ public class Arrays_Hot100_04 {
     }
 
     /**
-     * 题目07(leetcode 第48题):  旋转图像
+     * 题目06(leetcode 第48题):  旋转图像
      * 描述:
      *  给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
      *  你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
@@ -219,7 +182,7 @@ public class Arrays_Hot100_04 {
     }
 
     /**
-     * 题目08(leetcode 第75题): 颜色分类
+     * 题目07(leetcode 第75题): 颜色分类
      * 描述: 给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
      * 此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
      *
@@ -263,6 +226,29 @@ public class Arrays_Hot100_04 {
                 ++p1;
             }
         }
+    }
+
+    /**
+     * 题目08(leetcode 第339题):  除法求值
+     * 描述:给你一个变量对数组 equations 和一个实数值数组 values 作为已知条件，
+     * 其中 equations[i] = [Ai, Bi] 和 values[i] 共同表示等式 Ai / Bi = values[i] 。每个 Ai 或 Bi 是一个表示单个变量的字符串。
+     * 另有一些以数组 queries 表示的问题，其中 queries[j] = [Cj, Dj] 表示第 j 个问题，请你根据已知条件找出 Cj / Dj = ? 的结果作为答案。
+     * 返回 所有问题的答案 。如果存在某个无法确定的答案，则用 -1.0 替代这个答案。如果问题中出现了给定的已知条件中没有出现的字符串，也需要用 -1.0 替代这个答案。
+     * 注意：输入总是有效的。你可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
+     * <p>
+     * 输入：equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
+     * 输出：[6.00000,0.50000,-1.00000,1.00000,-1.00000]
+     * 解释：
+     * 条件：a / b = 2.0, b / c = 3.0
+     * 问题：a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
+     * 结果：[6.0, 0.5, -1.0, 1.0, -1.0 ]
+     * <p>
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/evaluate-division
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     */
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        return null;
     }
 
 

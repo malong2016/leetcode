@@ -227,7 +227,7 @@ public class Tree_Hot100_01 {
     }
 
     /**
-     * 题目08(leetcode 第208题): 实现 Trie (前缀树)
+     * 题目08(leetcode 第208题): 实现 Trie (前缀树)  -- 本题代码: com.kwl.data01.dataStructure.题目Struct.Trie
      * 描述: Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
      *
      * 请你实现 Trie 类：
@@ -252,9 +252,6 @@ public class Tree_Hot100_01 {
      * trie.startsWith("app"); // 返回 True
      * trie.insert("app");
      * trie.search("app");     // 返回 True
-     *
-     *
-     * 思路01: 参考com.kwl.data01.dataStructure.题目Struct.Trie
      */
 
 }

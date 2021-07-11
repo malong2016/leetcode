@@ -15,7 +15,7 @@ public class Arrays_Hot100_03 {
      * eg：
      * 输入: nums = [1,1,1,2,2,3], k = 2
      * 输出: [1,2]
-     *
+     * <p>
      * 思路01: 基于快速排序
      * 思路02: 基于堆排序
      */
@@ -159,16 +159,16 @@ public class Arrays_Hot100_03 {
     /**
      * 题目06(leetcode 第4题): 寻找两个正序数组的中位数
      * 描述: 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
-     *
+     * <p>
      * eg:
      * 输入：nums1 = [1,3], nums2 = [2]
      * 输出：2.00000
      * 解释：合并数组 = [1,2,3] ，中位数 2
-     *
+     * <p>
      * 输入：nums1 = [1,2], nums2 = [3,4]
      * 输出：2.50000
      * 解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
-     *
+     * <p>
      * 思路01: 先合并在调库排序，直接返回中位数
      * 思路02: 不需要真的合并，而是循环(len01 + len02) /2 + 1,设置二个指针p1和p2分别指向数组
      * 具体流程如下
@@ -176,11 +176,11 @@ public class Arrays_Hot100_03 {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) { //调库
         int p1 = 0, p2 = 0, len = nums1.length + nums2.length;
         int left = -1, right = -1;
-        for (int i = 0; i <= len/2; i++) {
+        for (int i = 0; i <= len / 2; i++) {
             left = right;
             if (p1 < nums1.length && (p2 >= nums2.length || nums1[p1] < nums2[p2])) { //p2越出，或者p1小于p2，移动小的
                 right = nums1[p1++];
-            }else right = nums2[p2++];
+            } else right = nums2[p2++];
         }
         if ((len & 1) == 0) return (left + right) / 2.0;
         else return right;
@@ -216,6 +216,26 @@ public class Arrays_Hot100_03 {
             }
         }
         return res;
+    }
+
+    /**
+     * 题目08(leetcode 第253题): 会议室 II
+     * 描述:给你一个会议时间安排的数组 intervals ，每个会议时间都会包括开始和结束的时间 intervals[i] = [starti, endi] ，
+     * 为避免会议冲突，同时要考虑充分利用会议室资源，请你计算至少需要多少间会议室，才能满足这些会议安排。
+     * <p>
+     * 思路01:先对interval根据开始时间进行排序(先入队的肯定开始时间比你早)。 设置一个优先队列，这个优先队列总是保存，结束时间。
+     * 如果待入队列元素大于队首，那么就可以共用一个会议室，对顶元素出队。无论是否共用，待入队的结束结束都是要入队的
+     */
+    public int minMeetingRooms(int[][] intervals) {
+        if (intervals.length == 0) return 0;
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);     //是默认的是吗???如果是多维数组，如何比较?
+        priorityQueue.offer(intervals[0][1]);    //把第一个结束时间入队
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] >= priorityQueue.peek()) priorityQueue.poll();//开始时间大于队首的结束时间，如果可以共用一个会议室，那么队首出队
+            priorityQueue.offer(intervals[i][1]);     //无论是否共用,都是要将入队的结束时间
+        }
+        return priorityQueue.size();
     }
 
 

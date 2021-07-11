@@ -2,6 +2,7 @@ package com.kwl.data01.HOT100.动态规划;
 
 import com.kwl.data01.dataStructure.TreeNode;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -213,6 +214,72 @@ public class dpSword_Hot100_02 {
         dp[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);     //不偷root节点,可以选择偷子节点和不偷子节点
         dp[1] = root.val + left[0] + right[0];   //偷了root节点,就不能偷左右字节
         return dp;
+    }
+
+    /**
+     * 题目07(leetcode 第322题): 零钱兑换
+     * 描述: 给定不同面额的硬币 coins 和一个总金额 amount。
+     * 编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+     * <p>
+     * eg:
+     * 输入：coins = [1, 2, 5], amount = 11
+     * 输出：3
+     * 解释：11 = 5 + 5 + 1
+     * <p>
+     * 输入：coins = [2], amount = 3
+     * 输出：-1
+     * <p>
+     * 输入：coins = [1], amount = 0
+     * 输出：0
+     * <p>
+     * 思路01: 动态规划,dp[i] = n,代表i元可以换最小的硬币,dp[0] = 0
+     * 思路02:
+     */
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1); //最多就是全部是amount!!设置+1
+        dp[0] = 0;       //0元换0个硬币
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {       //硬币小于i就可以换
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);  //如果换不成，这里还是会返回amount+1
+                }
+            }
+        }
+        return dp[amount] == amount + 1 ? -1 : dp[amount];
+    }
+
+    /**
+     * 题目08(leetcode 第309题): 最佳买卖股票时机含冷冻期
+     * 描述: 给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。​
+     * 设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
+     * 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+     * 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。。
+     * <p>
+     * 输入: [1,2,3,0,2]
+     * 输出: 3
+     * 解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
+     * 思路: f[i][0]: 手上持有股票的最大收益  (昨天就有股票or今天买入)
+     * f[i][1]: 手上不持有股票，并且处于冷冻期中的累计最大收益    (今天卖出)
+     * f[i][2]: 手上不持有股票，并且不在冷冻期中的累计最大收益  (今天一开始就没有股票)
+     *
+     * 初始化:   dp[0][0] = -prices[0];
+     */
+    public int maxProfit(int[] prices) {
+        int len = prices.length;
+        if (len == 1) return 0;
+        //1是持有股票(昨天就有股票or今天买入)2是不持有股票，在冷冻期(今天卖出),3是不持有股票，也不在冷冻期(今天一开始就没有股票)
+        int[][] dp = new int[len][3];
+        dp[0][0] = -prices[0];    //第一天买入直接是-收益，dp[0][0]初始化为0
+        for (int i = 1; i < len; i++) {
+            //如果在当天持有股票.说明是 1 昨天持有股票 2 昨天不持有，而且不处于冷冻期。今天买入！！！
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
+            //不持有股票，而且在冷冻期，说明是 1 今天卖出，那么肯定是昨天持有
+            dp[i][1] = dp[i - 1][0] + prices[i];
+            //现在不持有股票,不在冷冻期(今天开始就没有股票)。说明是 1 昨天不持有，在冷冻期 2 昨天不持有，不在冷冻期
+            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+        }
+        return Math.max(dp[len - 1][1], dp[len - 1][2]);     //注意dp[len-1][0]持有股票是没有意义的
     }
 
 }

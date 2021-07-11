@@ -113,18 +113,18 @@ public class Dfs_Hot100_01 {
 
     public List<String> generateParenthesis(int n) {
         List<String> res = new LinkedList<>();
-        dfs("", n, 0, 0, res);
+        dfs("", res, n, 0, 0); //初始左右括号计数都是等于0
         return res;
     }
 
-    public void dfs(String ans, int n, int lc, int rc, List<String> res) {
-        // 剪枝 右边扣号数量大于左边
-        if (rc > lc || lc > n) return;
-        // 满足结果
-        if (lc == n && lc == rc) res.add(ans);
-        // 遍历+递归
-        dfs(ans + '(', n, lc + 1, rc, res);
-        dfs(ans + ')', n, lc, rc + 1, res);
+    void dfs(String str, List<String> res, int n, int lc, int rc) {
+        if (rc > lc || rc > n || lc > n) return;         //右统计大于左统计，或者左右大于n，直接返回
+        if (lc == n && rc == n) {         //左右统计同时符合n添加
+            res.add(str);
+            return;
+        }
+        dfs(str + '(', res, n, lc + 1, rc);       //左添加一个'('
+        dfs(str + ')', res, n, lc, rc + 1);        //右添加一个')'
     }
 
     /**
@@ -147,22 +147,22 @@ public class Dfs_Hot100_01 {
     public boolean exist(char[][] board, String word) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (dfs09(board, word, i, j, 0)) return true;
+                if (dfs(board, word, i, j, 0)) return true;   //从单词第一个字母的下标0开始搜索开始搜索
             }
         }
         return false;
     }
 
-    boolean dfs09(char[][] board, String word, int i, int j, int index) {
-        //越界&&最后一个值不等于word最后一个值
+    boolean dfs(char[][] board, String word, int i, int j, int index) {
+        //i或者j越界,或者对应搜索的字符不满足单词对应index的字符的值!!!
         if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word.charAt(index))
             return false;
-        if (index == word.length() - 1) return true;      //index如果不断扩大到word.length - 1就可以
-        char temp = board[i][j]; //暂时保存值
-        board[i][j] = '.';     //修改值,复制被重复访问
-        boolean res = dfs09(board, word, i + 1, j, index + 1) || dfs09(board, word, i - 1, j, index + 1) ||
-                dfs09(board, word, i, j + 1, index + 1) || dfs09(board, word, i, j - 1, index + 1);   //从上下左右开始搜索
-        board[i][j] = temp;
+        if (index == word.length() - 1) return true;        //不断满足单词对应index字符,如果index来到了n - 1那么就符合
+        char temp = board[i][j];                                //暂时保存值
+        board[i][j] = '.';                                     //修改值,复制被重复访问
+        boolean res = dfs(board, word, i + 1, j, index + 1) || dfs(board, word, i - 1, j, index + 1) ||
+                dfs(board, word, i, j + 1, index + 1) || dfs(board, word, i, j - 1, index + 1);   //从上下左右开始搜索
+        board[i][j] = temp;                                      //恢复原来的值
         return res;
     }
 
@@ -239,6 +239,42 @@ public class Dfs_Hot100_01 {
         } else {
             dfs(nums, target, index + 1, sum - nums[index]);
             dfs(nums, target, index + 1, sum + nums[index]);
+        }
+    }
+
+    /**
+     * 题目08(leetcode 第17题): 电话号码的字母组合
+     * 描述: 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+     * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+     */
+    Map<Character, String> phoneMap = new HashMap<Character, String>(){{
+        put('2', "abc");
+        put('3', "def");
+        put('4', "ghi");
+        put('5', "jkl");
+        put('6', "mno");
+        put('7', "pqrs");
+        put('8', "tuv");
+        put('9', "wxyz");
+    }};
+    List<String> res = new ArrayList<String>();
+    public List<String> letterCombinations(String digits) { //回溯法(官方)
+        if (digits.length() == 0) return res;
+        dfs01(digits, 0, new StringBuffer());
+        return res;
+    }
+
+    public void dfs01(String digits, int index,StringBuffer combination){
+        if (index == digits.length()) res.add(combination.toString());
+        else {
+            char digit = digits.charAt(index);
+            String letters =   phoneMap.get(digit);
+            int lettersConut = letters.length();
+            for (int i = 0;i < lettersConut;i++){
+                combination.append(letters.charAt(i));
+                dfs01(digits,index+1,combination);
+                combination.deleteCharAt(combination.length() - 1);
+            }
         }
     }
 

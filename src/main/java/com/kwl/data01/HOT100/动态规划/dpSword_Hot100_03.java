@@ -1,5 +1,6 @@
 package com.kwl.data01.HOT100.动态规划;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -105,35 +106,99 @@ public class dpSword_Hot100_03 {
     }
 
     /**
-     * 题目04(leetcode 第309题): 最佳买卖股票时机含冷冻期
-     * 描述: 给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。​
-     * 设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
-     * 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
-     * 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。。
+     * 题目04(leetcode 第300题): 最长递增子序列
+     * 描述: 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+     * 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
      * <p>
-     * 输入: [1,2,3,0,2]
-     * 输出: 3
-     * 解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]
-     * 思路: f[i][0]: 手上持有股票的最大收益  (昨天就有股票or今天买入)
-     * f[i][1]: 手上不持有股票，并且处于冷冻期中的累计最大收益    (今天卖出)
-     * f[i][2]: 手上不持有股票，并且不在冷冻期中的累计最大收益  (今天一开始就没有股票)
-     *
-     * 初始化:   dp[0][0] = -prices[0];
+     * 输入：nums = [10,9,2,5,3,7,101,18]
+     * 输出：4
+     * 解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+     * <p>
+     * 思路(动态规划): 双循环,先固定右端j,然后从i从0开始遍历到j-1,如果dp[j] > dp[i]就在对应的dp[i]+1
+     * dp[]初始值都是要设置为1，双循环不断的更新dp
      */
-    public int maxProfit(int[] prices) {
-        int len = prices.length;
-        if (len == 1) return 0;
-        //1是持有股票(昨天就有股票or今天买入)2是不持有股票，在冷冻期(今天卖出),3是不持有股票，也不在冷冻期(今天一开始就没有股票)
-        int[][] dp = new int[len][3];
-        dp[0][0] = -prices[0];    //第一天买入直接是-收益，dp[0][0]初始化为0
-        for (int i = 1; i < len; i++) {
-            //如果在当天持有股票.说明是 1 昨天持有股票 2 昨天不持有，而且不处于冷冻期。今天买入！！！
-            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
-            //不持有股票，而且在冷冻期，说明是 1 今天卖出，那么肯定是昨天持有
-            dp[i][1] = dp[i - 1][0] + prices[i];
-            //现在不持有股票,不在冷冻期(今天开始就没有股票)。说明是 1 昨天不持有，在冷冻期 2 昨天不持有，不在冷冻期
-            dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
+    public int lengthOfLIS(int[] nums) {    //从o开始
+        int[] dp = new int[nums.length];
+        int res = Integer.MIN_VALUE;
+        Arrays.fill(dp, 1);       //初始值全部赋值为1
+        for (int j = 0; j < nums.length; j++) {                //j是固定的右端,如果每次都是统计dp[j]的值,只要是前面的值都可以
+            for (int i = 0; i < j; i++) {
+                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);        //这里是dp[j]符合升序才要换!!
+            }
+            res = Math.max(res, dp[j]);
         }
-        return Math.max(dp[len - 1][1], dp[len - 1][2]);     //注意dp[len-1][0]持有股票是没有意义的
+        return res;
     }
+
+    public int lengthOfLIS01(int[] nums) {       //从1开始
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        int res = dp[0];
+        for (int j = 1; j < nums.length; j++) {
+            for (int i = 0; i < j; i++) {
+                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);
+            }
+            res = Math.max(res, dp[j]);
+        }
+        return res;
+    }
+
+    /**
+     * 题目05(leetcode 第416题): 分割等和子集
+     * 描述: 给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+     * <p>
+     * eg01:
+     * 输入：nums = [1,5,11,5]
+     * 输出：true
+     * 解释：数组可以分割成 [1, 5, 5] 和 [11]
+     * eg02:
+     * 输入：nums = [1,2,3,5]
+     * 输出：false
+     * 解释：数组不能分割成两个元素和相等的子集。
+     * <p>
+     * 注意: 当sum是奇数的时候,是不能分割的.target=sum/2 < max不能
+     * 思路01: 二维dp[i][j] i代表nums的index,j代表sum/2的数量,
+     * 思路02: 一维数组dp[i],代表本sum/2的数量
+     */
+    public boolean canPartition(int[] nums) {          //二维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[][] dp = new boolean[n][target + 1];     //当target==0,是直接返回true的
+        for (int i = 0; i < n; i++) {     //初始化i=0/j=0的情况
+            dp[i][0] = true;
+        }
+        dp[0][nums[0]] = true;      //就一个数,nums[0]为分割,其他是false
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < target + 1; j++) {
+                if (j >= nums[i]) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+                } else dp[i][j] = dp[i - 1][j];
+            }
+        }
+        return dp[n - 1][target];
+    }
+
+    public boolean canPartition01(int[] nums) {          //一维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+        for (int i = 0; i < n; i++) {
+            for (int j = target; j >= nums[i]; j--) {
+                dp[j] |= dp[j - nums[i]];       //等于以前求得,和现在的关系
+            }
+        }
+        return dp[dp.length - 1];
+    }
+
 }

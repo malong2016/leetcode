@@ -264,8 +264,8 @@ public class LinkSword_01 {
      * 题目09(swordOffer 第25题): 合并两个排序的链表
      */
     public  ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
-        ListNode head = new ListNode(-1);
-        ListNode p = head;
+        ListNode res = new ListNode(-1);
+        ListNode p = res;
         while (l1 != null && l2 != null) {
             if (l1.val < l2.val) {
                 p.next = l1;
@@ -277,7 +277,7 @@ public class LinkSword_01 {
             p = p.next;
         }
         p.next = l1 == null ? l2 : l1;
-        return head.next;
+        return res.next;
     }
 
     public  ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路02: 递归法
