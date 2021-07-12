@@ -63,7 +63,7 @@ public class LinkSword_01 {
 
 
     /**
-     * 题目02(swordOffer 第22):输入一个链表,输出该链表中倒数第K个节点(注意,尾节点是倒数第一个节点)
+     * 题目03(swordOffer 第22):输入一个链表,输出该链表中倒数第K个节点(注意,尾节点是倒数第一个节点)
      */
     public  ListNode findKthToTail(ListNode head, int k) {
         if (head == null) return null;        //记住,要先判断一下子
@@ -79,7 +79,7 @@ public class LinkSword_01 {
     }
 
     /**
-     * 题目03(swordOffer 第23):链表环中的入口节点
+     * 题目04(swordOffer 第23):链表环中的入口节点
      * 思路01: HashSet方法
      * 思路02: fast和slow先找到第一次相遇的指针位置，然后fast指向head,同时跑起来while(q == p)第二次相遇就是所求的节点
      * 数学解释: fast = 2*slow = slow + nb(循环一圈要b步) --> slow = nb   （你在圈圈里面要追上一个人，那么就要领先n圈）
@@ -97,7 +97,7 @@ public class LinkSword_01 {
     }
 
     /**
-     * 题目04(swordOffer 第24题): 反转链表
+     * 题目05(swordOffer 第24题): 反转链表
      *
      * 思路: 双指针pre(初始化指向null)和p进行扫描逆转,后继指针temp用来保留p的后继
      */
@@ -116,7 +116,7 @@ public class LinkSword_01 {
 
 
     /**
-     * 题目05(swordOffer 第25):输入二个递增的链表,合并这二个链表并使得新链表中的节点依旧是排序的
+     * 题目06(swordOffer 第25):输入二个递增的链表,合并这二个链表并使得新链表中的节点依旧是排序的
      *
      * 思路01: 如下，不断比较进行合并
      * 思路02: 利用归并思想，递归合并
@@ -141,7 +141,7 @@ public class LinkSword_01 {
 
 
     /**
-     * 题目06(swordOffer 第52题): 两个链表的第一个公共节点
+     * 题目07(swordOffer 第52题): 两个链表的第一个公共节点
      *
      * 思路01: 先走到null的链表A,链表A接入到链表B，同时达到公共节点
      * 思路02: HashSet(),先入HashSet,在遍历宁外一个链表
@@ -159,7 +159,7 @@ public class LinkSword_01 {
 
 
     /**
-     * 题目07(swordOffer 第35):复杂链表的复制
+     * 题目08(swordOffer 第35):复杂链表的复制
      * 描述: 请实现函数ComplexListNode clone(complexListNode pHead)复制一个复杂链表。
      * 在复杂链表中，每个节点除了有一个m_pNext指针指向下一个节点，还有一个m_pSibling指针指向链表
      * 的任意节点或者null
@@ -213,82 +213,5 @@ public class LinkSword_01 {
             p = p.next;       //到主链第二个节点
         }
         return res;
-    }
-
-
-    /**
-     * 题目07(swordOffer 第06题):从尾到头打印链表
-     */
-    public int[] reversePrint(ListNode head) {
-        List<Integer> res = new LinkedList<>();
-        reverse(head, res);
-        int[] resInt = new int[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            resInt[i] = res.get(i);
-        }
-        return resInt;
-    }
-    void reverse(ListNode head, List<Integer> res){
-        if (head != null){
-            reverse(head.next, res);
-            res.add(head.val);
-        }
-    }
-
-    /**
-     * 题目08(swordOffer 第22题): 链表中倒数第k个节点
-     */
-    public ListNode getKthFromEnd(ListNode head, int k) {
-        if (head == null) return head;
-        ListNode fast = head,slow = head;
-        for (int i = 0; i < k; i++) {      //先走k步
-            fast = fast.next;
-        }
-        while (fast != null) {      //最后fast == null
-            slow = slow.next;
-            fast = fast.next;
-        }
-        return slow;
-    }
-    public ListNode getKthFromEnd01(ListNode head, int k) {        //优化
-        if (head == null) return null;
-        ListNode fast = head, slow = head;
-        for (int i = 0; fast != null; i++) {
-            fast = fast.next;
-            if (i >= k) slow = slow.next;
-        }
-        return slow;
-    }
-
-    /**
-     * 题目09(swordOffer 第25题): 合并两个排序的链表
-     */
-    public  ListNode mergeTwoLists(ListNode l1, ListNode l2) {      //思路01: 非递归法
-        ListNode res = new ListNode(-1);
-        ListNode p = res;
-        while (l1 != null && l2 != null) {
-            if (l1.val < l2.val) {
-                p.next = l1;
-                l1 = l1.next;
-            } else {
-                p.next = l2;
-                l2 = l2.next;
-            }
-            p = p.next;
-        }
-        p.next = l1 == null ? l2 : l1;
-        return res.next;
-    }
-
-    public  ListNode mergeTwoLists01(ListNode l1, ListNode l2) {  //思路02: 递归法
-        if (l1 == null) return l2;
-        if (l2 == null) return l1;
-        if (l1.val < l2.val) {
-            l1.next = mergeTwoLists01(l1.next, l2);
-            return l1;
-        } else {
-            l2.next = mergeTwoLists01(l1, l2.next);
-            return l2;
-        }
     }
 }

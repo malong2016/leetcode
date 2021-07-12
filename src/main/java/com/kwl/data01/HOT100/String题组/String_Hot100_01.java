@@ -208,6 +208,89 @@ public class String_Hot100_01 {
         }
         return res;
     }
+    /**
+     * 题目05(leetcode 第169题): 多数元素
+     * 描述: 给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素
+     * 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+     * <p>
+     * 思路01:利用HashMap逐个统计,最后遍历
+     * 思路02(最优解):摩尔投票法找出众数,设置一个x,扫描下一个,如果等于vote++,不等于vote--
+     * vote变成0之后,换数
+     */
+    public int majorityElement(int[] nums) { //投票计数法
+        int res = 0, vote = 0;
+        for (int num : nums) {
+            if (vote == 0) res = num;
+            vote += num == res ? 1 : -1;   //是本元素是+1,不是就-1;
+        }
+        return res;
+    }
+
+    /**
+     * 题目06（leetcode 第5题）: 最长回文子串
+     * 描述: 给你一个字符串 s，找到 s 中最长的回文子串
+     * 思路: 中心扩散
+     */
+    public String longestPalindrome(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            String len1 = centreExpand(s, i, i);
+            String len2 = centreExpand(s, i, i + 1);
+            res = res.length() < len1.length() ? len1 : res;
+            res = res.length() < len2.length() ? len2 : res;
+        }
+        return res;
+    }
+
+    public String centreExpand(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return s.substring(left + 1, right);
+    }
+
+    /**
+     * 题目07（leetcode 第3题）:无重复字符的最长子串
+     * 描述: 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+     * 思路: HashMap/Set/new int[128]
+     */
+    public int lengthOfLongestSubstring(String s) {
+        int res = 0;
+        int left = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (map.containsKey(s.charAt(i))) {
+                left = Math.max(left, map.get(s.charAt(i)) + 1);
+            }
+            res = Math.max(res, i - left + 1);
+            map.put(s.charAt(i), i);
+        }
+        return res;
+    }
+
+    /**
+     * 题目08（leetcode 第11题）:盛最多水的容器
+     * 描述: 给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。
+     * 在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。
+     * 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+     * <p>
+     * 输入：[1,8,6,2,5,4,8,3,7]
+     * 输出：49
+     * 解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
+     * <p>
+     * 思路01(官方对碰双指针法): 和上题思路差不多
+     */
+    public int maxArea(int[] height) {  //双指针对碰法
+        int l = 0, r = height.length - 1;
+        int res = Integer.MIN_VALUE;
+        while (l < r) {
+            res = Math.max(res, Math.min(height[l], height[r]) * (r - l));    //更新结果
+            if (height[l] < height[r]) l++;      //保留比较大的值!!!
+            else r--;
+        }
+        return res;
+    }
 
 
 

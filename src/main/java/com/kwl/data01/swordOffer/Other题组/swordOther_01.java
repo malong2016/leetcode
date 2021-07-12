@@ -23,7 +23,7 @@ public class swordOther_01 {
      * 思路02: (n-1)&n可以吧最右边的1变成0
      * 思路03: n也可以不断的>>> 右移动，然后和1进行判断!!!
      */
-    public  int numberOf1(int n) {
+    public int numberOf1(int n) {
         int res = 0;
         while (n != 0) {
             res++;
@@ -32,12 +32,12 @@ public class swordOther_01 {
         return res;
     }
 
-    public  int numberOf2(int n) {
+    public int numberOf2(int n) {
         int res = 0;
         int flag = 1;
         while (flag != 0) {         //这个可以循环32次
             if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
-            flag <<=  1;
+            flag <<= 1;
         }
         return res;
     }
@@ -49,8 +49,30 @@ public class swordOther_01 {
      * eg: 输入12,那么1~12这些整数中包含1,10,11和12一共出现了5次
      * <p>
      * 思路01(swordOffer 暴力解): n%10==1,个位存在1,如果大于10,n/=10在进行判断
+     * 思路02(解题区K神): high,cur,low digit    高位,当前位，低位，进位
+     * cur = 0, res +=  high * digit
+     * cur = 1, high*digit + low + 1
+     * cur = 其他 (high+1) * digit
      */
-    public  int numberOf1_my(int n) {
+    public int numberOf2_my(int n) {
+        int low = 0, res = 0;
+        int cur = n % 10, high = n / 10, digit = 1;
+        while (cur != 0 || high != 0) {
+            if (cur == 0) res += high * digit;
+            else if (cur == 1) res += high * digit + low + 1;
+            else res += (high + 1) * digit;
+            low += cur * digit;        //2*10+2
+            cur = high % 10;          //253 %10 =3,当前位是一位
+            high /= 10;              // 高位是多位
+            digit *= 10;            //这是当前位处的进位！！！
+        }
+        return res;
+    }
+
+
+
+
+    public int numberOf1_my(int n) {
         int number = 0;
         for (int i = 1; i <= n; i++) {
             int temp = i; //不能改变本身
@@ -111,18 +133,20 @@ public class swordOther_01 {
         while (b != 0) {
             if ((b & 1) == 1) res *= x;     //这个如果是0也就没有意义,如果是1就累加
             x *= x;
-            b >>=1;
+            b >>= 1;
         }
         return res;
     }
+
     public double myPow03(double x, int n) {      //递归法
-        if(n == 0) return 1;
-        if(n == 1) return x;
-        if(n == -1) return 1 / x;
+        if (n == 0) return 1;
+        if (n == 1) return x;
+        if (n == -1) return 1 / x;
         double half = myPow(x, n / 2);
         double mod = myPow(x, n % 2);
         return half * half * mod;
     }
+
     double power01(double base, int exponent) {
         double res = 1;
         for (int i = 0; i < exponent; i++) {
@@ -138,9 +162,9 @@ public class swordOther_01 {
      * <p>
      * 思路: 利用&&进行短路终止判断
      */
-    public  int res01 = 0;
+    public int res01 = 0;
 
-    public  int sumNums(int n) {
+    public int sumNums(int n) {
         boolean x = n > 1 && sumNums(n - 1) > 0;  //当n=1的时候被短路
         res01 += n;
         return res01;

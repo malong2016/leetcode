@@ -12,9 +12,6 @@ import java.util.Queue;
  */
 public class Tree_Hot100_01 {
 
-
-
-
     /**
      * 题目01(leetcode 第114题): 二叉树展开为链表
      * 描述: 给你二叉树的根结点 root ，请你将它展开为一个单链表：

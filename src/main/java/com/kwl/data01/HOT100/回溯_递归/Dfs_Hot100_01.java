@@ -16,14 +16,14 @@ public class Dfs_Hot100_01 {
      * eg:nums = [1,2,3]  --> [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
      * nums = [0]   --> [[],[0]]
      */
-    public static List<List<Integer>> subsets(int[] nums) {
+    public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();     //这是返回的结果集!!
         LinkedList<Integer> path = new LinkedList<>();
         dfs(0, nums, res, path);
         return res;
     }
 
-    public static void dfs(int index, int[] nums, List<List<Integer>> res, LinkedList<Integer> path) {
+    public void dfs(int index, int[] nums, List<List<Integer>> res, LinkedList<Integer> path) {
         res.add(new LinkedList<>(path));      //要动态分配空间,temp总在变化,所以要动态分配
         for (int i = index; i < nums.length; i++) {
             path.add(nums[i]);
@@ -48,7 +48,9 @@ public class Dfs_Hot100_01 {
     }
 
     void dfs(int[] nums, int index, List<List<Integer>> res, List<Integer> path) {
-        if (index == nums.length) res.add(new ArrayList<>(path));   //如果遍历完成一轮,就添加到res中,在这里就已经做完了
+        if (index == nums.length) {
+            res.add(new ArrayList<>(path));   //如果遍历完成一轮,就添加到res中,在这里就已经做完了
+        }
         for (int i = index; i < nums.length; i++) {
             Collections.swap(path, index, i);
             dfs(nums, index + 1, res, path);
@@ -56,25 +58,26 @@ public class Dfs_Hot100_01 {
         }
     }
 
-    public List<List<Integer>> permuteAndVisit(int[] nums) {     //使用visit[i]方法
-        List<List<Integer>> res = new ArrayList<>();
-        int[] visited = new int[nums.length];
-        backtrack(res, nums, new ArrayList<Integer>(), visited);
+    public List<List<Integer>> permuteAndVisit(int[] nums) {       //使用visit来处理全排列,使用visit不需要index，每次都是重头开始遍历
+        LinkedList<Integer> path = new LinkedList<>();
+        List<List<Integer>> res = new LinkedList<>();
+        boolean[] visit = new boolean[nums.length];
+        dfs(visit, nums, path, res);
         return res;
     }
 
-    private void backtrack(List<List<Integer>> res, int[] nums, ArrayList<Integer> tmp, int[] visited) {
-        if (tmp.size() == nums.length) {
-            res.add(new ArrayList<>(tmp));
+    public void dfs(boolean[] visit, int[] nums, LinkedList<Integer> path, List<List<Integer>> res) {
+        if (path.size() == nums.length) {      //path添加满了
+            res.add(new LinkedList<>(path));       //注意，这里要new地址
             return;
         }
-        for (int i = 0; i < nums.length; i++) {     //总是从0开始搜索，等价于就是在交换元素
-            if (visited[i] == 1) continue;     //搜索之后不能再搜索本身
-            visited[i] = 1;
-            tmp.add(nums[i]);
-            backtrack(res, nums, tmp, visited);
-            visited[i] = 0;
-            tmp.remove(tmp.size() - 1);
+        for (int i = 0; i < nums.length; i++) {
+            if (visit[i]) continue;       //如果已经访问过，就直接跳过
+            visit[i] = true;
+            path.add(nums[i]);
+            dfs(visit, nums, path, res);
+            visit[i] = false;
+            path.removeLast();
         }
     }
 
@@ -85,8 +88,6 @@ public class Dfs_Hot100_01 {
      * 说明: 所有数字（包括 target）都是正整数。 解集(结果)不能包含重复的组合。
      * eg: 输入：candidates = [2,3,6,7], target = 7, --> {{7},{2,2,3}}
      */
-
-
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new ArrayList<>();
         LinkedList<Integer> path = new LinkedList<>();
@@ -105,12 +106,12 @@ public class Dfs_Hot100_01 {
         }
     }
 
+
     /**
      * 题目04(leetcode 第22题): 括号生成
      * 描述: 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
      * eg: n = 3 -->  ["((()))","(()())","(())()","()(())","()()()"]
      */
-
     public List<String> generateParenthesis(int n) {
         List<String> res = new LinkedList<>();
         dfs("", res, n, 0, 0); //初始左右括号计数都是等于0
@@ -126,6 +127,7 @@ public class Dfs_Hot100_01 {
         dfs(str + '(', res, n, lc + 1, rc);       //左添加一个'('
         dfs(str + ')', res, n, lc, rc + 1);        //右添加一个')'
     }
+
 
     /**
      * 题目05(leetcode 第79题): 单词搜索
@@ -247,7 +249,7 @@ public class Dfs_Hot100_01 {
      * 描述: 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
      * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
      */
-    Map<Character, String> phoneMap = new HashMap<Character, String>(){{
+    Map<Character, String> phoneMap = new HashMap<Character, String>() {{
         put('2', "abc");
         put('3', "def");
         put('4', "ghi");
@@ -257,26 +259,25 @@ public class Dfs_Hot100_01 {
         put('8', "tuv");
         put('9', "wxyz");
     }};
-    List<String> res = new ArrayList<String>();
+    List<String> res = new ArrayList<>();
+
     public List<String> letterCombinations(String digits) { //回溯法(官方)
         if (digits.length() == 0) return res;
         dfs01(digits, 0, new StringBuffer());
         return res;
     }
 
-    public void dfs01(String digits, int index,StringBuffer combination){
+    public void dfs01(String digits, int index, StringBuffer combination) {
         if (index == digits.length()) res.add(combination.toString());
         else {
             char digit = digits.charAt(index);
-            String letters =   phoneMap.get(digit);
+            String letters = phoneMap.get(digit);
             int lettersConut = letters.length();
-            for (int i = 0;i < lettersConut;i++){
+            for (int i = 0; i < lettersConut; i++) {
                 combination.append(letters.charAt(i));
-                dfs01(digits,index+1,combination);
+                dfs01(digits, index + 1, combination);
                 combination.deleteCharAt(combination.length() - 1);
             }
         }
     }
-
-
 }

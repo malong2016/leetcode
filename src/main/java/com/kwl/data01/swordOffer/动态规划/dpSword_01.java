@@ -241,18 +241,29 @@ public class dpSword_01 {
     /**
      * 题目08(swordOffer 第63题): 股票的最大利润
      * 股票价格按照先后顺序放在arr中{9,11,8,5,7,12,16,14} 注意股票是先后时间
-     * 只能在时间前买入,后面卖出才能有最大利润,这个股票最大利润是16-5=11
+     * 只能在时间前买入,后面卖出才能有最大利润,这个股票最大利润是16-5=11。如果没有利润，那么就返回0
      * <p>
      * 思路: 动态规划
      */
-    public int maxDiff(int[] numbers) {
-        if (numbers == null || numbers.length <= 1) return 0;  //传入null或者长度小于1的数组,无法交易股票返回-1
-        int profit = 0;
-        int cost = Integer.MAX_VALUE;      //cost是保存前面数组的最小值,也是股票买入的最低值！！！
-        for (int number : numbers) {
-            cost = Math.min(cost, number);
-            profit = Math.max(profit, number - cost); //当前最大利润和默认的saveLastMaxDiff比较,取较大值
+    public int maxProfit(int[] prices) {
+        int res = 0, pre = Integer.MAX_VALUE;
+        for (int price : prices) {
+            res = Math.max(res, price - pre);            //或者直接取最小价格和最高利润
+            pre = Math.min(pre, price);
+//            if (price > pre) res = Math.max(res, price - pre);      //当前价格高于pre，卖出,就更新res
+//            else pre = price;                             //前面价格小于pre,更新pre
         }
-        return profit;
+        return res;
+    }
+
+    public int maxProfit01(int[] prices) {       //dp方法
+        int[] dp = new int[prices.length];
+        dp[0] = 0;      //第一天,不能获取到利润
+        int min = prices[0];   //那么当前能获取的股票最低价格
+        for (int i = 1; i < prices.length; i++) {
+            dp[i] = Math.max(dp[i - 1], prices[i] - min); //更新dp[i]
+            min = Math.min(min, prices[i]);     //更新价格
+        }
+        return dp[prices.length - 1];
     }
 }

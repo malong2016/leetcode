@@ -31,15 +31,10 @@ public class Arrays_Hot100_02 {
         }
         return inc || des;
     }
-    /**
-     * 题目02(leetcode 35题): 搜索插入位置  todo 折半插入leetcode35题
-     * 描述: 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
-     * 注意: 你可以假设数组中无重复元素。
-     */
 
 
     /**
-     * 题目03(leetcode 第215题): 数组中的第K个最大元素
+     * 题目02(leetcode 第215题): 数组中的第K个最大元素
      * 描述: 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
      * <p>
      * 思路01: 先排序Arrays.sort(nums);返回  return nums[nums.length-k];
@@ -69,7 +64,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目04(leetcode 第136题): 只出现一次的数字
+     * 题目03(leetcode 第136题): 只出现一次的数字
      * 描述: 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
      * <p>
      * 思路01: res = 0,在遍历数组进行异或,相同会异或为0,最后剩下就是所求的值
@@ -84,7 +79,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目05(leetcode 第238题): 除自身以外数组的乘积 -- 本题和swordOffer 66题一样
+     * 题目04(leetcode 第238题): 除自身以外数组的乘积 -- 本题和swordOffer 66题一样
      */
     public int[] productExceptSelf(int[] nums) {
         int[] res = new int[nums.length];
@@ -101,7 +96,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目06(leetcode 739题): 每日温度
+     * 题目05(leetcode 739题): 每日温度
      * 描述: 请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，
      * 至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替
      * <p>
@@ -141,7 +136,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目07(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
+     * 题目06(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
      * 描述: 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
      * <p>
      * 每行的元素从左到右升序排列。
@@ -165,7 +160,7 @@ public class Arrays_Hot100_02 {
     }
 
     /**
-     * 题目08(leetcode 第621题): 任务调度器
+     * 题目07(leetcode 第621题): 任务调度器
      * 描述:给你一个用字符数组 tasks 表示的 CPU 需要执行的任务列表。其中每个字母表示一种不同种类的任务。任务可以以任意顺序执行，
      * 并且每个任务都可以在 1 个单位时间内执行完。在任何一个单位时间，CPU 可以完成一个任务，或者处于待命状态。
      * 然而，两个 相同种类 的任务之间必须有长度为整数 n 的冷却时间，因此至少有连续 n 个单位时间内 CPU 在执行不同的任务，或者在待命状态。
@@ -203,6 +198,36 @@ public class Arrays_Hot100_02 {
             count++;
         }
         return Math.max((ints[127] - 1) * (n + 1) + count, tasks.length);
+    }
+
+    /**
+     * 题目08(leetcode 第56题):  合并区间
+     * 描述: 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。
+     * 请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+     * <p>
+     * eg:
+     * 输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+     * 输出：[[1,6],[8,10],[15,18]]
+     * 解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+     * <p>
+     * 思路01(官方思路): 先按照左端点进行升序排序。然后，
+     * 1 如果待加入的元素左端值，大于拍好序的最大值，直接加入
+     * 2 如果待加入元素左端值小于或者等于等于拍好序的最大值，那么就融合，左端值还是原来的左端值(因为一定更小)，右端值二者右端的最大值
+     */
+    public int[][] merge(int[][] intervals) {
+        if (intervals == null || intervals.length <= 1) return intervals;       //传入个数0或者1直接返回本身
+        Arrays.sort(intervals, ((o1, o2) -> o1[0] - o2[0]));   //按照左端元素升序(注意排序默认就是升序)
+        LinkedList<int[]> res = new LinkedList<int[]>() {{  //先把第一个元素添加进来
+            add(intervals[0]);
+        }};
+        for (int i = 1; i < intervals.length; i++) {
+            int[] resLast = res.getLast();     //拿到返回值的最后一个元素
+            if (resLast[1] < intervals[i][0]) res.add(intervals[i]);   //最小值大于拍好序的最大值，直接加入
+            else {
+                resLast[1] = Math.max(resLast[1], intervals[i][1]); //右端取二者的最大值,注意,左端还是原来的
+            }
+        }
+        return res.toArray(new int[0][]);    //转化为int[][]
     }
 
 

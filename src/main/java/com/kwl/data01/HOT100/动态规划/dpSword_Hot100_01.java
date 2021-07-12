@@ -111,7 +111,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目05(leetcode 第84题): 柱状图中最大的矩形
+     * 题目04(leetcode 第84题): 柱状图中最大的矩形
      * 描述: 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
      * 求在该柱状图中，能够勾勒出来的矩形的最大面积。
      * <p>
@@ -159,23 +159,23 @@ public class dpSword_Hot100_01 {
     }
 
 
-        /**
-         * 题目06(leetcode 第85题): 最大矩阵
-         * 给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
-         * eg:
-         * 输入：matrix = [
-         * ["1","0","1","0","0"],
-         * ["1","0","1","1","1"],
-         * ["1","1","1","1","1"],
-         * ["1","0","0","1","0"]
-         * ]
-         * 输出：6
-         * 解释：最大矩形如上图所示。
-         *
-         * 思路01: 高扫描，和leetcode84题柱形最大面积差不多
-         * 每层看做是个柱形图，如果是1是height[i]++,如果是height是直接设置为0；
-         * 我们遍历每行，计算出height[i]，传入到柱形的最大面积，就可以计算当前的最大面积
-         */
+    /**
+     * 题目05(leetcode 第85题): 最大矩阵
+     * 给定一个仅包含 0 和 1 、大小为 rows x cols 的二维二进制矩阵，找出只包含 1 的最大矩形，并返回其面积。
+     * eg:
+     * 输入：matrix = [
+     * ["1","0","1","0","0"],
+     * ["1","0","1","1","1"],
+     * ["1","1","1","1","1"],
+     * ["1","0","0","1","0"]
+     * ]
+     * 输出：6
+     * 解释：最大矩形如上图所示。
+     *
+     * 思路01: 高扫描，和leetcode84题柱形最大面积差不多
+     * 每层看做是个柱形图，如果是1是height[i]++,如果是height是直接设置为0；
+     * 我们遍历每行，计算出height[i]，传入到柱形的最大面积，就可以计算当前的最大面积
+     */
     public int maximalRectangle(char[][] matrix) {
         if (matrix == null || matrix.length == 0 || matrix[0].length == 0) return 0;
         int m = matrix.length, n = matrix[0].length, res = 0;    //res要设置为0，防止遍历不了的情况
@@ -191,7 +191,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目07(leetcode 第152题): 乘积最大子数组
+     * 题目06(leetcode 第152题): 乘积最大子数组
      * 描述: 给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
      * <p>
      * eg: [-2,3,-4]  --> 24
@@ -210,7 +210,7 @@ public class dpSword_Hot100_01 {
     }
 
     /**
-     * 题目08(leetcode 第121题) 买卖股票的最佳时机
+     * 题目07(leetcode 第121题) 买卖股票的最佳时机
      * 描述: 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
      * 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
      * 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
@@ -226,6 +226,64 @@ public class dpSword_Hot100_01 {
             else pre = price;
         }
         return res;
+    }
+
+    /**
+     * 题目08(leetcode 第416题): 分割等和子集
+     * 描述: 给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+     * <p>
+     * eg01:
+     * 输入：nums = [1,5,11,5]
+     * 输出：true
+     * 解释：数组可以分割成 [1, 5, 5] 和 [11]
+     * eg02:
+     * 输入：nums = [1,2,3,5]
+     * 输出：false
+     * 解释：数组不能分割成两个元素和相等的子集。
+     * <p>
+     * 注意: 当sum是奇数的时候,是不能分割的.target=sum/2 < max不能
+     * 思路01: 二维dp[i][j] i代表nums的index,j代表sum/2的数量,
+     * 思路02: 一维数组dp[i],代表本sum/2的数量
+     */
+    public boolean canPartition(int[] nums) {          //二维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[][] dp = new boolean[n][target + 1];     //当target==0,是直接返回true的
+        for (int i = 0; i < n; i++) {     //初始化i=0/j=0的情况
+            dp[i][0] = true;
+        }
+        dp[0][nums[0]] = true;      //就一个数,nums[0]为分割,其他是false
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < target + 1; j++) {
+                if (j >= nums[i]) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+                } else dp[i][j] = dp[i - 1][j];
+            }
+        }
+        return dp[n - 1][target];
+    }
+
+    public boolean canPartition01(int[] nums) {          //一维
+        int sum = 0, max = Integer.MIN_VALUE, n = nums.length;
+        for (int num : nums) {
+            sum += num;
+            max = Math.max(max, num);
+        }
+        int target = sum / 2;
+        if (sum % 2 == 1 || target < max) return false;        //如果sum是奇数或者target小于max直接返回false
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;
+        for (int i = 0; i < n; i++) {
+            for (int j = target; j >= nums[i]; j--) {
+                dp[j] |= dp[j - nums[i]];       //等于以前求得,和现在的关系
+            }
+        }
+        return dp[dp.length - 1];
     }
 
 
