@@ -53,7 +53,7 @@ public class Dfs_Hot100_01 {
         }
         for (int i = index; i < nums.length; i++) {
             Collections.swap(path, index, i);
-            dfs(nums, index + 1, res, path);
+            dfs(nums, index + 1, res, path);        //如果是index+1,那么就是不会变的
             Collections.swap(path, index, i);    //回溯到原来的状态
         }
     }
@@ -89,7 +89,7 @@ public class Dfs_Hot100_01 {
      * eg: 输入：candidates = [2,3,6,7], target = 7, --> {{7},{2,2,3}}
      */
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> res = new LinkedList<>();
         LinkedList<Integer> path = new LinkedList<>();
         Arrays.sort(candidates);
         dfs01(0, candidates, target, res, path);
@@ -160,11 +160,10 @@ public class Dfs_Hot100_01 {
         if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word.charAt(index))
             return false;
         if (index == word.length() - 1) return true;        //不断满足单词对应index字符,如果index来到了n - 1那么就符合
-        char temp = board[i][j];                                //暂时保存值
-        board[i][j] = '.';                                     //修改值,复制被重复访问
+        board[i][j] = '\0';                                  //设置为空字符
         boolean res = dfs(board, word, i + 1, j, index + 1) || dfs(board, word, i - 1, j, index + 1) ||
                 dfs(board, word, i, j + 1, index + 1) || dfs(board, word, i, j - 1, index + 1);   //从上下左右开始搜索
-        board[i][j] = temp;                                      //恢复原来的值
+        board[i][j] = word.charAt(index);                                      //恢复原来的值
         return res;
     }
 

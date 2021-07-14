@@ -12,3 +12,8 @@ leetcode hot100已经做过的题目
 
 swordOffer已经做过的题目复习
 swordOffer 第53题-I
+
+
+
+回溯法:
+ 全排序中如果是交换，那么都是index+1

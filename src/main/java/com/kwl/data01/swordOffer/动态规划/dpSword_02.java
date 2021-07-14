@@ -17,7 +17,7 @@ public class dpSword_02 {
      * 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
      */
     public int numWays(int n) {
-        if (n == 0 || n == 1) return 1;
+        if (n == 0 || n == 1) return 1;      //这里注意青蛙跳，n==0要特别处理!!
         if (n == 2) return 2;
         int p1 = 1, p2 = 2;
         for (int i = 3; i <= n; i++) {
@@ -55,7 +55,7 @@ public class dpSword_02 {
         if (i >= board.length || i < 0 || j >= board[0].length || j < 0 || board[i][j] != word[k])
             return false;    //越界是直接返回false
         if (k == word.length - 1) return true;
-        board[i][j] = '\0';    //设置为空字符
+        board[i][j] = '\0';    //空字符(NULL)
         boolean res = dfs(board, word, i + 1, j, k + 1) || dfs(board, word, i - 1, j, k + 1) ||
                 dfs(board, word, i, j + 1, k + 1) || dfs(board, word, i, j - 1, k + 1);
         board[i][j] = word[k]; //board[i][j]一定是等于word[k]的

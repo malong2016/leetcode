@@ -12,14 +12,11 @@ import java.util.*;
 class Data01ApplicationTests {
 
 
-    int fun01(){
-        int a = 100;
-        return a = 103;
-    }
+
 
     @Test
     void test() {
-        System.out.println(fun01());
+
     }
 
 }
