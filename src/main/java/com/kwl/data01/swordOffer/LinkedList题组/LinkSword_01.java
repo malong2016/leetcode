@@ -102,13 +102,13 @@ public class LinkSword_01 {
      * 思路: 双指针pre(初始化指向null)和p进行扫描逆转,后继指针temp用来保留p的后继
      */
     public  ListNode reverseList(ListNode headNode) {
-        ListNode pre = null;
+        ListNode pre = null;      //这里不需要链接到head
         ListNode p = headNode;
         while (p != null) {
-            ListNode pNodeNext = p.next;
+            ListNode temp = p.next;       //保存后继
             p.next = pre;
             pre = p;
-            p = pNodeNext;
+            p = temp;
         }
         return pre;
     }

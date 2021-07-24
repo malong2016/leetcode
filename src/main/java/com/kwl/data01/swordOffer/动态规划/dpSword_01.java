@@ -154,7 +154,7 @@ public class dpSword_01 {
      * 思路01(leetcode 动态规划): f(i) = f(i-2)+f(i-1) 如果Xi-1Xi可以被翻译 f(i) = f(f-1),如果Xi-1Xi不能被翻译
      * 思路02(数字求余): todo等下
      */
-    public int getTranslationCount(int num) {
+    public int translateNu01(int num) {
         String str = String.valueOf(num);
         int[] dp = new int[str.length() + 1];   //这里要是最后一位对应num,考虑0就是length+1,不考虑就是length
         dp[0] = 1;
@@ -168,6 +168,24 @@ public class dpSword_01 {
             }
         }
         return dp[str.length()];
+    }
+
+    public int translateNum(int num) {
+        String numStr = String.valueOf(num);
+        if (numStr.length() == 1) return 1;
+        int a = 1, b = 1;   //当len长度为0或者是1只有一种翻译情况
+        for (int i = 2; i <= numStr.length(); i++) {
+            String tempStr = numStr.substring(i - 2, i); //包括前不包括后
+            int tempInt = Integer.parseInt(tempStr);
+            if (tempInt >= 10 && tempInt <= 25) {
+                int temp = b;
+                b = a + b;
+                a = temp;
+            } else {
+                a = b;       //b不变,a赋值为b
+            }
+        }
+        return b;
     }
 
     /**

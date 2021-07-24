@@ -42,44 +42,8 @@ public class ArraysSword_01 {
      * 思路02(最优解,时间复杂度o(log2n)): 先二分查到到3,如果k左边第一个元素不是k(或者改元素下标是0),那么这个元素就是第一个k,返回这个元素的index
      * 左边存在,在递归找左边,找到满足要求
      */
-    public static int getFirstK(int[] arr, int k, int start, int end) { //递归开始和结束的位置
-        if (start > end) return -1;       //不存在k,返回-1
-        int mid = (start + end) / 2;
-        if (arr[mid] == k) {
-//            if (mid > 0 && arr[mid - 1] != k || mid == 0) return mid;
-            if (mid == 0 || arr[mid - 1] != k) return mid;
-            else end = mid - 1;    //向下找
-        } else if (arr[mid] > k) {          //左半区找
-            end = mid - 1;
-        } else {                            //右半区找
-            start = mid + 1;
-        }
-        return getFirstK(arr, k, start, end);
-    }
-
-    public static int getLastK(int[] arr, int k, int start, int end) {      //理由同上
-        if (start > end) return -1;       //不存在k,返回-1
-        int mid = (start + end) / 2;
-        if (arr[mid] == k) {
-            if (mid == arr.length - 1 || arr[mid + 1] != k) return mid; //不能等于
-            else start = mid + 1;    //向上找
-        } else if (arr[mid] > k) {          //左半区找
-            end = mid - 1;
-        } else {                            //右半区找
-            start = mid + 1;
-        }
-        return getLastK(arr, k, start, end);
-    }
-
-    public static int getNumberOfK(int[] arr, int k) {
-        int number = 0;
-        if (arr != null) {
-            int firstK = getFirstK(arr, k, 0, arr.length - 1);
-            int lastK = getLastK(arr, k, 0, arr.length - 1);
-
-            if (firstK > -1 && lastK > -1) number = lastK - firstK + 1;
-        }
-        return number;        //注意arr如果是null,就返回初始化0
+    public int search(int[] nums, int target) {
+        return 0;
     }
 
     /**
@@ -105,19 +69,19 @@ public class ArraysSword_01 {
      * 使得他们的和正好是s。如果有多对数字的和等于s,就输出任意一对就可以
      * eg: {1,2,4,7,11,15}和数字15 => 输入 {4,11} (因为4+11=15)
      * <p>
-     * 思路01(时间复杂度o(n)):设置front/tail指针,计算之和,大于目标值,tail指针右移动,小于目标值,front左移动
-     * 等于就返回头尾指针指向的数  findNumbersWithSum
+     * 思路01(时间复杂度o(n)):设置l/r指针,计算之和,大于目标值,r指针右移动,小于目标值,l左移动
+     * 等于就返回头尾指针指向的数
      * 思路02: 如果set里面存在target-nums[i],就直接输出，如果不存在就把nums[i] add到set里面
      */
     public int[] findNumbersWithSum(int[] nums, int target) {
         if (nums == null || nums.length == 1) return new int[0];
-        int begin = 0, end = nums.length - 1;
-        while (begin < end) {
-            int sum = nums[begin] + nums[end];
-            if (sum > target) end--;
-            else if (sum < target) begin++;
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int sum = nums[l] + nums[r];
+            if (sum > target) r--;
+            else if (sum < target) l++;
             else {
-                return new int[]{nums[begin], nums[end]};
+                return new int[]{nums[l], nums[r]};
             }
         }
         return new int[0];
@@ -144,24 +108,24 @@ public class ArraysSword_01 {
      */
     public int[][] findContinuousSequence(int target) {
         if (target < 3) return new int[0][0];  //最少要连续二个数,这个不符合条件
-        int left = 1, right = 2, sum = 3;
+        int l = 1, r = 2, sum = 3;
         List<int[]> res = new LinkedList<>();      //注意本题目返回的是int[][]所以泛型还是使用int[]好
-        while (left < right) {
+        while (l < r) {
             if (sum == target) {
-                int[] path = new int[right - left + 1];
-                for (int i = left; i < right + 1; i++)
-                    path[i - left] = i;  //把联系的数写入path之中
+                int[] path = new int[r - l + 1];
+                for (int i = l; i < r + 1; i++)
+                    path[i - l] = i;  //把联系的数写入path之中
                 res.add(path);
             }
             if (sum >= target) {        //先减少后移动
-                sum -= left;
-                left++;
+                sum -= l;
+                l++;
             } else {                    //先移动,后添加
-                right++;
-                sum += right;
+                r++;
+                sum += r;
             }
         }
-        return res.toArray(new int[0][]);
+        return res.toArray(new int[0][]);   //知名类型是int[]就够了
     }
 
     /**
@@ -200,19 +164,31 @@ public class ArraysSword_01 {
      * <p>
      * 异或补充: x^0 = x; x^x = 0;
      */
-    public static int[] singleNumbers(int[] nums) {
-        int n = 0;
-        for (int num : nums) {
-            n ^= num;            //求出x ^ y
+    public int[] singleNumbers(int[] nums) {
+        //异或,求解
+        //全部异或，求出a ^ b
+        //用1去不断试探可能有一位是1
+        //根据这一位进行分组，a和b肯定在不同的小组，小组全部异或就可以得出值
+        int temp = 0;
+        for(int num : nums){
+            temp ^=  num;  //得到a ^ b
         }
-        int m = 1, x = 0, y = 0;
-        while ((m & n) == 0) m <<= 1; //如果等于0(注意不是不等于1!!!)，那么1就继续向左移动,寻找第一位不是1的
-        for (int num : nums) {
-            if ((num & m) == 0) x ^= num;   //分组01
-            else y ^= num;                  //分组02
+        int flag = 1;
+        while((flag & temp)==0){   //找到第一位是1的数(a和b第一个不同的位置一个0一个1)，就跳出循环
+            flag <<= 1;
         }
-        return new int[]{x, y};
+        int[] res = new int[2]; //初始化0
+        for(int num : nums){
+            if ((num & flag) == 0){
+                res[0] ^=  num;
+            }else{
+                res[1] ^= num;
+            }
+        }
+        return res;
     }
+
+
 
     /**
      * 题目08(swordOffer 第56题-II): 数组中数字出现的次数
@@ -233,9 +209,6 @@ public class ArraysSword_01 {
         }
         return -1;
     }
-
-
-
 
 
 }

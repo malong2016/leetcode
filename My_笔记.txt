@@ -17,3 +17,6 @@ swordOffer 第53题-I
 
 回溯法:
  全排序中如果是交换，那么都是index+1
+
+
+本次swordoffer第一次默写是从12号开始，注意

@@ -3,7 +3,6 @@ package com.kwl.data01.swordOffer.String题组;
 import java.util.*;
 
 /**
- *
  * @author kuang.weilin
  * @date 2021/2/14
  */
@@ -16,7 +15,7 @@ public class StringSword_01 {
      * 思路01(基础解): 最大Math.pow(10,n)-1
      * 思路02(大数打印法,参考leetcode): todo
      */
-    public  int[] printToMaxOfNDigits(int n) {
+    public int[] printToMaxOfNDigits(int n) {
         int max = (int) (Math.pow(10, n) - 1);
         int res[] = new int[max];          //注意是返回值,res[]不能有空隙
         for (int i = 0; i < max; i++) res[i] = i + 1;
@@ -28,7 +27,7 @@ public class StringSword_01 {
      * 题目02(swordOffer 第05题): 请实现一个函数，把字符串 s 中的每个空格替换成"%20"。
      * 例如: "we are happy" 输出为 "we%20are%20happy"
      */
-    public  String replaceBlank01(String str) {
+    public String replaceBlank01(String str) {
         StringBuilder stringBuilder = new StringBuilder(str);
 //        for (int i = 0; i < stringBuilder.length(); i++) {
 //            if (stringBuilder.charAt(i) == ' ') {                     //遍历stringBuilder如果为' '就替换
@@ -49,24 +48,25 @@ public class StringSword_01 {
      * 方法二: HashSet
      * 方法三: 使用new int[128] A~Z 65 到90   a~z 97~122
      */
-    public  int lengthOfLongestSubString(String str) {
+    public int lengthOfLongestSubString(String str) {
         Map<Character, Integer> map = new HashMap<>();
-        int left = 0, right = 0, res = 0;
-        while (right < str.length()) {
-            if (map.containsKey(str.charAt(right))) {
-                left = Math.max(left, map.get(str.charAt(right)) + 1);
+        int l = 0, r = 0, res = 0;
+        while (r < str.length()) {
+            if (map.containsKey(str.charAt(r))) {       //注意是contains!
+                l = Math.max(l, map.get(str.charAt(r)) + 1);
             }
-            res = Math.max(res, right - left + 1);
-            map.put(str.charAt(right), right);
-            right++;
+            res = Math.max(res, r - l + 1);
+            map.put(str.charAt(r), r);
+            r++;
         }
         return res;
     }
+
     public int lengthOfLongestSubstring(String s) {          //new int[128]解法
         int[] window = new int[128];
         int l = 0, r = 0, res = 0;
-        while (r < s.length()){
-            while (window[s.charAt(r)] > 0){       //大于0说明有重复的，此时还没有添加进来
+        while (r < s.length()) {
+            while (window[s.charAt(r)] > 0) {       //大于0说明有重复的，此时还没有添加进来
                 window[s.charAt(l++)]--;
             }
             res = Math.max(res, r - l + 1);
@@ -85,7 +85,7 @@ public class StringSword_01 {
      * 思路02:设置一个HashMap(key,boolean) 不断的加入,boolean判断是否是已经加入,在扫描到第一个true
      * 思路03(假设是字母最大'z'是122):先将0-123全部设置为new int[123]然后扫描arr[char[i]]++进行计数,第一个arr[char[i]]==1就可以输出
      */
-    public  char firstNotRepeatingChar(String str) {       //思路02
+    public char firstNotRepeatingChar(String str) {       //思路02
         HashMap<Character, Boolean> hashMap = new HashMap<>();
         char[] charArray = str.toCharArray();
         for (char c : charArray) {
@@ -97,14 +97,14 @@ public class StringSword_01 {
         return ' ';     //如果不存在就返回null
     }
 
-    public  char firstNotRepeatingChar01(String str) {       //思路03
-        int[] arr = new int[123];
+    public char firstNotRepeatingChar01(String str) {       //思路03
+        int[] arr = new int[128];
         char[] charArray = str.toCharArray();
         for (char c : charArray) {
             arr[c]++;         //对应字符串转化为int类型进行计数,注意第一次数组为1的值,返回(char)index就是找到的值
         }
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == 1) return (char) i;        //要强制转化,如果写int的变量,如果直接写int字面量就不需要转化
+            if (arr[i] == 1) return (char) i;        //、如果写int的变量要强转,如果直接写12就不需要转化
         }
         return ' ';     //如果不存在就返回null
     }
@@ -153,7 +153,29 @@ public class StringSword_01 {
      * 思路02(双指针从尾巴向前扫描)加入到StringBuild中来
      * 思路03: str.split(" ")先分割，然后在加入到StringBuild中来
      */
-    public String reverseSentence(String str) {
+    public String reverseWords(String s) {
+        //StringBuild用来接受,双指针从后向前扫描空格
+        int l = s.length() - 1, r = s.length() - 1;
+        StringBuilder stringBuilder = new StringBuilder();
+        while (l >= 0){
+            while (l >= 0 && s.charAt(l) != ' ') l--;  //扫描到空格或者等于0就是一个完整的
+            stringBuilder.append(s.subSequence(l + 1, r + 1)+" ");
+            while(l >= 0 && s.charAt(l) == ' ') l--;      //去除空格,找到第一个不是空格
+            r = l;
+        }
+        return stringBuilder.toString().trim();
+    }
+    public String reverseWords03(String s) {      //分割法
+        //先分割
+        String[] str =  s.split(" ");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = str.length - 1; i >= 0; i--) {
+            if (str[i].equals("")) continue;
+            else stringBuilder.append(str[i] + " ");
+        }
+        return stringBuilder.toString().trim();
+    }
+    public String reverseWords01(String str) {        //swordOffer官方解法
 
         char[] charArray = str.toCharArray();
         reverse(charArray, 0, charArray.length - 1);

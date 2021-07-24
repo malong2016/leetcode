@@ -49,9 +49,9 @@ public class TreeSword_02 {
         Queue<TreeNode> queue = new LinkedList<>();
         if (root != null) queue.offer(root);
         while(!queue.isEmpty()){
-            List<Integer> path = new LinkedList<>();
-            int num =queue.size();
-            for (int i = 0; i < num; i++) {
+            List<Integer> path = new LinkedList<>();   //每次都是要新的path
+            int size =queue.size();
+            for (int i = 0; i < size; i++) {
                 TreeNode pollNode =  queue.poll();
                 path.add(pollNode.val);
                 if (pollNode.left != null) queue.offer(pollNode.left);

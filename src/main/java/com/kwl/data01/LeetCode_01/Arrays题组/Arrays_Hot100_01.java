@@ -21,7 +21,7 @@ public class Arrays_Hot100_01 {
             sum += nums[r];
             while (sum >= target) {       //l右滑动,减少窗口里面的元素,直到窗口小于target
                 res = Math.min(res, r - l + 1);     //更新res
-                sum -= nums[l++];         //l右移动
+                sum -= nums[l++];         //l右移动,最多是把窗口里面的东西全部剪掉为0，肯定会跳出
             }
             r++;
         }

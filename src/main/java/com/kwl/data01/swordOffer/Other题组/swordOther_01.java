@@ -185,4 +185,9 @@ public class swordOther_01 {
         }
         return a;
     }
+
+    /**
+     * 题目07(swordOffer 面试题2): 实现单例模式  -- 本题在swordOffer上没有
+     * 代码参考: com.kwl.data01.designMode.CreativeMode.Singleton
+     */
 }

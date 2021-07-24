@@ -97,11 +97,19 @@ public class dpSword_02 {
      * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
-    public int FindGreatestSumOfSumOfSubArray(int[] arr) {
+    public int FindGreatestSumOfSumOfSubArray(int[] arr) {      //原地改变数组
         int res = arr[0];    //默认是res是arr[0]
         for (int i = 1; i < arr.length; i++) {
             arr[i] += Math.max(arr[i - 1], 0);
             res = Math.max(arr[i], res);
+        }
+        return res;
+    }
+    public int maxSubArray(int[] nums) {        //标准做法，不断更新pre
+        int pre = 0, res = Integer.MIN_VALUE;
+        for(int num : nums){
+            pre = Math.max(pre + num, num);   //选与不选,pre指向当前
+            res = Math.max(res,pre);         //更新res
         }
         return res;
     }
