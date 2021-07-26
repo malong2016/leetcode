@@ -74,9 +74,12 @@ public class Singleton {         //懒汉模式
      * 在加锁处理里面还需要判断一次实例是否已存在，这种做法被称为“双重锁定”。
      */
     public  static Singleton getInstance03() {
-        if (instance == null){                      //先判断实例是否存在，如果实例不存在就加锁
+        //先判断实例是否存在，如果实例不存在就加锁,如果第二个线程看到锁了,就的等待执行完成，进入之后再一次上锁
+        if (instance == null){
             synchronized (Singleton.class){
-                instance = new Singleton();
+                if (instance == null) {
+                    instance = new Singleton();
+                }
             }
         }
         return instance;

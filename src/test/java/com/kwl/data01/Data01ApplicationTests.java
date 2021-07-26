@@ -16,9 +16,5 @@ class Data01ApplicationTests {
 
     @Test
     void test() {
-
     }
-
-
-
 }

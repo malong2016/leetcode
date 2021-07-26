@@ -27,14 +27,16 @@ public class swordOther_01 {
         int res = 0;
         while (n != 0) {
             res++;
+            //会把int x = 1000000(二进制)
+            // x - 1 = 0111111 (把最后一个位置变成0,后面变成1)
+            //x & (x-1)把最后一个1变成0
             n = (n - 1) & n;           //每次进行n-1&n都是把最右边的1变成0
         }
         return res;
     }
 
     public int numberOf2(int n) {
-        int res = 0;
-        int flag = 1;
+        int flag = 1, res = 0;
         while (flag != 0) {         //这个可以循环32次
             if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
             flag <<= 1;
@@ -68,8 +70,6 @@ public class swordOther_01 {
         }
         return res;
     }
-
-
 
 
     public int numberOf1_my(int n) {

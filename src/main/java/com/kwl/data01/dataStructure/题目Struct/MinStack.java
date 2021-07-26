@@ -3,7 +3,7 @@ package com.kwl.data01.dataStructure.题目Struct;
 import java.util.Stack;
 
 /**
- * leetcode 面试题155  (最小栈)
+ * leetcode 面试题155  (最小栈)    --不用靠率栈为null
  * swordOffer 面试题33 (包含min函数的栈)
  *
  * @author kuang.weilin

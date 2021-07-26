@@ -24,6 +24,4 @@ public class Person {
     private int city;
 
     private Student student;
-
-
 }

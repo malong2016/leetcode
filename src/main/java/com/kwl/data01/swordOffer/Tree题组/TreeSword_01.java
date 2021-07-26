@@ -58,14 +58,17 @@ public class TreeSword_01 {
 
     /**
      * 题目03(swordOffer 第26题):求树的子结构
-     * 描述: 输入二颗二叉树A和B,判断B是不是A的子结构
+     * 描述: 输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+     * eg: [1,2,3,4]  [3]  --> true
      */
     public boolean isSubStructure(TreeNode A, TreeNode B) {
-        //当A和B同时不是null的时候,A和B是子结构,A的左右子树和B是子结构a满足其中之一就可以
+        //当A和B同时不是null的时候,A和B是子结构,A的左右子树和B是子结构a满足其中之一就可以.
+        //isSubStructure(A.left, B) 也不一定是A.left做root(A.left子树满足就可以),所以还是要继续递归
+        //注意后手要括号起来,因为如果前面出现A为null,后手所有的都不会执行，如果没有括号,后面会执行！！！
         return (A != null && B != null) && (recur(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
     }
 
-    Boolean recur(TreeNode A, TreeNode B) {
+    Boolean recur(TreeNode A, TreeNode B) {       //判断从A的root节点出发，节点B是不是A的子树
         if (B == null) return true;
         if (A == null || A.val != B.val) return false;
         return recur(A.left, B.left) && recur(A.right, B.right);
@@ -164,6 +167,9 @@ public class TreeSword_01 {
      * 题目08(swordOffer 第36题): 二叉搜索树与双向链表
      * 描述: 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表.(从小到大进行排序)
      * 要求不能创建任何新的节点,只能调节树中结点的指向。
+     *
+     * 注意: 特别地，我们希望可以就地完成转换操作。当转化完成以后，
+     * 树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继。还需要返回链表中的第一个节点的指针。
      * <p>
      * 思路01(leetcode解法):first和last结点设置为null.调用中序遍历helper(root)
      * 如果结点不为null,调用左子树递归(helper(node.left))-->这是寻找最小的最,last为null,初始化first节点

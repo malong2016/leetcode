@@ -4,6 +4,7 @@ import com.kwl.data01.dataStructure.TreeNode;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * @author kuang.weilin
@@ -11,34 +12,56 @@ import java.util.List;
  */
 public class TreeSword_03 {
 
+
     /**
-     * 题目01(swordOffer 第34题): 二叉树中和为某一值的路径
-     * 描述: 输入一棵二叉树和一个整数,打印出二叉树中节点值的和为输入整数的所有路径。
-     * 从树的root结点开始向下一直到叶结点所经过的节点形成一条路径
+     * 题目07(swordOffer 第37题): 序列化二叉树
+     * 描述: 请实现二个函数,分别用来序列化和反序列化!!!
+     * leetcode是层序遍历,空指针用null表示,[1,2,null,null]
      * <p>
-     * 思路01: 回溯法,先序遍历+路径记录.target-遍历的值,如果最后减到了0,就加入到List<Integer>
+     * 思路01(leetcode): 序列化，利用层序遍历和stringBuild来实现输出
      */
-
-
-    public List<List<Integer>> pathSum(TreeNode root, int target) {  //回溯法遍历找值
-        List<List<Integer>> res = new LinkedList<>();
-        LinkedList<Integer> path = new LinkedList<>();
-        dfs(root, target, res, path);
-        return res;
-    }
-
-    void dfs(TreeNode root, int target, List<List<Integer>> res, LinkedList<Integer> path) {
-        if (root != null) {
-            path.add(root.val);           //先进行添加
-            target -= root.val;
-            if (root.left == null && root.right == null && target == 0) {
-                res.add(new LinkedList<>(path));
-            }
-            dfs(root.left, target, res, path);
-            dfs(root.right, target, res, path);
-            path.removeLast();
+    public  String serialize(TreeNode root) {           //这是序列化
+        if (root == null) return "[]";
+        StringBuilder res = new StringBuilder("[");
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node != null) {
+                res.append(node.val + ",");
+                queue.add(node.left);           //无论是否是null都是要添加进来
+                queue.add(node.right);
+            } else res.append("null,");
         }
+        res.deleteCharAt(res.length() - 1);
+        res.append("]");
+        return res.toString();
     }
+
+    public  TreeNode deserialize(String data) {       //反序列化
+        if (data == "[]") return null;
+        String[] arr = data.substring(1, data.length() - 1).split(",");      //转化为数组类型
+        Queue<TreeNode> queue = new LinkedList<>();
+        TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+        queue.offer(root);
+        int i = 1;   //通过i不断进行控制找到下一个,root节点已经入队
+        while (!queue.isEmpty()) {
+            TreeNode poll = queue.poll();
+            if (!arr[i].equals("null")) {        // 构造树和入队都是在判断条件里面进行的
+                poll.left = new TreeNode(Integer.parseInt(arr[i]));
+                queue.offer(poll.left);
+            }
+            i++;
+            if (!arr[i].equals("null")) {
+                poll.right = new TreeNode(Integer.parseInt(arr[i]));
+                queue.offer(poll.right);
+            }
+            i++;
+        }
+        return root;
+    }
+
+
 
 
 }

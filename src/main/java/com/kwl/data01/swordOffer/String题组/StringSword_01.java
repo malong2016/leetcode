@@ -175,26 +175,6 @@ public class StringSword_01 {
         }
         return stringBuilder.toString().trim();
     }
-    public String reverseWords01(String str) {        //swordOffer官方解法
-
-        char[] charArray = str.toCharArray();
-        reverse(charArray, 0, charArray.length - 1);
-
-        int begin = 0, end = 0;      //初始化,开始从开始扫描
-        while (begin != charArray.length) {
-            if (charArray[begin] == ' ') {
-                begin++;
-                end++;
-            } else if (end == charArray.length || charArray[end] == ' ') {       //要扫描到字符数组溢出,先判断end == charArray.length
-                reverse(charArray, begin, --end);      //end要向前移动一位到非空格
-                begin = ++end;          //同时移动到空格,最后会等于长度length
-            } else {
-                end++;
-            }
-        }
-        return String.valueOf(charArray);
-    }
-
     /**
      * 题目07(leetcode 20) 表示数值的字符串
      * 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。

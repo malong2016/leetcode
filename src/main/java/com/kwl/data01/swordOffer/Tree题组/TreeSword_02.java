@@ -97,8 +97,8 @@ public class TreeSword_02 {
 
 
     /**
-     * 题目04(swordOffer第8): 二叉树的下一个节点
-     * 描述: 给定一棵二叉树和其中一个节点,如果找出中序遍历序列的下一个节点?
+     * 题目04(swordOffer第8题): 二叉树的下一个节点
+     * 描述: 给定一棵二叉树和其中一个节点,如何找出中序遍历序列的下一个节点?
      * 树中的节点除了有二个分别指向左右节点的指针,还有一个指向父节点的指针
      * <p>
      * 思路01(swordOffer思路): 假如存在右子树,沿着右节点一路left找到最左边的那个节点
@@ -106,9 +106,9 @@ public class TreeSword_02 {
      * 的左节点就是next
      */
     public TreeWithFather getNext(TreeWithFather root) {
-        if (root == null) return null;     //根节点或者目标节点为null,返回null
+        if (root == null) return null;
 
-        if (root.right != null) {
+        if (root.right != null) {     //存在右节点，那么就找到右节点中最左边的那个节点(也是本子树中序遍历最先输出的)
             root = root.right;
             while (root.left != null) root = root.left;
             return root;
@@ -116,61 +116,14 @@ public class TreeSword_02 {
 
         while (root.father != null) {         //无右子树,如果存在父节点
             if (root.father.left == root) return root.father;      //如果这个节点是父节点的左子树
-            root = root.father;         //不断向上找父节点
+            root = root.father;
         }
-        return null;        //无右子树,不存在父节点
+        return null;        //无右子树,向上找不到一个节点的左节点是本节点
     }
+
 
     /**
-     * 题目05(swordOffer 第37题): 序列化二叉树
-     * 描述: 请实现二个函数,分别用来序列化和反序列化!!!
-     * leetcode是层序遍历,空指针用null表示,[1,2,null,null]
-     * <p>
-     * 思路01(leetcode): 序列化，利用层序遍历和stringBuild来实现输出
-     */
-    public  String serialize(TreeNode root) {           //这是序列化
-        if (root == null) return "[]";
-        StringBuilder res = new StringBuilder("[");
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            if (node != null) {
-                res.append(node.val + ",");
-                queue.add(node.left);           //无论是否是null都是要添加进来
-                queue.add(node.right);
-            } else res.append("null,");
-        }
-        res.deleteCharAt(res.length() - 1);
-        res.append("]");
-        return res.toString();
-    }
-
-    public  TreeNode deserialize(String data) {       //反序列化
-        if (data == "[]") return null;
-        String[] arr = data.substring(1, data.length() - 1).split(",");      //转化为数组类型
-        Queue<TreeNode> queue = new LinkedList<>();
-        TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
-        queue.offer(root);
-        int i = 1;   //通过i不断进行控制找到下一个,root节点已经入队
-        while (!queue.isEmpty()) {
-            TreeNode poll = queue.poll();
-            if (!arr[i].equals("null")) {        // 构造树和入队都是在判断条件里面进行的
-                poll.left = new TreeNode(Integer.parseInt(arr[i]));
-                queue.offer(poll.left);
-            }
-            i++;
-            if (!arr[i].equals("null")) {
-                poll.right = new TreeNode(Integer.parseInt(arr[i]));
-                queue.offer(poll.right);
-            }
-            i++;
-        }
-        return root;
-    }
-
-    /**
-     * 题目06(swordOffer 第68题 - I): 二叉搜索树的最近公共祖先
+     * 题目05(swordOffer 第68题 - I): 二叉搜索树的最近公共祖先
      * 中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，
      * 最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。
      * <p>
@@ -183,26 +136,13 @@ public class TreeSword_02 {
         while (root != null) {            //这里不可能是null,一定能找到公共节点
             if (root.val > q.val && root.val > p.val) root = root.left;
             else if (root.val < q.val && root.val < p.val) root = root.right;
-            else break;          //这个是存在的3种情况跳出循环
+            else break;        //这个值在这二边的中间
         }
         return root;
     }
-
-    public TreeNode lowestCommonAncestor01(TreeNode root, TreeNode p, TreeNode q) {
-
-        while (root != null) {
-            if (root.val < p.val) // p,q 都在 root 的右子树中
-                root = root.right; // 遍历至右子节点
-            else if (root.val > q.val) // p,q 都在 root 的左子树中
-                root = root.left; // 遍历至左子节点
-            else break;
-        }
-        return root;
-    }
-
     /**
-     * 题目07(swordOffer 第68题 - I): 二叉树的最近公共节点
-     * 思路01: 先序遍历
+     * 题目06(swordOffer 第68题 - I): 二叉树的最近公共节点
+     * 思路01: 最后q和p一定会落在root二端
      */
     public TreeNode lowestCommonAncestor03(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null || root == p || root == q) return root;        //root本身是null，或者root就是p/q就返回本身
@@ -212,6 +152,36 @@ public class TreeSword_02 {
         if (right == null) return left;
         return root;        //左右子树都找到了，说明在root的二端，就返回root
     }
+
+    /**
+     * 题目07(swordOffer 第34题): 二叉树中和为某一值的路径        --leetcode 第437题 没有限制root和叶子节点,那么就要递归每一个节点作为root节点,然后不需要判断叶子节点
+     * 描述: 输入一棵二叉树和一个整数,打印出二叉树中节点值的和为输入整数的所有路径。
+     * 从树的root结点开始向下一直到叶结点所经过的节点形成一条路径
+     * <p>
+     * 思路01: 回溯法,先序遍历+路径记录.target-遍历的值,如果最后减到了0,就加入到List<Integer>
+     */
+
+
+    public List<List<Integer>> pathSum(TreeNode root, int target) {  //回溯法遍历找值
+        List<List<Integer>> res = new LinkedList<>();
+        LinkedList<Integer> path = new LinkedList<>();
+        dfs(root, target, res, path);
+        return res;
+    }
+
+    void dfs(TreeNode root, int target, List<List<Integer>> res, LinkedList<Integer> path) {
+        if (root != null) {
+            path.add(root.val);           //先进行添加
+            target -= root.val;
+            if (root.left == null && root.right == null && target == 0) {
+                res.add(new LinkedList<>(path));
+            }
+            dfs(root.left, target, res, path);
+            dfs(root.right, target, res, path);
+            path.removeLast();
+        }
+    }
+
 
     /**
      * 题目08(swordOffer 第33题): 二叉搜索树的后序遍历序列
@@ -224,8 +194,8 @@ public class TreeSword_02 {
      * 左子树:(i-1)  右子树:（i...length-2)   root: length-1
      */
     public boolean verifySquenceOfBSF(int[] postOrder) {
-        return recur03(postOrder, 0, postOrder.length - 1);
-    }
+    return recur03(postOrder, 0, postOrder.length - 1);
+}
 
     public boolean recur03(int[] postOrder, int l, int r) {        //数组和起始index和结束index
         if (l >= r) return true;       //注意如果没有右子树, j == m

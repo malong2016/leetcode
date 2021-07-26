@@ -3,10 +3,10 @@ package com.kwl.data01.dataStructure.题目Struct;
 import java.util.LinkedList;
 
 /**
- * swordOffer  第59题 - II. 队列的最大值
+ * swordOffer  第59题 - II. 队列的最大值  --要考虑队为null
  *
  * 思路01: 直接遍历队列，每次都求出最大值
- * 思路02：设置二个双端队列，一个记录每次pop的最大值，利用滑动窗口
+ * 思路02：设置二个双端队列，一个记录每次pop的最大值，利用滑动窗口(单调栈)
  * @author kuang.weilin
  * @date 2021/7/1 22:48
  */

@@ -100,9 +100,8 @@ public class TreeNode {
                 stack.push(root);
                 root = root.left;       //将左边的依次入栈
             }
-            root = stack.pop();           //这里是出最后的左
-            res.add(root.val);
-            root = root.right;
+            res.add(stack.pop().val);  //这里是出最后的左
+            root = root.right;      //注意最后一个节点是没有左子树，跳出循环的时候！！，直接指向右手
         }
         return res;
     }

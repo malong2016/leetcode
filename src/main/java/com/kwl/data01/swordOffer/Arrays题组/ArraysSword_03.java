@@ -68,17 +68,19 @@ public class ArraysSword_03 {
      * 2)非严格递减: 每轮窗口滑动添加了元素 nums[j + 1]nums[j+1] ，需将 dequedeque 内所有 < nums[j + 1]<nums[j+1] 的元素删除。
      * 3) 每次都是队首就是最大值
      */
-    public int[] maxSildingWindow(int[] nums, int k) {
-        if (nums.length == 0 || k == 0) return new int[0];
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(nums.length == 0 || k == 0) return new int[0];
         LinkedList<Integer> linkedList = new LinkedList<>();
         int[] res = new int[nums.length - k + 1];
-        for (int i = 1 - k, j = 0; j < nums.length; i++, j++) {
-            if (i > 0 && linkedList.peekFirst() == nums[i - 1])
-                linkedList.removeFirst();    //如果num[i-1](对应滑动过的窗口)和队列中队首相等就删除
-            while (!linkedList.isEmpty() && linkedList.peekLast() < nums[j])
-                linkedList.removeLast(); //保持linkedList递减,删除队列中所有比Num[j]小的数
-            linkedList.addLast(nums[j]);
-            if (i >= 0) res[i] = linkedList.peekFirst();     //记录窗口的最大值
+        for(int i = 1 - k,j = 0; j < nums.length; i++,j++){     //i是前指针，可以判断出队，j是后指针，遍历指针
+            if(i > 0 && linkedList.peek() == nums[i-1]){
+                linkedList.poll(); //对手元素和移动的元素相等，就要清除
+            }
+            while(!linkedList.isEmpty()&&linkedList.peekLast()<nums[j]){
+                linkedList.pollLast();
+            }
+            linkedList.offer(nums[j]);   //无论如何都是要把nums[j]入队
+            if(i>=0) res[i] = linkedList.peek(); //队首就是最大值
         }
         return res;
     }
