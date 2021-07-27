@@ -50,15 +50,16 @@ public class ArraysSword_01 {
      * 题目03(swordOffer 第53题-II): 0～n-1中缺失的数字
      * 一个长度为n-1的递增排序数组中的所有数字都是唯一的，
      * 并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+     *
      * <p>
      * 思路01: 以缺少的值为边界，左半区是nums[i] = i,右半区是num[i] != i 题目转化为求右子数组的首位元素
      */
     public int missingNumber(int[] nums) {
         int low = 0, high = nums.length - 1;
-        while (low <= high) {
+        while (low <= high) {      //最后low指向排序区的后一个元素!!!
             int mid = (low + high) / 2;
-            if (nums[mid] == mid) low = mid + 1; //此时中点在左半区，向上半区逼近
-            else high = mid - 1;      //中点是在右半区，下半区逼近
+            if (nums[mid] == mid) low = mid + 1; //此时中点在左半区，向上半区逼近\
+            else high = mid - 1;      //中点是在右半区，下半区逼近.注意，这里是逼近到high == low,返回就是low的值
         }
         return low;
     }
@@ -110,7 +111,7 @@ public class ArraysSword_01 {
         if (target < 3) return new int[0][0];  //最少要连续二个数,这个不符合条件
         int l = 1, r = 2, sum = 3;
         List<int[]> res = new LinkedList<>();      //注意本题目返回的是int[][]所以泛型还是使用int[]好
-        while (l < r) {
+        while (l < r) {     //结束条件是l < r，因为当r到达target/或者某一值时候，sum一定>target,所以l会一直右移动直到和r重合
             if (sum == target) {
                 int[] path = new int[r - l + 1];
                 for (int i = l; i < r + 1; i++)

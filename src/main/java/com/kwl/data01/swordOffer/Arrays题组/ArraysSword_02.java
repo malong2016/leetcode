@@ -63,18 +63,19 @@ public class ArraysSword_02 {
      * 思路01(leetcode):模拟 t(上) b(下) l(左) r(右) 上下左右四个边界
      */
     public int[] printMatrix(int[][] matrix) {
-        if (matrix.length == 0) return new int[0];
-        int t = 0, b = matrix.length - 1, x = 0;               //设置上下的边界
-        int l = 0, r = matrix[0].length - 1;                   //设置左右的边界
-        int[] res = new int[(r + 1) * (b + 1)];
+        if (matrix.length == 0) return new int[0];     //如果长度是0，那么n就会空指针异常
+        int m = matrix.length, n = matrix[0].length;
+        int t = 0, b = m - 1, l = 0, r = n - 1;
+        int[] res = new int[m * n];
+        int x = 0;
         while (true) {
-            for (int i = l; i <= r; i++) res[x++] = matrix[t][i]; // left(左) to right(右). 固定top(上)
-            if (++t > b) break;          //注意最后t和b l和f相遇的时候，这行或者这列是没有打印，打印完成这行/列，就是越界，所以结束循环
-            for (int i = t; i <= b; i++) res[x++] = matrix[i][r]; // top(上) to bottom(下). 固定right(右)
-            if (l > --r) break;
-            for (int i = r; i >= l; i--) res[x++] = matrix[b][i]; // right(右) to left(左). 固定bottom(底部)
-            if (t > --b) break;
-            for (int i = b; i >= t; i--) res[x++] = matrix[i][l]; // bottom(下) to top(上). 固定left(左)
+            for (int i = l; i <= r; i++) res[x++] = matrix[t][i];     //top-- 左到右
+            if (++t > b) break;
+            for (int i = t; i <= b; i++) res[x++] = matrix[i][r];    //r-- 上到下
+            if (--r < l) break;
+            for (int i = r; i >= l; i--) res[x++] = matrix[b][i];   //b--从右向左
+            if (--b < t) break;
+            for (int i = b; i >= t; i--) res[x++] = matrix[i][l]; //l++从下到上
             if (++l > r) break;
         }
         return res;
@@ -95,13 +96,13 @@ public class ArraysSword_02 {
     public int findRepeatNumber(int[] nums) {
         int i = 0;
         while (i < nums.length) {
-            if (nums[i] == i) {
+            if (nums[i] == i) {      //排除本身就等于的值
                 i++;
                 continue;
             }
-            if (nums[nums[i]] == nums[i]) return nums[i];
-            int temp = nums[i];
-            nums[i] = nums[temp];
+            if (nums[nums[i]] == nums[i]) return nums[i];    //如果对应的交互点存在nums[i]，说明有重复
+            int temp = nums[i];           //保存nums[i]的值
+            nums[i] = nums[temp];        //用nums[i] 和nums[nums[i]]进行交换
             nums[temp] = temp;
         }
         return -1;
@@ -179,13 +180,13 @@ public class ArraysSword_02 {
     public int reversePairs01(int[] nums) { //二路归并解法
         if (nums == null || nums.length == 1) return 0;
         int[] temp = new int[nums.length];
-        return mergeSort(nums,temp, 0, nums.length - 1);
+        return mergeSort(nums, temp, 0, nums.length - 1);
     }
 
-    int mergeSort(int[] nums,int[] temp, int l, int r) {
+    int mergeSort(int[] nums, int[] temp, int l, int r) {
         if (l >= r) return 0;
         int mid = (l + r) / 2;
-        int res = mergeSort(nums, temp,l, mid) + mergeSort(nums, temp,mid + 1, r);
+        int res = mergeSort(nums, temp, l, mid) + mergeSort(nums, temp, mid + 1, r);
         int i = l, j = mid + 1;      //指向左右开始的节点
         for (int k = l; k <= r; k++) {
             temp[k] = nums[k];
@@ -225,19 +226,19 @@ public class ArraysSword_02 {
      */
     public int[] constructArr(int[] a) {
         if (a.length == 0) return new int[0];
-        int[] b = new int[a.length];
-        b[0] = 1;
-        int temp = 1;
+        int[] pre = new int[a.length];
+        pre[0] = 1;
 
         //计算b: b[i] 代表是a[0,...i - 1]的乘积
         for (int i = 1; i < a.length; i++) {
-            b[i] = b[i - 1] * a[i - 1];
+            pre[i] = pre[i - 1] * a[i - 1];
         }
 
+        int back = 1;        //back代表的是后半段
         for (int i = a.length - 1; i >= 0; i++) {
-            b[i] = b[i] * temp;
-            temp = temp * a[i];
+            pre[i] = pre[i] * back;      //b[i]本身是前半段
+            back = back * a[i];      //这里是记录后半段
         }
-        return b;
+        return pre;
     }
 }

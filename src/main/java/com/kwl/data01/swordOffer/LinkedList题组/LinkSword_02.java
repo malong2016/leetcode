@@ -4,6 +4,7 @@ import com.kwl.data01.dataStructure.ListNode;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author kuang.weilin
@@ -29,6 +30,20 @@ public class LinkSword_02 {
             reverse(head.next, res);
             res.add(head.val);
         }
+    }
+
+    public int[] reversePrint01(ListNode head) {    //辅助栈法，先入栈后出栈
+        Stack<Integer> stack = new Stack<>();
+        ListNode p = head;
+        while (p != null) {
+            stack.push(p.val);
+            p = p.next;
+        }
+        int[] res = new int[stack.size()];
+        for (int i = 0; i < res.length; i++) {   //注意不能使用stack的size!!1
+            res[i] = stack.pop();
+        }
+        return res;
     }
 
     /**

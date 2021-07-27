@@ -106,9 +106,9 @@ public class swordOther_01 {
         for (int i = 0; i < n; i++)
             list.add(i);  //先把所有数加到动态数组里。
         while (list.size() > 1) { //循环条件要求list大小大于1，当只剩下最后一个数了就跳出
-            int temp = (pos + m - 1) % list.size();
-            list.remove(temp);
-            pos = temp;
+            int temp = (pos + m - 1) % list.size();   //要删除的下一个数的index
+            list.remove(temp);       //删除
+            pos = temp;  //指向要删除的index
         }
         return list.get(0);
     }
