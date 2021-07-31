@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class ListNodeMy {
 
 
+
     private Integer val;
 
     private ListNodeMy next;
@@ -24,7 +25,6 @@ public class ListNodeMy {
     public ListNodeMy(Integer val) {
         this.val = val;
     }
-
 
     //头插法建立链表
     public ListNodeMy buildListByHeadInsert(Integer[] arr){

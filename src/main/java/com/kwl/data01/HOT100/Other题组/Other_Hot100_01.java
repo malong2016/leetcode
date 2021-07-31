@@ -8,7 +8,7 @@ public class Other_Hot100_01 {
 
 
     /**
-     * 题目01(leetcode 第462题): 汉明距离
+     * 题目01(leetcode 第461题): 汉明距离
      * 描述: 两个整数之间的 汉明距离 指的是这两个数字对应二进制位不同的位置的数目。
      * 给你两个整数 x 和 y，计算并返回它们之间的汉明距离。
      * <p>
@@ -19,8 +19,18 @@ public class Other_Hot100_01 {
         int cur = x ^ y;
         int res = 0;
         while (cur != 0) {
-            if ((cur & 1) == 1) ++res;
+//            if ((cur & 1) == 1) ++res;
+            res += cur & 1;   //如果最后一位为1，就+1,为0就不变
             cur >>= 1;        //也可以/2是有符号右移动
+        }
+        return res;
+    }
+
+    public int hammingDistance01(int x, int y) {
+        int res = 0, cur = x ^ y; //不同就是1，那么就求flag中1的个数
+        while(cur != 0){
+            res++;
+            cur = cur & (cur - 1);
         }
         return res;
     }
@@ -32,38 +42,27 @@ public class Other_Hot100_01 {
      * 输入: 5
      * 输出: [0,1,1,2,1,2]
      * 思路01: 直接求解
-     * 思路02: 动态规划
+     * 思路02: 动态规划  状态转移方程   res[i] = res[i & (i - 1)] + 1 (最后一位去除，在加上1)
      */
     public int[] countBits(int n) {
         int[] res = new int[n + 1];
-        for (int i = 0; i <= n; i++) {
+        for(int i = 0; i <= n; i++){
             res[i] = countBit(i);
         }
         return res;
     }
-
-    int countBit(int n) {      //统计每个数二进制的个数
-        int res = 0, flag = 1;
-        while (flag != 0) {
-            if ((flag & n) != 0) res++;
-            flag <<= 1;
-        }
-        return res;
-    }
-
-    int countBit01(int n) {      //统计每个数二进制的个数
+    int countBit(int n){
         int res = 0;
-        while (n != 0) {
+        while(n != 0){
             res++;
-            n = (n - 1) & n;    //把最后一位1变成0
+            n = n & (n - 1);   //将最后一位变成1
         }
         return res;
     }
-
-    public int[] countBits01(int num) {        //动态规划
-        int[] res = new int[num + 1];
-        for (int i = 1; i <= num; i++) {  //注意要从1开始，0不满足
-            res[i] = res[i & (i - 1)] + 1;       //将最后一位去除
+    public int[] countBits02(int n) {
+        int[] res = new int[n + 1];
+        for(int i = 1; i <= n; i++){
+            res[i] = res[i & (i - 1)] + 1; // 等于最后一位1去除，在加上1
         }
         return res;
     }

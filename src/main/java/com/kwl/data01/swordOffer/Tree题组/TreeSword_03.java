@@ -46,7 +46,7 @@ public class TreeSword_03 {
         queue.offer(root);
         int i = 1;   //通过i不断进行控制找到下一个,root节点已经入队
         while (!queue.isEmpty()) {
-            TreeNode poll = queue.poll();
+            TreeNode poll = queue.poll();          //这里出队的化是本层所有的扫描到到队列中，这时候的匹配是下一层
             if (!arr[i].equals("null")) {        // 构造树和入队都是在判断条件里面进行的
                 poll.left = new TreeNode(Integer.parseInt(arr[i]));
                 queue.offer(poll.left);
@@ -59,6 +59,18 @@ public class TreeSword_03 {
             i++;
         }
         return root;
+    }
+
+
+    public static void main(String[] args) {
+        TreeSword_03 treeSword_03 = new TreeSword_03();
+        TreeNode treeNode = new TreeNode(1);
+        treeNode.left = new TreeNode(2);
+        treeNode.right = new TreeNode(3);
+        treeNode.right.left = new TreeNode(4);
+        treeNode.right.left = new TreeNode(4);
+        treeNode.right.right = new TreeNode(5);
+        System.out.println(treeSword_03.serialize(treeNode));
     }
 
 

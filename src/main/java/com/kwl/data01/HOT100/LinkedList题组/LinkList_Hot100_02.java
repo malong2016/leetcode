@@ -12,9 +12,8 @@ public class LinkList_Hot100_02 {
      * 题目01(leetcode 第206题): 反转链表
      */
     public ListNode reverseList(ListNode head) {
-        ListNode pre = null;
-        ListNode p = head;
-        while ( p!= null){
+        ListNode pre = null, p = head;
+        while (p != null) {
             ListNode temp = p.next;
             p.next = pre;
             pre = p;
@@ -28,7 +27,7 @@ public class LinkList_Hot100_02 {
      * 题目02(leetcode 第83题): 删除排序链表中的重复元素
      * 描述: 存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除所有重复的元素，使每个元素 只出现一次 。
      * 返回同样按升序排列的结果链表。
-     *
+     * <p>
      * 思路01: 单指针进行扫描
      * 思路02: 递归(暂时还是没有理解的)
      */
@@ -41,12 +40,13 @@ public class LinkList_Hot100_02 {
         }
         return head;
     }
+
     public ListNode deleteDuplicates02(ListNode head) {      //递归
-        if(head == null || head.next == null){
+        if (head == null || head.next == null) {
             return head;
         }
         head.next = deleteDuplicates02(head.next);
-        if(head.val == head.next.val) head = head.next;
+        if (head.val == head.next.val) head = head.next;
         return head;
     }
 
@@ -59,7 +59,6 @@ public class LinkList_Hot100_02 {
      * 思路01: 注意设置头节点，和处理末尾carry
      */
     public static ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        if (l1 == null || l2 == null) return null;
         ListNode res = new ListNode(-1);
         ListNode p = res;
         int carry = 0;

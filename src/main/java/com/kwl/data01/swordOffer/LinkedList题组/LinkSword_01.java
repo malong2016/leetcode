@@ -78,6 +78,16 @@ public class LinkSword_01 {
         return slow;
     }
 
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        if (head == null) return null;
+        ListNode fast = head, slow = head;
+        for (int i = 0; fast != null; i++) {
+            fast = fast.next;
+            if (i >= k) slow = slow.next; // k-1就走了k步
+        }
+        return slow;
+    }
+
     /**
      * 题目04(swordOffer 第23):链表环中的入口节点
      * 思路01: HashSet方法

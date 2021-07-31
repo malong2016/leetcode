@@ -189,7 +189,7 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目06(swordOffer 第60题): n个骰子的点数          //todo 注意答案取
+     * 题目06(swordOffer 第60题): n个骰子的点数
      * 描述: 把n个骰子扔在地上,所有的骰子朝上的一面点数之和为s,输入n,打印出s的所有可能的值出现的概率
      * 补充描述: 你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
      * <p>
@@ -197,6 +197,9 @@ public class dpSword_01 {
      * 输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
      * 输入: 2
      * 输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
+     *
+     * 情况01: 一维数组的情况
+     * 情况02: 二维数组求解
      */
     public double[] dicesProbability(int n) {
         //因为最后的结果只与前一个动态转移数组有关，所以这里只需要设置一个一维的动态转移数组
@@ -257,31 +260,19 @@ public class dpSword_01 {
     }
 
     /**
-     * 题目08(swordOffer 第63题): 股票的最大利润
+     * 题目08(swordOffer 第63题): 股票的最大利润       --本题和leetcode的121题重合
      * 股票价格按照先后顺序放在arr中{9,11,8,5,7,12,16,14} 注意股票是先后时间
      * 只能在时间前买入,后面卖出才能有最大利润,这个股票最大利润是16-5=11。如果没有利润，那么就返回0
      * <p>
      * 思路: 动态规划
      */
     public int maxProfit(int[] prices) {
-        int res = 0, pre = Integer.MAX_VALUE;
-        for (int price : prices) {
-            res = Math.max(res, price - pre);            //或者直接取最小价格和最高利润
-            pre = Math.min(pre, price);
-//            if (price > pre) res = Math.max(res, price - pre);      //当前价格高于pre，卖出,就更新res
-//            else pre = price;                             //前面价格小于pre,更新pre
+        if(prices.length == 0) return 0;
+        int res = 0, pre = prices[0];
+        for(int i = 1; i < prices.length; i++){
+            res = Math.max(res, prices[i] - pre);
+            pre = Math.min(pre, prices[i]);
         }
         return res;
-    }
-
-    public int maxProfit01(int[] prices) {       //dp方法
-        int[] dp = new int[prices.length];
-        dp[0] = 0;      //第一天,不能获取到利润
-        int min = prices[0];   //那么当前能获取的股票最低价格
-        for (int i = 1; i < prices.length; i++) {
-            dp[i] = Math.max(dp[i - 1], prices[i] - min); //更新dp[i]
-            min = Math.min(min, prices[i]);     //更新价格
-        }
-        return dp[prices.length - 1];
     }
 }

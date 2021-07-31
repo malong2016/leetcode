@@ -40,8 +40,9 @@ public class Tree_Hot100_02 {
      * 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
      * <p>
      * 思路01: 递归
+     * 思路02: 利用一个队列进行迭代法，每次都是入二个节点
      */
-    public boolean isSymmetric(TreeNode root) {
+    public boolean isSymmetric(TreeNode root) { // 递归法
         if (root == null) return true;
         return isSymmetric(root.left, root.right);
     }
@@ -51,6 +52,33 @@ public class Tree_Hot100_02 {
         if (root01 == null || root02 == null) return false;      //一个为null一个不为null,返回fasle
         return root01.val == root02.val && isSymmetric(root01.left, root02.right) && isSymmetric(root01.right, root02.left);
     }
+
+    public boolean isSymmetric02(TreeNode root) {       //迭代法
+        if (root == null) {
+            return true;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root.left);
+        queue.offer(root.right);
+
+        while (!queue.isEmpty()) {
+            TreeNode node1 = queue.poll();
+            TreeNode node2 = queue.poll();
+            if (node1 == null && node2 == null) {
+                continue;
+            }
+            if (node1 == null || node2 == null || node1.val != node2.val) {
+                return false;
+            }
+            queue.offer(node1.left);
+            queue.offer(node2.right);
+            queue.offer(node1.right);
+            queue.offer(node2.left);
+        }
+        return true;
+    }
+
 
     /**
      * 题目03(leetcode 第102题): 二叉树的层序遍历
@@ -97,38 +125,43 @@ public class Tree_Hot100_02 {
         root.right = left;
         return root;
     }
+
     /**
      * 题目06(leetcode 第543题): 二叉树的直径
      * 描述: 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
      * 描述: 就是求每一个节点 左高+右高,最后返回最大的值
      */
     int res01 = 0;
-    public int diameterOfBinaryTree(TreeNode root) {
+
+    public int diameterOfBinaryTree(TreeNode root) {    //这里是返回的是res，而高度是返回的高度，所以要取
         treeDepth(root);
         return res01;
     }
-    int treeDepth(TreeNode root){
+
+    int treeDepth(TreeNode root) {       //在返回高度的同时，对res进行更新
         if (root == null) return 0;
         int lDepth = treeDepth(root.left);      //先要记录一下左右深度,因为要求最高，不断的比较
         int rDepth = treeDepth(root.right);
         res01 = Math.max(lDepth + rDepth, res01);
-        return Math.max(lDepth, rDepth) + 1;      //这里应该是使用上面已经计算过的，否则会超时
+        return Math.max(lDepth, rDepth) + 1;
     }
+
     /**
      * 题目07(leetcode 第538题): 把二叉搜索树转换为累加树
      * 描述: 给出二叉 搜索 树的根节点，该树的节点值各不相同，请你将其转换为累加树（Greater Sum Tree），使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
-     *
+     * <p>
      * 提醒一下，二叉搜索树满足下列约束条件：
-     *
+     * <p>
      * 节点的左子树仅包含键 小于 节点键的节点。
      * 节点的右子树仅包含键 大于 节点键的节点。
      * 左右子树也必须是二叉搜索树。
-     *
+     * <p>
      * 思路01: 反中序遍历,先遍历右子树，累加。
      */
     int sum = 0;
+
     public TreeNode convertBST(TreeNode root) {
-        if (root != null){
+        if (root != null) {
             convertBST(root.right);
             sum += root.val;        //把right子树+本root节点的值全部累加
             root.val = sum;

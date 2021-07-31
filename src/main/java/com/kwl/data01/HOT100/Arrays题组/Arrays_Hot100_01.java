@@ -161,28 +161,30 @@ public class Arrays_Hot100_01 {
      * 说明:  1必须在原数组上操作，不能拷贝额外的数组。
      * 2尽量减少操作次数。
      * <p>
-     * 思路01(my): 双指针,把非0换到前面,注意，如果交换把0换到后面，会改变数组的顺序
+     * 思路01: 双指针,把非0换到前面,注意，如果交换把0换到后面，会改变数组的顺序
+     * 思路02: 遇到非0就注入到前面，最后用0来填充元素
      */
     public void moveZeroes(int[] nums) {
-        int l = 0, r = 0;
-        while (r < nums.length) {
-            if (nums[r] != 0) {
+        //思路01: 遇到非0就交换到最前端,指针l维护已经交换好的元素
+        int l = 0;
+        for(int r = 0; r < nums.length; r++){
+            if(nums[r] != 0){
                 int temp = nums[r];
                 nums[r] = nums[l];
-                nums[l] = temp;
-                l++;
+                nums[l++] = temp;     //只有交换，才指向下一个元素，注意指向的元素是没有排好序的元素！！！@
             }
-            r++;
         }
     }
 
-    public void moveZeroes01(int[] nums) {   //不交换
-        int l = 0, r = 0;
-        while (r < nums.length) {
-            if (nums[r] != 0) nums[l++] = nums[r];  //非0前面注入到前面
-            r++;
+    public void moveZeroes02(int[] nums) {
+        //思路02: 遇到非0就填充到最前端，最后用0填充剩余部分
+        int l = 0;
+        for(int r = 0; r < nums.length; r++){
+            if(nums[r] != 0){
+                nums[l++] = nums[r];
+            }
         }
-        while (l < nums.length) nums[l++] = 0;
+        while(l < nums.length) nums[l++] = 0;
     }
 
 

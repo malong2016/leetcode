@@ -220,10 +220,11 @@ public class dpSword_Hot100_01 {
      * 思路: 见下面
      */
     public int maxProfit(int[] prices) {
-        int res = 0, pre = Integer.MAX_VALUE;      //pre要设置为最大值,因为在第一天要买入
-        for (int price : prices) {
-            if (price > pre) res = Math.max(res, price - pre);
-            else pre = price;
+        if (prices.length == 0) return 0;
+        int res = 0, pre = prices[0];
+        for(int i = 1; i < prices.length; i++){
+            res = Math.max(res, prices[i] - pre);  //更新利润
+            pre = Math.min(pre,prices[i]);          //更新pre
         }
         return res;
     }

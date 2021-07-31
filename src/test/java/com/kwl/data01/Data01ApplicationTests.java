@@ -12,12 +12,18 @@ import java.util.*;
 class Data01ApplicationTests {
 
 
+    public int numberOf2(int n) {
+        int flag = 1, res = 0;
+        while (flag != 0) {         //这个可以循环32次
+            if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
+            flag <<= 1;
+        }
+        return res;
+    }
 
 
     @Test
     void test() {
-        //对于长度为0来讲
-        int[][] arr = new int[0][3];
-        System.out.println(arr[0]);
+        System.out.println(numberOf2(-15));
     }
 }

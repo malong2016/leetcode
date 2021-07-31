@@ -130,32 +130,18 @@ public class LinkList_Hot100_01 {
     /**
      * 题目04(leetcode 第19题):删除链表的倒数第 N 个结点
      * 进阶: 一趟完成删除
-     * 思路01: 先计算链表的长度length,要删除的是length-n+1节点,所以顺序扫描到要删除节点的前驱第length-n个节点
-     * 思路02: 设置快慢指针,块指针先走k+1(前面有k+1个节点,到Null之后,fast到slow前面有k+1个,也就是倒数k+1个)
-     * 然后慢指针和快指针一起走,快指针null,慢指针就到删除节点的前驱节点
+     * 思路: 先走多少步，最后fast为null的时候，last就是在倒数第多少个，我们要删除第k，其实是要找到倒数k+1,所以要走k+1步
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        //方法二: 设置快慢指针,快指针先走k步(注意是达到第k+1个节点,前面就是k),最后快指针到null,前面有k个数,慢指针是倒数第k个节点
-        if (head == null) return head;
-        ListNode fast = head, slow = head;
-        for (int i = 0; i < n; i++) {
-            fast = fast.next;
-        }
-        while (fast != null) {      //最后fast == null
-            slow = slow.next;
-            fast = fast.next;
-        }
-        return slow;
-    }
-
-    public ListNode removeNthFromEnd02(ListNode head, int n) {  //代码优化
-        if (head == null) return head;
-        ListNode fast = head, slow = head;
+        ListNode pre = new ListNode(-1);
+        pre.next = head;
+        ListNode fast = head, slow = pre;      //提前落后一个,所以先走n步就可以
         for (int i = 0; fast != null; i++) {
-            if (i >= n) slow = slow.next; //已经走了k步(0,1,2...k-1)
             fast = fast.next;
+            if (i >= n) slow = slow.next;
         }
-        return slow;
+        slow.next = slow.next.next;
+        return pre.next;
     }
 
     /**
@@ -211,6 +197,18 @@ public class LinkList_Hot100_01 {
         return res;
     }
 
+
+    public ListNode mergeKLists02(ListNode[] lists) {                //todo 理解分治求解分治法求解
+        return divideList(lists, 0, lists.length - 1);
+    }
+
+    ListNode divideList(ListNode[] lists,int L, int R){
+        if (L == R) return lists[L];
+        if (L > R) return null;
+        int  mid = (R + L)/2;
+        return mergeTwoLists01(divideList(lists, L, mid), divideList(lists, mid+1, R));
+    }
+
     /**
      * 题目07(leetcode 第142题): 环形链表 II
      * 描述: 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
@@ -239,10 +237,10 @@ public class LinkList_Hot100_01 {
      * <p>
      * 如果链表中存在环，则返回 true 。 否则，返回 false
      */
-    public boolean hasCycle(ListNode head) {  //快慢指针找
+    public boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
-            fast = fast.next.next;                //这里一定要先走
+            fast = fast.next.next;
             slow = slow.next;
             if (slow == fast) return true;
         }

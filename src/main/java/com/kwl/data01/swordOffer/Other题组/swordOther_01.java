@@ -1,7 +1,6 @@
 package com.kwl.data01.swordOffer.Other题组;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,6 +39,15 @@ public class swordOther_01 {
         while (flag != 0) {         //这个可以循环32次
             if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
             flag <<= 1;
+        }
+        return res;
+    }
+
+    public int hammingWeight01(int n) {  //使用x & 1如果是1 那么最后一位就是1，如果是0，那么最后一位就是0
+        int res = 0;
+        while (n != 0){
+            res += n & 1;
+            n = n >>> 1; //要考虑负数的情况
         }
         return res;
     }
@@ -162,12 +170,12 @@ public class swordOther_01 {
      * <p>
      * 思路: 利用&&进行短路终止判断
      */
-    public int res01 = 0;
+    public int res = 0;
 
     public int sumNums(int n) {
-        boolean x = n > 1 && sumNums(n - 1) > 0;  //当n=1的时候被短路
-        res01 += n;
-        return res01;
+        boolean flag = n > 1 && sumNums(n - 1) > 0;  //当n=1的时候被短路
+        res += n;
+        return res;
     }
 
 

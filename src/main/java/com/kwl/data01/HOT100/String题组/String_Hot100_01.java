@@ -269,6 +269,31 @@ public class String_Hot100_01 {
         return res;
     }
 
+    public int lengthOfLongestSubstring01(String s) {       //new int[128]
+        int[] arr = new int[128];
+        int res = 0, l = 0;
+        for(int r = 0; r < s.length(); r++){
+            while(arr[s.charAt(r)] != 0){
+                arr[s.charAt(l++)]--;      //这个是里面的char
+            }
+            res = Math.max(res,r - l + 1);
+            arr[s.charAt(r)]++;
+        }
+        return res;
+    }
+
+    public int lengthOfLongestSubstring03(String s) {     //hashSet移除制定的
+        if (s == null) return -1;
+        Set<Character> hashSet = new HashSet<>();
+        int left = 0,res = 0;
+        for (int right = 0; right < s.length(); right++) {
+            while(hashSet.contains(s.charAt(right))) hashSet.remove(s.charAt(left++));
+            res = Math.max(res, right - left + 1);
+            hashSet.add(s.charAt(right));
+        }
+        return res;
+    }
+
     /**
      * 题目08（leetcode 第11题）:盛最多水的容器
      * 描述: 给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。
@@ -283,7 +308,7 @@ public class String_Hot100_01 {
      */
     public int maxArea(int[] height) {  //双指针对碰法
         int l = 0, r = height.length - 1;
-        int res = Integer.MIN_VALUE;
+        int res = 0;
         while (l < r) {
             res = Math.max(res, Math.min(height[l], height[r]) * (r - l));    //更新结果
             if (height[l] < height[r]) l++;      //保留比较大的值!!!

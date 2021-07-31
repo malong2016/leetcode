@@ -88,7 +88,7 @@ public class dpSword_02 {
     }
 
     /**
-     * 题目04(swordOffer 第42题): 连续子数组的最大和
+     * 题目04(swordOffer 第42题): 连续子数组的最大和     --本题和leetcode的53题重合
      * 描述: 输入一个整型数组，数组中存在正数和负数。数组中的一个或者连续多个整数
      * 组成一个子数组。求所有子数组的和的最大值。要求时间复杂度是o(n)
      * eg: 输入{1,-2,3,10,-4,7,2,-5} 最大子数组是{3,10,-4,7,2}
@@ -97,7 +97,15 @@ public class dpSword_02 {
      * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
-    public int FindGreatestSumOfSumOfSubArray(int[] arr) {      //原地改变数组
+    public int maxSubArray(int[] nums) {        //标准做法，不断更新pre
+        int pre = 0, res = Integer.MIN_VALUE;     //
+        for(int num : nums){
+            pre = Math.max(pre + num, num);   //选与不选,pre指向当前
+            res = Math.max(res,pre);         //更新res
+        }
+        return res;
+    }
+    public int maxSubArray02(int[] arr) {      //原地改变数组
         int res = arr[0];    //默认是res是arr[0]
         for (int i = 1; i < arr.length; i++) {
             arr[i] += Math.max(arr[i - 1], 0);
@@ -105,13 +113,6 @@ public class dpSword_02 {
         }
         return res;
     }
-    public int maxSubArray(int[] nums) {        //标准做法，不断更新pre
-        int pre = 0, res = Integer.MIN_VALUE;
-        for(int num : nums){
-            pre = Math.max(pre + num, num);   //选与不选,pre指向当前
-            res = Math.max(res,pre);         //更新res
-        }
-        return res;
-    }
+
 
 }

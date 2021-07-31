@@ -157,7 +157,7 @@ public class TreeNode {
 
 
     /**
-     * 复制一棵二叉树
+     * 复制一棵二叉树  --类比合并二颗二叉树
      */
     public static TreeNode copyTree(TreeNode root) {
         if (root == null) return null;
@@ -167,8 +167,4 @@ public class TreeNode {
         return copyTree;
     }
 
-    public static void main(String[] args) {
-
-
-    }
 }

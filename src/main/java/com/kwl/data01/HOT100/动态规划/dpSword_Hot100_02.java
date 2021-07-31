@@ -22,12 +22,12 @@ public class dpSword_Hot100_02 {
      * 用max记录最大值
      */
     public int maxSubArray(int[] nums) {   //直接累计
-        int pre = 0, max = nums[0];
+        int pre = 0, res = nums[0];
         for (int num : nums) {
-            pre = pre > 0 ? pre + num : num;
-            max = Math.max(max, pre);
+            pre = Math.max(pre + num, num);
+            res = Math.max(res, pre);
         }
-        return max;
+        return res;
     }
 
     public int maxSubArray01(int[] nums) {    //dp法
@@ -51,7 +51,7 @@ public class dpSword_Hot100_02 {
      * 思路02: dp[n]
      */
     public int climbStairs(int n) {
-        if (n == 1 || n == 2) return n;   //如果包括0一般就是0 ~ n,不包括从0开始的化就是0 ~ n -1
+        if (n == 1 || n == 2) return n;
         int a = 1, b = 2;
         for (int i = 3; i <= n; i++) {
             int temp = a + b;
@@ -62,8 +62,8 @@ public class dpSword_Hot100_02 {
     }
 
     public int climbStairs01(int n) {        //dp方法
-        if (n == 1) return 1;
-        int[] dp = new int[n];      // n阶楼梯存储到n-1索引的数组下
+        if (n == 1) return 1;      //这里要初始化二个，所以特殊情况就是1
+        int[] dp = new int[n];
         dp[0] = 1;
         dp[1] = 2;           //如果是2阶楼梯，有二种方法
         for (int i = 2; i < dp.length; i++) {

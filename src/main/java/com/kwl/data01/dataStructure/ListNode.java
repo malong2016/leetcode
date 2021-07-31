@@ -90,7 +90,7 @@ public class ListNode {
     /**
      * 6 快(fast)慢(slow)指针寻找链表中间的节点
      * 思路: 设置fast和slow指针,扫描链表,fast指针一次走二步,slow指针一次走一步
-     * 当fast指针到达尾节点or尾节点的next,slow指针到达链表中间节点(如果是偶数,那么是指向中点的前一个节点)
+     * 当fast指针到达尾节点or尾节点的next,slow指针到达链表中间节点(如果是偶数,那么是指向中点的后一个节点)
      */
     public static ListNode getMidNodeByFastAndSlow(ListNode head) {
         ListNode fast = head, slow = head;            //fast = head.next(或者head.next.next)(偶数的情况,slow指向中点的前一个节点!!!)
@@ -100,11 +100,4 @@ public class ListNode {
         }
         return slow;
     }
-
-
-
-
-
-
-
 }
