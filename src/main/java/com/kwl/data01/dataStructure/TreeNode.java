@@ -41,7 +41,7 @@ public class TreeNode {
 
     /**
      * 迭代法-前序遍历
-     * 思路: 用一个栈去维护
+     * 思路: 用一个栈去维护  --有点类似层次遍历，不过这里是先入right子树(right是后遍历的)
      */
     public static List<Integer> preOrderIter(TreeNode root) {
         List<Integer> res = new ArrayList<>();
@@ -100,7 +100,8 @@ public class TreeNode {
                 stack.push(root);
                 root = root.left;       //将左边的依次入栈
             }
-            res.add(stack.pop().val);  //这里是出最后的左
+            root = stack.pop();
+            res.add(root.val);  //这里是出最后的左
             root = root.right;      //注意最后一个节点是没有左子树，跳出循环的时候！！，直接指向右手
         }
         return res;

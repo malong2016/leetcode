@@ -268,7 +268,7 @@ public class dpSword_01 {
      */
     public int maxProfit(int[] prices) {
         if(prices.length == 0) return 0;
-        int res = 0, pre = prices[0];
+        int res = 0, pre = prices[0];        //这里res如果只有一天，就返回0
         for(int i = 1; i < prices.length; i++){
             res = Math.max(res, prices[i] - pre);
             pre = Math.min(pre, prices[i]);

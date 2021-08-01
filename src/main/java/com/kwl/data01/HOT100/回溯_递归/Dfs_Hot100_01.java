@@ -27,7 +27,7 @@ public class Dfs_Hot100_01 {
         res.add(new LinkedList<>(path));      //要动态分配空间,temp总在变化,所以要动态分配
         for (int i = index; i < nums.length; i++) {
             path.add(nums[i]);
-            dfs(i + 1, nums, res, path);
+            dfs(i + 1, nums, res, path);       //注意，这里是i+1,如果是index，那么就是固定的，不符合条件!!!
             path.removeLast();
         }
     }
@@ -91,15 +91,19 @@ public class Dfs_Hot100_01 {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> res = new LinkedList<>();
         LinkedList<Integer> path = new LinkedList<>();
-        Arrays.sort(candidates);
+//        Arrays.sort(candidates);        //先排好序可以剪枝
         dfs01(0, candidates, target, res, path);
         return res;
     }
 
     void dfs01(int index, int[] nums, int target, List<List<Integer>> res, LinkedList<Integer> path) {      //回溯
-        if (target == 0) res.add(new LinkedList<>(path));
+        if (target < 0) return;
+        if (target == 0) {
+            res.add(new LinkedList<>(path));
+            return;
+        }
         for (int i = index; i < nums.length; i++) {
-            if (target - nums[i] < 0) break;   //已经排序,本nums[i]排序不来，后面也排序不来
+//            if(target - nums[i] < 0) break;         //这里针对排序数组，当前数不符合，后面更大的数也是不符合的
             path.add(nums[i]);
             dfs01(i, nums, target - nums[i], res, path); //因为可以重复,所有继续从i开始寻找
             path.removeLast();
@@ -144,7 +148,7 @@ public class Dfs_Hot100_01 {
      * 给定 word = "SEE", 返回 true
      * 给定 word = "ABCB", 返回 false
      * <p>
-     * 思路01(回溯法):
+     * 思路01(回溯法): 注意我们不用设置visit,直接修改board[i][j] = '/0'
      */
     public boolean exist(char[][] board, String word) {
         for (int i = 0; i < board.length; i++) {

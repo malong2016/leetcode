@@ -108,7 +108,6 @@ public class dpSword_Hot100_02 {
     }
 
 
-
     /**
      * 题目04(leetcode 第200题): 岛屿数量
      * 描述: 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
@@ -138,6 +137,7 @@ public class dpSword_Hot100_02 {
         }
         return res;
     }
+
     void dfs(char[][] grid, int i, int j) {
         int m = grid.length, n = grid[0].length;
         if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || grid[i][j] != '1') return; //越界或者不等于1就直接返回
@@ -160,7 +160,17 @@ public class dpSword_Hot100_02 {
      * 思路01: 核心就是偷前面和不偷前面的,dp[i]维护当前点的最大值
      * dp[i] = dp[i - 1] + dp[i - 2] + nums[i]  (偷前面和不偷前面的)
      */
-    public int rob(int[] nums) {          //dp方法
+    public int rob(int[] nums) {
+        int a = 0, b = nums[0];
+        for(int i = 1; i < nums.length;i++){ //从第二个数开始
+            int temp = b;
+            b = Math.max(nums[i]+a, b);  //更新b,偷与不偷，比较大小
+            a = temp; //移动
+        }
+        return b;      //这里肯定是偷到最后是最多的
+    }
+
+    public int rob01(int[] nums) {          //dp方法
         if (nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
         int[] dp = new int[nums.length];
@@ -172,17 +182,6 @@ public class dpSword_Hot100_02 {
         return dp[nums.length - 1];
     }
 
-    public int rob02(int[] nums) {          //pre方法
-        if (nums.length == 0) return 0;
-        if (nums.length == 1) return nums[0];
-        int pre = nums[0], cur = Math.max(nums[0], nums[1]);
-        for (int i = 2; i < nums.length; i++) {
-            int temp = cur;
-            cur = Math.max(cur, pre + nums[i]);     //更新cur,注意这里有i所以要从2~len-1,否则一般是3~len
-            pre = temp;             //更新pre
-        }
-        return cur;
-    }
 
     /**
      * 题目06(leetcode 第337题):  打家劫舍 III
@@ -202,18 +201,19 @@ public class dpSword_Hot100_02 {
      * 思路01: 后序遍历 + 动态规划
      */
     public int rob(TreeNode root) {
-        int[] res = dfs(root);
-        return Math.max(res[0], res[1]);
+        if(root == null) return 0;
+        int[] res = robValue(root);
+        return Math.max(res[0], res[1]);     //返回偷和不偷的最大值
     }
-
-    int[] dfs(TreeNode root) {        //int[0]代表不偷,int[1]代表偷
-        if (root == null) return new int[]{0, 0};      //就null，偷和不偷都是0
-        int[] left = dfs(root.left);
-        int[] right = dfs(root.right);
-        int[] dp = new int[2];
-        dp[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);     //不偷root节点,可以选择偷子节点和不偷子节点
-        dp[1] = root.val + left[0] + right[0];   //偷了root节点,就不能偷左右字节
-        return dp;
+    //设置返回int[]{a,b} 每个节点偷和不偷的的值
+    int[] robValue(TreeNode root){
+        if(root == null) return new int[]{0,0}; //偷和不偷都是返回0
+        int[] l = robValue(root.left);
+        int[] r = robValue(root.right);
+        int[] res = new int[2]; //设置返回值
+        res[0] = Math.max(l[0],l[1]) + Math.max(r[0], r[1]);  //root节点不偷，左右节点可以偷和不偷，分别求最大值
+        res[1] = root.val + l[0] + r[0];       //root节点偷，左右节点全部选择不偷
+        return res;
     }
 
     /**
@@ -262,7 +262,7 @@ public class dpSword_Hot100_02 {
      * 思路: f[i][0]: 手上持有股票的最大收益  (昨天就有股票or今天买入)
      * f[i][1]: 手上不持有股票，并且处于冷冻期中的累计最大收益    (今天卖出)
      * f[i][2]: 手上不持有股票，并且不在冷冻期中的累计最大收益  (今天一开始就没有股票)
-     *
+     * <p>
      * 初始化:   dp[0][0] = -prices[0];
      */
     public int maxProfit(int[] prices) {

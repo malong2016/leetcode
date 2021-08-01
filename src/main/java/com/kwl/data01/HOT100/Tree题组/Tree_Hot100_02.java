@@ -90,18 +90,18 @@ public class Tree_Hot100_02 {
      */
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
-        Queue<TreeNode> queue = new LinkedList<>();      //队列里面是没有Queue
+        Queue<TreeNode> queue = new LinkedList<>();     //注意这里是TreeNode
         if (root != null) queue.offer(root);
         while (!queue.isEmpty()) {
-            List<Integer> path = new LinkedList<>();
-            int num = queue.size();
-            for (int i = 0; i < num; i++) {
+            List<Integer> path = new LinkedList<>();    //每次都是新的地址，所以res.add(直接加)
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
                 TreeNode pollNode = queue.poll();
                 path.add(pollNode.val);
                 if (pollNode.left != null) queue.offer(pollNode.left);
                 if (pollNode.right != null) queue.offer(pollNode.right);
             }
-            res.add(new LinkedList<>(path));
+            res.add(path);
         }
         return res;
     }

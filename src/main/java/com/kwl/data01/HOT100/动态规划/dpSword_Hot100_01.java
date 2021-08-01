@@ -28,23 +28,6 @@ public class dpSword_Hot100_01 {
         }
         return dp[m - 1][n - 1];
     }
-
-    public int uniquePaths01(int m, int n) {
-        int[][] dp = new int[m][n];
-        for (int i = 0; i < m; i++) {        //先初始化，避免后面判断
-            dp[i][0] = 1;
-        }
-        for (int i = 0; i < n; i++) {
-            dp[0][i] = 1;
-        }
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
-            }
-        }
-        return dp[m - 1][n - 1];
-    }
-
     /**
      * 题目02(leetcode 第64题): 最小路径和
      * 描述:给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
@@ -100,7 +83,7 @@ public class dpSword_Hot100_01 {
         int res = 0;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == '1') {
+                if (matrix[i][j] == '1') {      //等于'1'才要考虑,不等于'1'默认就是0
                     if (i == 0 || j == 0) dp[i][j] = 1;
                     else dp[i][j] = Math.min(dp[i - 1][j - 1], Math.min(dp[i - 1][j], dp[i][j - 1])) + 1;
                     res = Math.max(res, dp[i][j]);
@@ -196,15 +179,15 @@ public class dpSword_Hot100_01 {
      * <p>
      * eg: [-2,3,-4]  --> 24
      * <p>
-     * 思路01:如果当前是nums[i] > 0,就是取前面的最大值,如果是nums[i] < 0，就是取前面的最小值!!所以我们要同时记录最大值和最小值
+     * 思路01: 因为正负关系是不定的，所以在要同时保留前置的最大值和最小值.注意保留preMax
      */
-    public int maxProduct(int[] nums) {        //直接迭代
-        int res = Integer.MIN_VALUE, max = 1, min = 1;
-        for (int num : nums) {
-            int temp = max;         //max在改变
-            max = Math.max(num, Math.max(max * num, min * num));
-            min = Math.min(num, Math.min(temp * num, min * num));
-            res = Math.max(res, max);
+    public int maxProduct(int[] nums) {
+        int preMax = nums[0], perMin = nums[0],res = nums[0];    //这里这里res要结合特殊情况，就是返回nums[0]
+        for(int i = 1; i < nums.length; i++){
+            int temp = preMax;       //preMax最大值在改变
+            preMax = Math.max(nums[i], Math.max(preMax * nums[i], perMin * nums[i]));   //更新前置最大值和最小值
+            perMin = Math.min(nums[i], Math.min(temp * nums[i], perMin * nums[i]));
+            res = Math.max(res,preMax);       //res一般是在前置更新完成之后再变化
         }
         return res;
     }

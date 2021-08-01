@@ -57,7 +57,7 @@ public class TreeSword_02 {
                 if (pollNode.left != null) queue.offer(pollNode.left);
                 if (pollNode.right != null) queue.offer(pollNode.right);
             }
-            res.add(new LinkedList<>(path));
+            res.add(path);
         }
         return res;
     }

@@ -20,8 +20,10 @@ public class Tree_Hot100_01 {
      * <p>
      * 思路01: 设置一个List<TreeNode> list，对root进行先序遍历，
      * 把节点按照顺序加入到list中，在遍历list指针，把节点串成新的链表
-     * 思路02(递归法): 利用右子树-->左子树-->root(后序遍历的逆序,不会丢失孩子节点),设置全局变量pre，保存
+     * 思路02(递归法): 这里是先拼接最后一个链表的最后一个元素，不断向前拼接。
+     * 利用右子树-->左子树-->root(后序遍历的逆序,不会丢失孩子节点,这样和先序遍历正好相反！！！),设置全局变量pre，保存
      * 遍历指针的right节点
+     * 因为右子树要先来，所以要反后序遍历
      */
     public void flatten(TreeNode root) {
         List<TreeNode> list = new LinkedList<>();
@@ -44,8 +46,7 @@ public class Tree_Hot100_01 {
     private TreeNode pre = null;
 
     public void flatten01(TreeNode root) {   //逆序的后序遍历,pre是当前遍历指针的下一个节点
-        if (root == null)
-            return;
+        if (root == null) return;
         flatten(root.right);
         flatten(root.left);
         root.right = pre;
@@ -63,13 +64,13 @@ public class Tree_Hot100_01 {
      * 思路01(解题区01): 中序遍历节点，设置一个当前节点的前驱pre,比较二个值，不断进行递归
      * 思路02(官方高赞): 设置dfs上下界，不断进行更新上下界
      */
-    int pre01 = Integer.MIN_VALUE;         //注意测试会使用[-2147483648] -2^32,所以这里要设置更小的Long.MIN_VALUE
+    long pre01 = Long.MIN_VALUE;         //注意测试会使用[-2147483648] -2^32,所以这里要设置更小的Long.MIN_VALUE
 
     public boolean isValidBST(TreeNode root) {
         if (root == null) return true;
         if (!isValidBST(root.left)) return false;      //如果是false，就返回false,注意这里是true,还需要继续向下遍历，所以不能直接返回
         if (root.val <= pre01) return false;     //小于前驱节点,直接返回
-        pre01 = root.val;          //更新前驱节点
+        pre01 = root.val;          //更新前驱节点,第一次来一定要更新，所以要设置为Long.MINVALUE
         return isValidBST(root.right);     //判断右子树是否是
     }
 

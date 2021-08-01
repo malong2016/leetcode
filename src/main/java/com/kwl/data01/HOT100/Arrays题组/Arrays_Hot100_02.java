@@ -38,8 +38,18 @@ public class Arrays_Hot100_02 {
      * 描述: 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
      * <p>
      * 思路01: 先排序Arrays.sort(nums);返回  return nums[nums.length-k];
-     * 思路02: 快速排序和堆排序
+     * 思路02: 快速排序和堆排序     todo 理解快速排序
      */
+
+    public int findKthLargest014(int[] nums, int k) {      //堆排序
+        //这里使用堆排序
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(); //最大就弄最小推，每次都是把最小值出队。里面就可以保持到最大值
+        for(int num : nums){
+            priorityQueue.offer(num);
+            if(priorityQueue.size() > k) priorityQueue.poll(); //如果队中大于k，就把最小值出队，所以队中始终保持是k个元素
+        }
+        return priorityQueue.peek();
+    }
     public int findKthLargest(int[] nums, int k) {
         return quickSort(nums, 0, nums.length - 1, nums.length - k);
     }
@@ -82,17 +92,17 @@ public class Arrays_Hot100_02 {
      * 题目04(leetcode 第238题): 除自身以外数组的乘积 -- 本题和swordOffer 66题一样
      */
     public int[] productExceptSelf(int[] nums) {
-        int[] res = new int[nums.length];
-        res[0] = 1;
-        for (int i = 1; i < nums.length; i--) {
-            res[i] = res[i - 1] * nums[i - 1];   //把0,1...i-1累乘
+        int[] pre = new int[nums.length];    //除了本身之外的乘积
+        pre[0] = 1;
+        for(int i = 1; i < nums.length;i++){       //除了本身之后前置
+            pre[i] = pre[i-1] * nums[i - 1];
         }
-        int temp = 1;
-        for (int i = nums.length - 1; i >= 0; i--) {    //注意是j--
-            res[i] *= temp;
-            temp = temp * nums[i];    //把i+1...num.length-1累乘
+        int back = 1;
+        for(int i = nums.length - 1;i >= 0; i--){
+            pre[i] = back * pre[i];
+            back = back * nums[i];
         }
-        return res;
+        return pre;
     }
 
     /**
@@ -150,11 +160,12 @@ public class Arrays_Hot100_02 {
      * 输出：false
      */
     public boolean searchMatrix(int[][] matrix, int target) {
-        int i = matrix.length - 1, j = 0;
-        while (i >= 0 && j <= matrix[0].length - 1) {
-            if (matrix[i][j] == target) return true;
-            else if (matrix[i][j] > target) i--;   //更小值里面找
-            else j++;   //更大的值找
+        int m = matrix.length, n = matrix[0].length;
+        int i = m - 1, j = 0;            //注意这里i和j越大，值越大。
+        while(i >= 0 && j < n){
+            if(matrix[i][j] == target) return true;
+            else if(matrix[i][j] > target) i--;  //找更小的值
+            else j++;     //找更大的值
         }
         return false;
     }

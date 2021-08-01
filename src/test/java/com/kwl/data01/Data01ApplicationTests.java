@@ -24,6 +24,9 @@ class Data01ApplicationTests {
 
     @Test
     void test() {
-        System.out.println(numberOf2(-15));
+        char a = '\0';
+        System.out.println((int)a);
+        char b = ' ';
+        System.out.println((int)b);
     }
 }
