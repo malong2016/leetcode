@@ -1,6 +1,7 @@
 package com.kwl.data01.myTest;
 
 
+import com.kwl.data01.dataStructure.Array;
 import com.kwl.data01.dataStructure.ListNode;
 import com.kwl.data01.dataStructure.TreeNode;
 
@@ -12,18 +13,13 @@ import java.util.*;
  */
 public class MyTest01 {
 
-    public int[] productExceptSelf(int[] nums) {
-        int[] pre = new int[nums.length];    //除了本身之外的乘积
-        pre[0] = 1;
-        for(int i = 1; i < nums.length;i++){
-            pre[i] = pre[i-1] * nums[i];
-        }
-        int back = 1;
-        for(int i = nums.length - 1;i >= 0; i--){
-            pre[i] = back * pre[i];
-            back = back * nums[i];
-        }
-        return pre;
-    }
+
+    /**
+     * 给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
+     *
+     * 输入:nums = [1,1,1], k = 2
+     * 输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
+     */
+
 
 }

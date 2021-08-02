@@ -88,23 +88,24 @@ public class dpSword_Hot100_02 {
      * 解释: 返回 true 因为 "applepenapple" 可以被拆分成 "apple pen apple"。
      *      注意你可以重复使用字典中的单词。
      * <p>
-     * 思路01: 先固定一端j,在从i从0扫描到j-1,如果前半段是true(可以差分)+ sub(i+1,j)满足条件 (就是前后半段都可以拆分)
+     * 思路01: 先固定一端j,在从i从0扫描到j-1,如果前半段是true(可以差分)+ sub(i,j-1)满足条件 (就是前后半段都可以拆分)
      * ,那么就可以设置为true.
      * 注意dp[0] = 0,0是可以拆分的 要设置为dp[len+1]
      */
     public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> set = new HashSet<>(wordDict);      //存入hashSet进行判断
+        HashSet<String> hashSet = new HashSet<>(wordDict);    //这里面可以传入Collection集合
+        //dp中的index代表本index之前的字符串能否拆分，多加一个0，所以是len+1
         boolean[] dp = new boolean[s.length() + 1];
         dp[0] = true;
-        for (int j = 1; j <= s.length(); j++) {   //因为是截切j是不包括
-            for (int i = 0; i < j; i++) {
-                if (dp[i] && set.contains(s.substring(i, j))) {
+        for (int j = 1; j <= s.length(); j++) {    //截切的时候不包括j,代表是j-1是否可以拆分
+            for (int i = 0; i < j; i++) {       //i最后可以j-1，所以全部验证了
+                if (dp[i] && hashSet.contains(s.substring(i, j))) {
                     dp[j] = true;
-                    break;              //如果当前可以拆分,直接跳出本次循环
+                    break;
                 }
             }
         }
-        return dp[s.length()];
+        return dp[dp.length - 1];     //返回最后一个元素
     }
 
 
@@ -127,9 +128,9 @@ public class dpSword_Hot100_02 {
      */
     public int numIslands(char[][] grid) {
         int m = grid.length, n = grid[0].length, res = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1') {
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == '1'){       //如果不是'1'就不需要
                     dfs(grid, i, j);
                     res++;
                 }
@@ -138,12 +139,13 @@ public class dpSword_Hot100_02 {
         return res;
     }
 
-    void dfs(char[][] grid, int i, int j) {
-        int m = grid.length, n = grid[0].length;
-        if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || grid[i][j] != '1') return; //越界或者不等于1就直接返回
-        grid[i][j] = '2';   //如果符合条件,就设置为'2',也代表已经访问
-        dfs(grid, i - 1, j);              //上下左右进行扩散
-        dfs(grid, i + 1, j);
+    void dfs(char[][] grid, int i, int j){
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != '1'){  //第一次来，一定可以通过
+            return;
+        }
+        grid[i][j] = '2'; //访问过一次，就设置为2，下次就不会在访问
+        dfs(grid, i - 1,j);       //上下左右开始扩散,消除为'1'的点
+        dfs(grid, i + 1,j);
         dfs(grid, i, j - 1);
         dfs(grid, i, j + 1);
     }
@@ -162,9 +164,9 @@ public class dpSword_Hot100_02 {
      */
     public int rob(int[] nums) {
         int a = 0, b = nums[0];
-        for(int i = 1; i < nums.length;i++){ //从第二个数开始
+        for (int i = 1; i < nums.length; i++) { //从第二个数开始
             int temp = b;
-            b = Math.max(nums[i]+a, b);  //更新b,偷与不偷，比较大小
+            b = Math.max(nums[i] + a, b);  //更新b,偷与不偷，比较大小
             a = temp; //移动
         }
         return b;      //这里肯定是偷到最后是最多的
@@ -201,17 +203,18 @@ public class dpSword_Hot100_02 {
      * 思路01: 后序遍历 + 动态规划
      */
     public int rob(TreeNode root) {
-        if(root == null) return 0;
+        if (root == null) return 0;
         int[] res = robValue(root);
         return Math.max(res[0], res[1]);     //返回偷和不偷的最大值
     }
+
     //设置返回int[]{a,b} 每个节点偷和不偷的的值
-    int[] robValue(TreeNode root){
-        if(root == null) return new int[]{0,0}; //偷和不偷都是返回0
+    int[] robValue(TreeNode root) {
+        if (root == null) return new int[]{0, 0}; //偷和不偷都是返回0
         int[] l = robValue(root.left);
         int[] r = robValue(root.right);
         int[] res = new int[2]; //设置返回值
-        res[0] = Math.max(l[0],l[1]) + Math.max(r[0], r[1]);  //root节点不偷，左右节点可以偷和不偷，分别求最大值
+        res[0] = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);  //root节点不偷，左右节点可以偷和不偷，分别求最大值
         res[1] = root.val + l[0] + r[0];       //root节点偷，左右节点全部选择不偷
         return res;
     }

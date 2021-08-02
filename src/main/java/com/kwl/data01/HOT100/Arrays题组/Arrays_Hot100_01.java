@@ -143,9 +143,9 @@ public class Arrays_Hot100_01 {
 
     public int subarraySum(int[] nums, int k) {      //暴力解
         int res = 0;
-        for (int i = 0; i < nums.length; i++) {
-            int temp = 0;
-            for (int j = i; j < nums.length; j++) {
+        for (int i = 0; i < nums.length; i++) {   //固定一端，向后走
+            int temp = 0;                  //要更新
+            for (int j = i; j < nums.length; j++) { //从固定的这一端开始
                 temp = temp + nums[j];
                 if (temp == k) res++;
             }
@@ -167,8 +167,8 @@ public class Arrays_Hot100_01 {
     public void moveZeroes(int[] nums) {
         //思路01: 遇到非0就交换到最前端,指针l维护已经交换好的元素
         int l = 0;
-        for(int r = 0; r < nums.length; r++){
-            if(nums[r] != 0){
+        for (int r = 0; r < nums.length; r++) {
+            if (nums[r] != 0) {
                 int temp = nums[r];
                 nums[r] = nums[l];
                 nums[l++] = temp;     //只有交换，才指向下一个元素，注意指向的元素是没有排好序的元素！！！@
@@ -179,12 +179,12 @@ public class Arrays_Hot100_01 {
     public void moveZeroes02(int[] nums) {
         //思路02: 遇到非0就填充到最前端，最后用0填充剩余部分
         int l = 0;
-        for(int r = 0; r < nums.length; r++){
-            if(nums[r] != 0){
+        for (int r = 0; r < nums.length; r++) {
+            if (nums[r] != 0) {
                 nums[l++] = nums[r];
             }
         }
-        while(l < nums.length) nums[l++] = 0;
+        while (l < nums.length) nums[l++] = 0;
     }
 
 

@@ -16,14 +16,20 @@ public class Arrays_Hot100_04 {
      * 思路: 单调队列
      */
     public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums == null || nums.length == 0) return new int[0];
+        //使用单调队列来求解本题目
+        LinkedList<Integer> queue = new LinkedList<>();     //这是一个双端队列
         int[] res = new int[nums.length - k + 1];
-        LinkedList<Integer> linkedList = new LinkedList();
         for (int i = 1 - k, j = 0; j < nums.length; i++, j++) {
-            if (i > 0 && nums[i - 1] == linkedList.peekFirst()) linkedList.pollFirst();  //可能前面的值已经被清除掉了
-            while (!linkedList.isEmpty() && linkedList.peekLast() < nums[j]) linkedList.pollLast();
-            linkedList.addLast(nums[j]);
-            if (i >= 0) res[i] = linkedList.peekFirst();
+            if (i > 0) {
+                if (queue.peek() == nums[i - 1]) {   //队首元素和滑动之前元素相等
+                    queue.poll();   //队首出队
+                }
+            }
+            while (!queue.isEmpty() && nums[j] > queue.peekLast()) {    //入队元素把队列中小于本元素全部出队
+                queue.pollLast(); //尾部出队
+            }
+            queue.offer(nums[j]);         //无论什么时候都是要入队的
+            if (i >= 0) res[i] = queue.peek();     //将队顶元素就是本轮的最大值,保存到结果
         }
         return res;
     }
@@ -41,21 +47,21 @@ public class Arrays_Hot100_04 {
      * 输出：0
      * <p>
      * 思路01(最优解): 先克隆数组，把数组排好序，然后遍历原数组，使用l和r指针维护，错序的最小和最大距离
-     * 注意: 如果有乱序，那么left和right一定是不相等的
+     * 注意: 如果有乱序，那么left<right一定是不相等的,不是乱序那么就是0
      * 思路02(单调栈): 具体看官方最优解
      */
     public int findUnsortedSubarray(int[] nums) {
-        int[] cloneNums = nums.clone();
-        Arrays.sort(cloneNums);
-        int left = Integer.MAX_VALUE, right = Integer.MIN_VALUE;      //l是维护最小距离,r是维护最大距离
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != cloneNums[i]) {        //夹在l和r中间的都是没有排好序的元素
-                left = Math.min(left, i);
-                right = Math.max(right, i);
-//                right = i;        //这里i一定是比right更大的  -- 优化
+        //先克隆数组,拍好序，在顺序搜索，使用l和r维护不相等的最小index和最大index
+        int[] cloneArr = nums.clone();
+        Arrays.sort(cloneArr);    //要排好序在比较
+        int l = nums.length - 1, r = 0;    //l维护乱序最小index,r维护乱序最大索引
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] != cloneArr[i]){
+                l = Math.min(l,i);
+                r = Math.max(l,i);      //或者r = i(优化)
             }
         }
-        return left > right ? 0 : right - left + 1; //如果left和right没有动,那么原数组就是升序的,不需要维护
+        return l < r ? r -l + 1 : 0;    //是乱序那么r一定会大于l
     }
 
     /**
@@ -66,16 +72,20 @@ public class Arrays_Hot100_04 {
      * 思路01: 使用HashSet先存储，后判断
      * 思路02: 先排序，后使用dp!!! 注意可能出现重复的数      dp[n]或者pre
      */
-    public int longestConsecutive(int[] nums) {       //使用hashSet
-        if (nums == null || nums.length == 0) return 0;
-        Set<Integer> set = new HashSet<>();
-        for (int num : nums) set.add(num);          //添加进来
-        int res = Integer.MIN_VALUE;
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set = new HashSet<>();      //使用HashSet
         for (int num : nums) {
-            int count = 0;         //每次都是重新统计
-            if (set.contains(num - 1)) continue;      //如果有比这个数小的，那么就不用计算,因为小的可能是比这个数的res大!
-            while (set.contains(num++)) count++;           //统计个数
-            res = Math.max(res, count);
+            set.add(num);
+        }
+        int res = 0;
+        for (int num : nums) {
+            if (set.contains(num - 1)) continue; //num - 1会得到比该数更大的值，所以直接跳过
+            int count = 1;
+            //num只使用一次，所以可以一来就++
+            while (set.contains(++num)) {      //统计比num上面的数，直到最后不存在
+                count++;
+            }
+            res = Math.max(res, count); //更新res
         }
         return res;
     }
@@ -108,8 +118,7 @@ public class Arrays_Hot100_04 {
      * <p>
      * 思路01(HahsMap + 排序法): 在HashMap设置key = "排好序的字符",value = List<List<String>>
      * 如果你第一次来,那么就就put('item',new List<List<String>>),或者就把这个元素添加进去
-     * <p>
-     * 思路02: todo 字母异位词分组还有更好的方法???
+     * 思路02: 使用new int[x - 'a']进行计数，然后遍历[0,25]将值和出现次数拼接作为key,在使用map记录这个值
      */
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
@@ -117,15 +126,11 @@ public class Arrays_Hot100_04 {
             char[] charStr = str.toCharArray();
             Arrays.sort(charStr);
             String strSort = String.valueOf(charStr);     //拿到排好序的str
-//            List<String> list = map.getOrDefault(strSort, new LinkedList<String>());     //拿到映射表中的value,如果映射表中没有就创建
-//            list.add(str);
-//            map.put(strSort, list);          //添加进来
             if (!map.containsKey(strSort)) map.put(strSort, new LinkedList<String>());   //先添加/最优解
             map.get(strSort).add(str);        //后拿到加入
         }
         return new LinkedList<>(map.values());
     }
-
 
 
     /**
@@ -134,7 +139,7 @@ public class Arrays_Hot100_04 {
      * 给定一个包含 n + 1 个整数的数组 nums ，其数字都在 1 到 n 之间（包括 1 和 n），可知至少存在一个重复的整数。
      * 假设 nums 只有 一个重复的整数 ，找出 这个重复的数 。
      * 你设计的解决方案必须不修改数组 nums 且只用常量级 O(1) 的额外空间。
-     *
+     * <p>
      * 思路01（HashSet）:不断添加进来，然后不能添加就是重复数.或者使用new int[nums.length]
      * 思路02(快慢指针，类比链表是否有环): 代码如下
      */
@@ -155,25 +160,27 @@ public class Arrays_Hot100_04 {
     /**
      * 题目06(leetcode 第48题):  旋转图像
      * 描述:
-     *  给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
-     *  你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
-     *
+     * 给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
+     * 你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
+     * <p>
      * 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
      * 输出：[[7,4,1],[8,5,2],[9,6,3]]
-     *
+     * <p>
      * 思路01: 先水平翻转,在主对角线翻转
      */
     public void rotate(int[][] matrix) {
+        //先上下翻转，在主对角线翻转
         int m = matrix.length, n = matrix[0].length;
-        for (int i = 0; i < m / 2; i++) {           //水平翻转,横坐标在变，纵坐标不变
+        for (int i = 0; i < m / 2; i++) {        //上下翻转,注意上下翻转要控制横坐标是m/2,否则最后会不变
             for (int j = 0; j < n; j++) {
                 int temp = matrix[i][j];
-                matrix[i][j] = matrix[m - 1 - i][j];
+                matrix[i][j] = matrix[m - 1 - i][j];    //水平翻转的化，水平坐标轴在变，竖直不变
                 matrix[m - 1 - i][j] = temp;
             }
         }
-        for (int i = 0; i < m; i++) {        //主对角线翻转,注意我们起手的是左下方
-            for (int j = 0; j < i; j++) {
+
+        for (int i = 0; i < m; i++) {          //主对象线翻转
+            for (int j = 0; j < i; j++) {     //j == i这个是主对角线，不需要翻转.如果不控制，翻转过来，翻转回去，等于没有翻转
                 int temp = matrix[i][j];
                 matrix[i][j] = matrix[j][i];
                 matrix[j][i] = temp;
@@ -185,25 +192,28 @@ public class Arrays_Hot100_04 {
      * 题目07(leetcode 第75题): 颜色分类
      * 描述: 给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
      * 此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
-     *
-     *
+     * <p>
+     * <p>
      * 思路01: 单指针+二遍排序 ,一趟遇到0就交换到前面来,二趟遇到1就交换到前面来。指针p前面都是排好的数据
      * 思路02: 双指针+ 一遍排序
      */
     public void sortColors(int[] nums) {
-        int p = 0;
-        for (int i = 0; i < nums.length; i++){
-            if (nums[i] == 0) swap(nums, p++, i);   //交换完成之后p++
+        //单指针，先把0交换到最前面，在把1交换到最前面
+        int p = 0;       //p指向待交换元素
+        for(int i = 0; i < nums.length; i++){       //扫描,把0交换到前面
+            if(nums[i] == 0) swap(nums,p++,i);
         }
-        for (int i = p; i < nums.length; i++){
-            if (nums[i] == 1) swap(nums, p++, i);
+        for(int i = p; i < nums.length; i++){    //扫描,把1交换到最前面
+            if(nums[i] == 1) swap(nums,p++,i);
         }
     }
-    void swap(int[] nums, int l, int r){
-        int temp = nums[l];
-        nums[l] = nums[r];
-        nums[r] = temp;
+
+    void swap(int[] nums,int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
+
     public void sortColors01(int[] nums) {         //双指针,不好理解
         int n = nums.length;
         int p0 = 0, p1 = 0;

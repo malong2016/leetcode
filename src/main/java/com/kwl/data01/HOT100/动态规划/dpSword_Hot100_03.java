@@ -28,14 +28,15 @@ public class dpSword_Hot100_03 {
      * 动态规划，dp[i - j*j] + 1(注意,此时是j*j构成完全平方数,所以就是要dp+1)
      */
     public int numSquares(int n) {
-        int[] dp = new int[n + 1];    //我们初始化包括dp[0] = 0,dp[16 - 4*4]+1=dp[0]+1,正好是1(不要考虑0*0!!!!)
-        for (int i = 1; i < dp.length; i++) {
-            dp[i] = i;                   //dp[i]初始化,最大值是1*1 + 1*1 ....
-            for (int j = 1; i - j * j >= 0; j++) {
-                dp[i] = Math.max(dp[i], dp[i - j * j] + 1);
+        //dp[0] = 0,所以我们可以需要n+1
+        int[] dp = new int[n + 1];    //这里数和dp的index一一对应
+        for (int j = 1; j <= n; j++) {
+            dp[j] = j;     //默认是全部是1+1+1...+1
+            for (int i = 1; j - i * i >= 0; i++) {    //构成一个平方1*1,在构成2*2
+                dp[j] = Math.min(dp[j], dp[j - i * i] + 1); //i*i是1，然后在求dp[j-i*i]的最小值
             }
         }
-        return dp[n];
+        return dp[dp.length - 1];
     }
 
     /**
@@ -117,32 +118,22 @@ public class dpSword_Hot100_03 {
      * 思路(动态规划): 双循环,先固定右端j,然后从i从0开始遍历到j-1,如果dp[j] > dp[i]就在对应的dp[i]+1
      * dp[]初始值都是要设置为1，双循环不断的更新dp
      */
-    public int lengthOfLIS(int[] nums) {    //从o开始
-        int[] dp = new int[nums.length];
-        int res = Integer.MIN_VALUE;
-        Arrays.fill(dp, 1);       //初始值全部赋值为1
-        for (int j = 0; j < nums.length; j++) {                //j是固定的右端,如果每次都是统计dp[j]的值,只要是前面的值都可以
-            for (int i = 0; i < j; i++) {
-                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);        //这里是dp[j]符合升序才要换!!
-            }
-            res = Math.max(res, dp[j]);
-        }
-        return res;
-    }
-
-    public int lengthOfLIS01(int[] nums) {       //从1开始
+    public int lengthOfLIS(int[] nums) {
+        //求出每个点的最长连续序列，注意我们是固定一端，宁外一端进行逼近
+        //初始化全部是1
         int[] dp = new int[nums.length];
         Arrays.fill(dp, 1);
-        int res = dp[0];
-        for (int j = 1; j < nums.length; j++) {
+        int res = dp[0];       //这个是要不断的更新的
+        for (int j = 1; j < nums.length; j++) {         //这个是求出每个点的升序
             for (int i = 0; i < j; i++) {
-                if (nums[i] < nums[j]) dp[j] = Math.max(dp[i] + 1, dp[j]);
+                if (nums[i] < nums[j]) {
+                    dp[j] = Math.max(dp[j], dp[i] + 1);   //更新dp[j]
+                }
             }
-            res = Math.max(res, dp[j]);
+            res = Math.max(res, dp[j]);   //更新res
         }
         return res;
     }
-
 
 
 }

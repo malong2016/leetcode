@@ -105,7 +105,7 @@ public class Arrays_Hot100_03 {
     }
 
     /**
-     * 题目05(leetcode 第406题): 下一个排列
+     * 题目05(leetcode 第31题): 下一个排列
      * 描述:
      * 实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。
      * 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
@@ -194,25 +194,25 @@ public class Arrays_Hot100_03 {
      * <p>
      * 思路01: 固定一端，左右扫描
      */
-    public List<List<Integer>> threeSum(int[] nums) {    //先排序,遇到重复在去重
-        List<List<Integer>> res = new ArrayList();
-        if (nums == null || nums.length < 3) return res;
-        int len = nums.length;
+    public List<List<Integer>> threeSum(int[] nums) {
+        //先固定一端(遇到相同要去重)，在二端进行逼近(遇到相同要去重)，
+        List<List<Integer>> res = new LinkedList<>();
+        if (nums.length < 3) return res;
         Arrays.sort(nums);
-        for (int i = 0; i < len - 2; i++) {
-            if (nums[i] > 0) break;
-            if (i > 0 && nums[i] == nums[i - 1]) continue; //结束本次循环
-            int L = i + 1, R = len - 1;
-            while (L < R) {
-                int sum = nums[i] + nums[R] + nums[L];
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) break;           //因为这里已经是排好序的，大于0，直接返回
+            if (i > 0 && nums[i] == nums[i - 1]) continue;   //去重
+            int l = i + 1, r = nums.length - 1;
+            while (l < r) {
+                int sum = nums[i] + nums[l] + nums[r];
                 if (sum == 0) {
-                    res.add(Arrays.asList(nums[i], nums[L], nums[R]));
-                    while (L < R && nums[L] == nums[L + 1]) L++;
-                    while (L < R && nums[R] == nums[R - 1]) R--;
-                    L++;
-                    R--;
-                } else if (sum < 0) L++;
-                else if (sum > 0) R--;
+                    res.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                    while (l < r && nums[l] == nums[l + 1]) l++;       //去重，移动到最后一个相同的值那么
+                    while (l < r && nums[r] == nums[r - 1]) r--;
+                    l++;           //去重之后要同时移动,因为这里的二个数都是添加了的
+                    r--;
+                } else if (sum < 0) l++;        //l右移动，扩大
+                else r--;         //r左移动，缩小
             }
         }
         return res;

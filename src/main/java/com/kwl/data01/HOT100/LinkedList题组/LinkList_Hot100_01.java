@@ -24,27 +24,28 @@ public class LinkList_Hot100_01 {
      * 思路02: 归并排序,自顶到底的归并排序，利用递归
      * 思路02: todo 快速排序
      */
-    public ListNode sortList(ListNode head) {       //手写归并排序
-        if (head == null || head.next == null) return head;    //如果head为null或者只有一个节点,就返回head
-        ListNode fast = head.next.next, slow = head;       //如果是偶数找到的slow是位于中点的第一个节点,方便断链!!
+    public ListNode sortList(ListNode head) {
+        //先利用快慢指针找到中点，在前半段排好，后半段排好(这是递归)，最后融合前后半段
+        if (head == null || head.next == null) return head;
+        ListNode slow = head, fast = head.next;            //slow指向偶数的前一个节点
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
-        ListNode leftList = sortList(slow.next);    //后半段排序
-        slow.next = null;      //将后半段断链,因为后半段已经拍好序!!!,不需要排序,拆开链表最后才能mergeList二个二个合并
-        ListNode rightList = sortList(head);    //前半段排序
-        return mergeList(leftList, rightList);      //前后半段融合
+        ListNode l = sortList(slow.next); //slow是中点的前一个节点
+        slow.next = null;   //前后断开
+        ListNode r = sortList(head);
+        return mergeTwoList(l, r);      //前后链合并
     }
 
-    ListNode mergeList(ListNode l1, ListNode l2) {       //融合二个链表,而且让他们升序
+    ListNode mergeTwoList(ListNode l1, ListNode l2) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         if (l1.val < l2.val) {
-            l1.next = mergeList(l1.next, l2);
+            l1.next = mergeTwoList(l1.next, l2);
             return l1;
         } else {
-            l2.next = mergeList(l2.next, l1);
+            l2.next = mergeTwoList(l2.next, l1);
             return l2;
         }
     }
@@ -202,33 +203,15 @@ public class LinkList_Hot100_01 {
         return divideList(lists, 0, lists.length - 1);
     }
 
-    ListNode divideList(ListNode[] lists,int L, int R){
+    ListNode divideList(ListNode[] lists, int L, int R) {
         if (L == R) return lists[L];
         if (L > R) return null;
-        int  mid = (R + L)/2;
-        return mergeTwoLists01(divideList(lists, L, mid), divideList(lists, mid+1, R));
+        int mid = (R + L) / 2;
+        return mergeTwoLists01(divideList(lists, L, mid), divideList(lists, mid + 1, R));
     }
 
     /**
-     * 题目07(leetcode 第142题): 环形链表 II
-     * 描述: 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
-     * 注意: 不允许修改给定的链表
-     * 进阶: 是否可以用空间复杂度o(1)处理这个问题
-     * <p>
-     * 思路01(时间复杂度是o(n)): 利用HashSet不断添加结点到里面,如果有重复就返回false
-     * 思路02: 快慢指针???  todo 理解
-     */
-    public ListNode detectCycle(ListNode head) {
-        Set<ListNode> set = new HashSet<>();
-        while (head != null) {
-            if (!set.add(head)) return head;
-            head = head.next;
-        }
-        return null;    //如果没有环或者传入null,就返回null
-    }
-
-    /**
-     * 题目08(leetcode 第141题): 环形链表
+     * 题目07(leetcode 第141题): 环形链表
      * 描述: 给定一个链表，判断链表中是否有环。
      * <p>
      * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
@@ -245,6 +228,45 @@ public class LinkList_Hot100_01 {
             if (slow == fast) return true;
         }
         return false;         //如果没有找到就返回null
+    }
+
+
+    /**
+     * 题目08(leetcode 第142题): 环形链表 II
+     * 描述: 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+     * 注意: 不允许修改给定的链表
+     * 进阶: 是否可以用空间复杂度o(1)处理这个问题
+     * <p>
+     * 思路01(时间复杂度是o(n)): 利用HashSet不断添加结点到里面,如果有重复就返回false
+     * 思路02: 快慢指针
+     * 当第一次相遇的时候，设快慢指针走过的步数是f 和s
+     * 那么f = 2s  = s + nb(多走了n个圈)，所以慢指针走了nb圈
+     * 重新设置fast = head,当fast走a步时候(正好走到入环口),slow走了a + nb所以重合了
+     */
+    public ListNode detectCycle(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        while (head != null) {
+            if (!set.add(head)) return head;
+            head = head.next;
+        }
+        return null;    //如果没有环或者传入null,就返回null
+    }
+
+    public ListNode detectCycle01(ListNode head) {
+        //先求出第一次相遇，如果相遇，设置fast指向head，那么当fast和slow再次相遇就是节点
+        ListNode fast = head, slow = head;
+        while (true) {       //因为要排除无节点的,所以要设置true,被破跳出循环。
+            if (fast == null || fast.next == null) return null;    //满足其一就跳出循环
+            fast = fast.next.next;
+            slow = slow.next;
+            if (slow == fast) break;
+        }
+        fast = head;
+        while (fast != slow) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return fast;
     }
 
 

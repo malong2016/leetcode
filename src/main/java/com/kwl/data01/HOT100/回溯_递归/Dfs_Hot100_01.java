@@ -123,8 +123,8 @@ public class Dfs_Hot100_01 {
     }
 
     void dfs(String str, List<String> res, int n, int lc, int rc) {
-        if (rc > lc || rc > n || lc > n) return;         //右统计大于左统计，或者左右大于n，直接返回
-        if (lc == n && rc == n) {         //左右统计同时符合n添加
+        if (rc > lc || rc > n || lc > n) return;         //右统计大于左统计(在后添加无法匹配)，或者左右大于n，直接返回
+        if (lc == n && rc == n) {         //左右统计同时符合n添加，这里是一定可以匹配到
             res.add(str);
             return;
         }

@@ -5,6 +5,7 @@ import com.kwl.data01.dataStructure.Array;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
 import java.util.*;
 
 
@@ -12,21 +13,21 @@ import java.util.*;
 class Data01ApplicationTests {
 
 
-    public int numberOf2(int n) {
-        int flag = 1, res = 0;
-        while (flag != 0) {         //这个可以循环32次
-            if ((flag & n) != 0) res++;      //注意比较运算符优先级大于&位运算符!!!
-            flag <<= 1;
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] charStr = str.toCharArray();
+            Arrays.sort(charStr);
+            String strSort = String.valueOf(charStr);     //拿到排好序的str
+            if (!map.containsKey(strSort)) map.put(strSort, new LinkedList<String>());   //先添加/最优解
+            map.get(strSort).add(str);        //后拿到加入
         }
-        return res;
+        return new LinkedList<>(map.values());
     }
 
 
     @Test
     void test() {
-        char a = '\0';
-        System.out.println((int)a);
-        char b = ' ';
-        System.out.println((int)b);
+        System.out.println(groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
     }
 }

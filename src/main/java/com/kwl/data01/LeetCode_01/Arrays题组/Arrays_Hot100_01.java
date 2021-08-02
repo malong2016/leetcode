@@ -16,14 +16,13 @@ public class Arrays_Hot100_01 {
      * 思路01: 滑动窗口
      */
     public int minSubArrayLen(int target, int[] nums) {
-        int l = 0, r = 0, res = nums.length + 1, sum = 0; //设置为长度+1
-        while (r < nums.length) {
+        int l = 0, res = nums.length + 1, sum = 0; //设置为长度+1
+        for (int r = 0; r < nums.length; r++) {
             sum += nums[r];
             while (sum >= target) {       //l右滑动,减少窗口里面的元素,直到窗口小于target
                 res = Math.min(res, r - l + 1);     //更新res
                 sum -= nums[l++];         //l右移动,最多是把窗口里面的东西全部剪掉为0，肯定会跳出
             }
-            r++;
         }
         return res > nums.length ? 0 : res;      //如果res改变了就肯定存在,直接返回
     }

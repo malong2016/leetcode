@@ -5,3 +5,5 @@
 4 如果队列或者栈，是不断入队或者出栈，不能用stack/queue.size()来判断！！！
 5 对于长度为0
   matrix[0].length //这个要在res[m][n] res.length != 0的情况下来计算,否则就是空指针
+6 数组是[],方法是()
+7 注意，如果是new LinkedList<>(Collection) 不需要传入泛型,默认就是collections里面的泛型

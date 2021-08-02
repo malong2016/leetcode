@@ -44,12 +44,13 @@ public class Arrays_Hot100_02 {
     public int findKthLargest014(int[] nums, int k) {      //堆排序
         //这里使用堆排序
         PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(); //最大就弄最小推，每次都是把最小值出队。里面就可以保持到最大值
-        for(int num : nums){
+        for (int num : nums) {
             priorityQueue.offer(num);
-            if(priorityQueue.size() > k) priorityQueue.poll(); //如果队中大于k，就把最小值出队，所以队中始终保持是k个元素
+            if (priorityQueue.size() > k) priorityQueue.poll(); //如果队中大于k，就把最小值出队，所以队中始终保持是k个元素
         }
         return priorityQueue.peek();
     }
+
     public int findKthLargest(int[] nums, int k) {
         return quickSort(nums, 0, nums.length - 1, nums.length - k);
     }
@@ -94,11 +95,11 @@ public class Arrays_Hot100_02 {
     public int[] productExceptSelf(int[] nums) {
         int[] pre = new int[nums.length];    //除了本身之外的乘积
         pre[0] = 1;
-        for(int i = 1; i < nums.length;i++){       //除了本身之后前置
-            pre[i] = pre[i-1] * nums[i - 1];
+        for (int i = 1; i < nums.length; i++) {       //除了本身之后前置
+            pre[i] = pre[i - 1] * nums[i - 1];
         }
         int back = 1;
-        for(int i = nums.length - 1;i >= 0; i--){
+        for (int i = nums.length - 1; i >= 0; i--) {
             pre[i] = back * pre[i];
             back = back * nums[i];
         }
@@ -121,7 +122,7 @@ public class Arrays_Hot100_02 {
         int n = temperatures.length;
         int[] res = new int[n];
         for (int i = 0; i < n - 1; i++) {   //最后一天不需要计算
-            for (int j = i; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 if (temperatures[j] > temperatures[i]) {     //找到了第一个大于i的直接加入res,结束本次循环
                     res[i] = j - i;
                     break;
@@ -132,18 +133,18 @@ public class Arrays_Hot100_02 {
     }
 
     public int[] dailyTemperatures01(int[] temperatures) {       //单调栈
-        int n = temperatures.length;
-        int[] res = new int[n];
+        int[] res = new int[temperatures.length];
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < temperatures.length; i++) {
             while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
                 Integer popIndex = stack.pop();   //要出栈的index
-                res[popIndex] = i - popIndex;    //是哪个节点要你出栈的，之差就是结果
+                res[popIndex] = i - popIndex;    //是哪个节点要你出栈的，之差就是结果,注意这里是记录出队元素的index
             }
             stack.push(i);  //无论如何都是要把i入队的
         }
         return res;
     }
+
 
     /**
      * 题目06(leetcode 第240题): 搜索二维矩阵 II              ---本题和 swordOffer 第4题 重复
@@ -162,9 +163,9 @@ public class Arrays_Hot100_02 {
     public boolean searchMatrix(int[][] matrix, int target) {
         int m = matrix.length, n = matrix[0].length;
         int i = m - 1, j = 0;            //注意这里i和j越大，值越大。
-        while(i >= 0 && j < n){
-            if(matrix[i][j] == target) return true;
-            else if(matrix[i][j] > target) i--;  //找更小的值
+        while (i >= 0 && j < n) {
+            if (matrix[i][j] == target) return true;
+            else if (matrix[i][j] > target) i--;  //找更小的值
             else j++;     //找更大的值
         }
         return false;
@@ -198,6 +199,7 @@ public class Arrays_Hot100_02 {
         }
         return Math.max((maxTime - 1) * (n + 1) + maxCount, tasks.length);
     }
+
     public int leastInterval01(char[] tasks, int n) {        //new int[128]
         int[] ints = new int[128];
         for (char task : tasks) {
@@ -205,7 +207,7 @@ public class Arrays_Hot100_02 {
         }
         Arrays.sort(ints);
         int count = 0;
-        for (int i = 127; i >=0 && ints[i] == ints[127]  ; i--) {
+        for (int i = 127; i >= 0 && ints[i] == ints[127]; i--) {
             count++;
         }
         return Math.max((ints[127] - 1) * (n + 1) + count, tasks.length);
@@ -226,20 +228,19 @@ public class Arrays_Hot100_02 {
      * 2 如果待加入元素左端值小于或者等于等于拍好序的最大值，那么就融合，左端值还是原来的左端值(因为一定更小)，右端值二者右端的最大值
      */
     public int[][] merge(int[][] intervals) {
-        if (intervals == null || intervals.length <= 1) return intervals;       //传入个数0或者1直接返回本身
-        Arrays.sort(intervals, ((o1, o2) -> o1[0] - o2[0]));   //按照左端元素升序(注意排序默认就是升序)
-        LinkedList<int[]> res = new LinkedList<int[]>() {{  //先把第一个元素添加进来
-            add(intervals[0]);
-        }};
+        //大体思路: 先按照最左端元素进行生序排序
+        //在添加进来的元素，和最后一个元素的右端比较，大于就直接添加进来
+        //小于就更新最后一个元素的右端(取二者右端的最大值)
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);
+        LinkedList<int[]> res = new LinkedList<>();
+        res.add(intervals[0]);
         for (int i = 1; i < intervals.length; i++) {
-            int[] resLast = res.getLast();     //拿到返回值的最后一个元素
-            if (resLast[1] < intervals[i][0]) res.add(intervals[i]);   //最小值大于拍好序的最大值，直接加入
+            int[] last = res.peekLast(); //拿到排好序的最后一个元素
+            if (last[1] < intervals[i][0]) res.add(intervals[i]);   //注意等于不能直接加过来,左端和右端比较
             else {
-                resLast[1] = Math.max(resLast[1], intervals[i][1]); //右端取二者的最大值,注意,左端还是原来的
+                last[1] = Math.max(last[1], intervals[i][1]);      //更新最后一个值的最右端
             }
         }
-        return res.toArray(new int[0][]);    //转化为int[][]
+        return res.toArray(new int[0][]);
     }
-
-
 }

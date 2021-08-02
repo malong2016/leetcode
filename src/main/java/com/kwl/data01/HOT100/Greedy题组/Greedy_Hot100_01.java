@@ -21,18 +21,16 @@ public class Greedy_Hot100_01 {
      * 解释：无论怎样，总会到达下标为 3 的位置。但该下标的最大跳跃长度是 0 ， 所以永远不可能到达最后一个下标。
      * <p>
      * 思路01(官方解): 想要跳到最后一个那么在该点的nums[i] + i >= nums.length - 1 (这里是nums.length - 1个空隙)
-     * 不断维护maxIndex,当扫描到当前i,先进行比较，通过后再继续判断和维护
+     * 不断维护maxIndex(能跳的最大index),当扫描到当前i,先进行比较，通过后再继续判断和维护
      */
     public boolean canJump(int[] nums) {
-        //顺序扫描nums,维护最大跳跃maxIndex,如果扫描到i,先判断如果小于maxIndex,直接
-        //返回break,如果大于等于，继续判断维护
-        //核心是nums[i] + i >= nums.length -1就成功了
-        int maxIndex = 0;     //记录当前，能跳的最大index
-        for (int i = 0; i < nums.length; i++) {
-            if(i > maxIndex) break; //不能跳到i，那么就一定不能跳到nums.length-1
+        //nums[i] + i >= nums.length() - 1
+        int maxIndex = 0;      //最大能跳跃的地方index,初始化能跳到0,可能第一个就能跳过,所以不能初始化第一个
+        for(int i = 0; i < nums.length; i++){
+            if(i > maxIndex) break;     //不能跳到本点，直接返回
             else {
-                if (nums[i] + i >= nums.length -1) return true;    //当前i能跳跃到末尾，就返回true,不能跳到继续维护
-                maxIndex = Math.max(maxIndex, nums[i] + i);
+                if(nums[i] + i >= nums.length - 1) return true;
+                maxIndex = Math.max(maxIndex,nums[i] + i);     //更新一下最远能跳的index
             }
         }
         return false;
