@@ -17,10 +17,10 @@ public class StackAndQueue {
      * push('元素'):入栈,返回入栈的value
      * pop():出栈,return出栈的value
      * peek():return栈顶的元素
-     * search('元素'):返回指定元素的索引(注意索引是从栈顶开始向下计算)
+     * search('元素'):返回指定元素的索引(注意索引是从栈顶开始向下计算)  --栈顶返回1，以下是2,3,4...
      * isEmpty():判断栈是否是空,return boolean
      * size(): return 栈的长度
-     * get(index): 获取栈指定Index的值,栈底index是0
+     * get(index): 获取栈指定Index的值,栈底index是0  --和list数组是一样的
      *
      * 注意: 如果栈为空,pop()和peek()全部会抛出异常
      *

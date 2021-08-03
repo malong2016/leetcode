@@ -146,10 +146,38 @@ public class String_Hot100_01 {
      * 输出:
      *    [0, 6]
      *
-     * 思路01: 滑动窗口不动的超时！！！
+     * 思路01: new int[128]单双窗口比较
      * 思路02: 双map+vaild比较,windows只放入need中存在的值!!!
-     * 思路03: new int[128]单双窗口比较
      */
+    public List<Integer> findAnagrams(String s, String p) {
+        //本题使用new int[128]做
+        List<Integer> res = new LinkedList<>();
+        int[] window = new int[128], needArr = new int[128];
+        int valid = 0,needSize = 0;
+        for(int i = 0; i < p.length(); i++){
+            if(needArr[p.charAt(i)] == 0) needSize++; //第一次来，累加
+            needArr[p.charAt(i)]++;
+        }
+        int l = 0;
+        for(int r = 0; r < s.length(); r++){
+            char c1 = s.charAt(r);
+            if(needArr[c1] != 0){
+                window[c1]++;
+                if(window[c1] == needArr[c1]) valid++;
+            }
+            if(r - l + 1 == p.length()){
+                if(valid == needSize) res.add(l);
+                char c2 = s.charAt(l);
+                if(needArr[c2] != 0){
+                    if(window[c2] == needArr[c2]) valid--;
+                    window[c2]--;
+                }
+                l++;
+            }
+        }
+        return res;
+    }
+
     public List<Integer> findAnagrams07(String s, String p) {
         Map<Character, Integer> window = new HashMap<>();
         Map<Character, Integer> need = new HashMap<>();
@@ -178,36 +206,7 @@ public class String_Hot100_01 {
         }
         return res;
     }
-    public List<Integer> findAnagrams08(String s, String p) {
-        int[] window = new int[128];
-        int[] need = new int[128];
-        LinkedList<Integer> res = new LinkedList<>();
-        int amount = 0;
-        for (int i = 0; i < p.length(); i++) {
-            if (need[p.charAt(i)] == 0) amount++;  //计算p里面有多少不同个值
-            need[p.charAt(i)]++;
-        }
-        int l = 0, r = 0;
-        int valid = 0;
-        while (r < s.length()) {
-            char c1 = s.charAt(r);
-            if (need[c1] != 0) {
-                window[c1]++;
-                if (need[c1] == window[c1]) valid++;
-            }
-            if (r - l + 1 == p.length()) {
-                if (valid == amount) res.add(l);
-                char c2 = s.charAt(l);
-                if (need[c2] != 0) {
-                    if (need[c2] == window[c2]) valid--;
-                    window[c2]--;
-                }
-                l++;
-            }
-            r++;
-        }
-        return res;
-    }
+
     /**
      * 题目05(leetcode 第169题): 多数元素
      * 描述: 给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素

@@ -69,13 +69,13 @@ public class Arrays_Hot100_01 {
             if (nums[mid] == target) {
                 return mid;
             } else if (nums[mid] < nums[high]) {       //上半区是有序的
-                if (nums[mid] < target && target <= nums[high]) {
-                    low = mid + 1;          //向上半区逼近
+                if (nums[mid] < target && target <= nums[high]) {      //在本有序区间
+                    low = mid + 1;
                 } else {
-                    high = mid - 1;       //向下半区逼近
+                    high = mid - 1;
                 }
             } else {                   //下半区是有序的
-                if (nums[low] <= target && target < nums[mid]) {
+                if (nums[low] <= target && target < nums[mid]) {   //在本有序区间
                     high = mid - 1;
                 } else {
                     low = mid + 1;

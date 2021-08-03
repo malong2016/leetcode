@@ -229,7 +229,7 @@ public class Dfs_Hot100_01 {
      * +1 + 1 + 1 + 1 - 1 = 3
      * <p>
      * 思路01(官方回溯法):  见下面
-     * 思路02(动态规划): 见官方解答  todo 还是01背包问题
+     * 思路02(动态规划): 见官方解答  todo 还是01背包问题深入理解2021/08/03
      */
     int count01 = 0;
 
@@ -239,7 +239,7 @@ public class Dfs_Hot100_01 {
     }
 
     void dfs(int[] nums, int target, int index, int sum) {
-        if (index == nums.length) {
+        if (index == nums.length) {               //这里是互斥关系,注意我们index是会越界的index == len
             if (sum == target) count01++;
         } else {
             dfs(nums, target, index + 1, sum - nums[index]);

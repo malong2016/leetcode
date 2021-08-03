@@ -12,22 +12,30 @@ import java.util.*;
 @SpringBootTest
 class Data01ApplicationTests {
 
-
-    public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String str : strs) {
-            char[] charStr = str.toCharArray();
-            Arrays.sort(charStr);
-            String strSort = String.valueOf(charStr);     //拿到排好序的str
-            if (!map.containsKey(strSort)) map.put(strSort, new LinkedList<String>());   //先添加/最优解
-            map.get(strSort).add(str);        //后拿到加入
+    public int longestValidParentheses(String s) {
+        int res = 0;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') stack.push(i);
+            else {             //这个')'去和'('中进行匹配，这个也是只能逼出一个!!!
+                stack.pop();
+                if (stack.isEmpty()) stack.push(i); //栈为空，就把)的index入栈(最后一个没有被匹配到的)
+                else res = Math.max(res, i - stack.peek());
+            }
         }
-        return new LinkedList<>(map.values());
+        return res;
     }
-
 
     @Test
     void test() {
-        System.out.println(groupAnagrams(new String[]{"eat", "tea", "tan", "ate", "nat", "bat"}));
+        Stack<String> stack = new Stack<>();
+        stack.push("张三");
+        stack.push("李四");
+        stack.push("李四01");
+        System.out.println("stack = " + stack);
+        System.out.println(stack.get(0));
+        System.out.println(stack.search("李四01"));
+        System.out.println(stack.search("张三"));
     }
 }

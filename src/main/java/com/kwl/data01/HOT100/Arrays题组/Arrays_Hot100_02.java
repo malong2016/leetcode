@@ -184,7 +184,8 @@ public class Arrays_Hot100_02 {
      * 在本示例中，两个相同类型任务之间必须间隔长度为 n = 2 的冷却时间，而执行一个任务只需要一个单位时间，所以中间出现了（待命）状态。
      * <p>
      * 思路01(构造法): 最大频率数maxExec,res01 = (maxExce - 1) * (n + 1) + maxCount(最大频率的个数), A -> x -> x - > A -> x -> x ->A
-     * 每(n-1)为一组,最后会空出maxCount,res可能比tasks.length小，所以 res =  Max(res01,tasks.length)
+     * 可以看看最后一个不能计算maxExce-1,每组是n+1,最后加上最大频率的个数
+     * 每(n+1)为一组,最后会空出maxCount,res可能比tasks.length小，所以 res =  Max(res01,tasks.length)
      */
     public int leastInterval(char[] tasks, int n) {     //hashMap
         Map<Character, Integer> map = new HashMap<>();
@@ -193,12 +194,32 @@ public class Arrays_Hot100_02 {
             map.put(task, map.getOrDefault(task, 0) + 1);
             maxTime = Math.max(maxTime, map.get(task));        //拿到最大次数
         }
-        int maxCount = 0;      //最大次数的个数
+        int maxCount = 0;      //最大次数的个数eg:  A 3 B 3 C 3
         for (Integer value : map.values()) {
             if (value == maxTime) ++maxCount;
         }
+        // A -> x -> x - > A -> x -> x ->A
+        //可以看看最后一个不能计算maxExce-1,每组是n+1,最后加上最大频率的个数
         return Math.max((maxTime - 1) * (n + 1) + maxCount, tasks.length);
     }
+
+    public int leastInterval012(char[] tasks, int n) {
+        //先求出最多任务的完成时间
+        //要记录最大次数的个数(maxTime-1) * (n-1) + count,task.len
+        Map<Character, Integer> map = new HashMap<>(); //统计每个点的次数
+        int maxTime = Integer.MIN_VALUE;
+        for(char task : tasks){
+            map.put(task, map.getOrDefault(task, 0) +1);    //记录次数
+            maxTime = Math.max(maxTime, map.get(task));
+        }
+        int  count = 0;
+        for(Integer temp : map.values()){     //有多少个最大次数
+            if(temp == maxTime)  count++;
+        }
+        return Math.max((maxTime - 1) * (n - 1) + count, tasks.length) ;
+    }
+
+
 
     public int leastInterval01(char[] tasks, int n) {        //new int[128]
         int[] ints = new int[128];

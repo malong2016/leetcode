@@ -23,7 +23,7 @@ public class QueueAndStack_Hot100_01 {
             else {
                 stack.pop();
                 if (stack.isEmpty()) stack.push(i); //栈为空，就把)的index入栈(最后一个没有被匹配到的)
-                else res = Math.max(res, i - stack.peek());
+                else res = Math.max(res, i - stack.peek());   //注意和上面的是排斥关系!!!
             }
         }
         return res;

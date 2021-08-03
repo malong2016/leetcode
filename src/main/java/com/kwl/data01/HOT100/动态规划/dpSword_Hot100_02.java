@@ -241,7 +241,7 @@ public class dpSword_Hot100_02 {
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         Arrays.fill(dp, amount + 1); //最多就是全部是amount!!设置+1
-        dp[0] = 0;       //0元换0个硬币
+        dp[0] = 0;       //0元换0个硬币,注意在填充值之后一定要初始化0！！！
         for (int i = 1; i <= amount; i++) {
             for (int j = 0; j < coins.length; j++) {
                 if (coins[j] <= i) {       //硬币小于i就可以换
@@ -251,6 +251,7 @@ public class dpSword_Hot100_02 {
         }
         return dp[amount] == amount + 1 ? -1 : dp[amount];
     }
+
 
     /**
      * 题目08(leetcode 第309题): 最佳买卖股票时机含冷冻期
@@ -273,13 +274,13 @@ public class dpSword_Hot100_02 {
         if (len == 1) return 0;
         //1是持有股票(昨天就有股票or今天买入)2是不持有股票，在冷冻期(今天卖出),3是不持有股票，也不在冷冻期(今天一开始就没有股票)
         int[][] dp = new int[len][3];
-        dp[0][0] = -prices[0];    //第一天买入直接是-收益，dp[0][0]初始化为0
+        dp[0][0] = -prices[0];    //第一天买入直接是-收益，dp[0][0]初始化为-price[0],其他二个初始化为0(不操作)
         for (int i = 1; i < len; i++) {
             //如果在当天持有股票.说明是       1 昨天持有股票 2 昨天不持有，而且不处于冷冻期。今天买入！！！
             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] - prices[i]);
-            //不持有股票，而且在冷冻期，说明是    1 今天卖出，那么肯定是昨天持有
+            //不持有股票，而且在冷冻期(今天抛掉股票)，说明是    1 今天卖出，那么肯定是昨天持有
             dp[i][1] = dp[i - 1][0] + prices[i];
-            //现在不持有股票,不在冷冻期(今天开始就没有股票)。说明是     1 昨天不持有，在冷冻期 2 昨天不持有，不在冷冻期
+            //现在不持有股票,不在冷冻期(今天没有操作)。说明是     1 昨天不持有，在冷冻期 2 昨天不持有，不在冷冻期
             dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]);
         }
         return Math.max(dp[len - 1][1], dp[len - 1][2]);     //注意dp[len-1][0]持有股票是没有意义的

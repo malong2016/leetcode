@@ -76,9 +76,9 @@ public class Arrays_Hot100_03 {
      * 编号为 5 的人身高为 7 ，有 1 个身高更高或者相同的人排在他前面，即编号为 1 的人。
      * 因此 [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]] 是重新构造后的队列。
      * <p>
-     * 思路01(按照升序来，先按照身高，后按照人数):
+     * 思路01(先按照身高降序，在按照数量升序):
      * <p>
-     * 排序01: [7,1], [7,0], [6,1], [5,4], [5,2], [5,0], [4, 4]
+     * 排序01: [7,0], [7,1], [6,1], [5,4], [5,2], [5,0], [4, 4]
      */
     public int[][] reconstructQueue(int[][] people) {
 
@@ -91,16 +91,12 @@ public class Arrays_Hot100_03 {
 //                return o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0];
 //            }
 //        });
-        Arrays.sort(people, ((o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0]));    //lambd表达式
+        //先按照身高降序，在按照数量升序
+        Arrays.sort(people, ((o1, o2) -> o1[0] == o2[0] ? o1[1] - o2[1] : o2[0] - o1[0]));
         List<int[]> list = new ArrayList<>();
-        //K值定义为 排在h前面且身高大于或等于h的人数
-        //因为从身高降序开始插入，此时所有人身高都大于等于h
-        //因此K值即为需要插入的位置
-        for (int[] i : people) {         //矮的向前插入不影响!!!在插入的时候一定都是比他高的
-            System.out.println("i = " + i[1]);
+        for (int[] i : people) {
             list.add(i[1], i);
         }
-        System.out.println("list = " + list);
         return list.toArray(new int[list.size()][]);
     }
 
