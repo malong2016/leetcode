@@ -107,20 +107,15 @@ public class dpSword_Hot100_01 {
         for (int i = 0; i < len; i++) {
             int high = heights[i];
             if (high * len <= res) continue;        //如果左右全部扫描得到的面积都是小于res,就不用计算了
-            int l = i, r = i; //确定左右指针向二段扫描
-            while (l - 1 >= 0 && heights[l - 1] >= high) l--; //这个l是符合最大矩阵的情况
+            int l = i, r = i;
+            //以本点为扩散，向二边扫描，找到第一个小于本柱体的值
+            while (l - 1 >= 0 && heights[l - 1] >= high) l--;      //满足才要l--
             while (r + 1 <= len - 1 && heights[r + 1] >= high) r++;
             res = Math.max(res, (r - l + 1) * high);
-
-
-            //直接循环的时候计算宽度，更好理解
-//            int width = 1;
-//            while (--l >= 0 && heights[l] >= high) width++;
-//            while (++r <= len - 1 && heights[r] >= high) width++;
-//            res = Math.max(res, width * high);
         }
         return res;
     }
+
     public int largestRectangleArea01(int[] heights) {       //单调递增栈
         int res = 0;
         Stack<Integer> stack = new Stack<>();
@@ -237,10 +232,10 @@ public class dpSword_Hot100_01 {
             dp[i][0] = true;
         }
         dp[0][nums[0]] = true;      //就一个数,nums[0]为分割,其他是false
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < n; i++) {                         //i代表是数量,j是容器。这里都是从1开始，已经完成初始化
             for (int j = 1; j < target + 1; j++) {
                 if (j >= nums[i]) {
-                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i]];     // 1,2,3,4,1
                 } else dp[i][j] = dp[i - 1][j];
             }
         }
@@ -259,10 +254,10 @@ public class dpSword_Hot100_01 {
         dp[0] = true;
         for (int i = 0; i < n; i++) {
             for (int j = target; j >= nums[i]; j--) {
-                dp[j] |= dp[j - nums[i]];       //等于以前求得,和现在的关系
+                dp[j] |= dp[j - nums[i]];       //dp[j - nums[i]]是前面已经求得，可以
             }
         }
-        return dp[dp.length - 1];
+        return dp[target];
     }
 
 

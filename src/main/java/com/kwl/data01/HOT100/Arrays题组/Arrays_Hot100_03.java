@@ -128,10 +128,11 @@ public class Arrays_Hot100_03 {
      */
     public void nextPermutation(int[] nums) {
         int i = nums.length - 2;
+        //从倒数第二个开始找，找第一个升序的二个数
         while (i >= 0 && nums[i] >= nums[i + 1]) i--; //这里跳出循环就是nums[k]<num[k+1]或者i=-1(也就是全部降序)
         if (i >= 0) {
             int j = nums.length - 1;
-            while (j >= 0 && nums[i] >= nums[j]) j--;     //跳出循环是nums[i] < num[j] ，这里是一定能找到的,因为前面有升序
+            while (j >= 0 && nums[j] <= nums[i]) j--;     //跳出循环是nums[i] < num[j] ，这里是一定能找到的,因为前面有升序
             swap(nums, i, j);   //交换
         }
         reverseArr(nums, i + 1);      //交换
@@ -145,11 +146,7 @@ public class Arrays_Hot100_03 {
 
     void reverseArr(int[] nums, int beginIndex) {       //翻转
         int l = beginIndex, r = nums.length - 1;
-        while (l < r) {
-            swap(nums, l, r);
-            l++;
-            r--;
-        }
+        while (l < r) swap(nums, l++, r--);
     }
 
     /**
@@ -224,15 +221,18 @@ public class Arrays_Hot100_03 {
      */
     public int minMeetingRooms(int[][] intervals) {
         if (intervals.length == 0) return 0;
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);    //根据start时间进行，升序排序
         PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
-        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]);     //是默认的是吗???如果是多维数组，如何比较?
         priorityQueue.offer(intervals[0][1]);    //把第一个结束时间入队
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] >= priorityQueue.peek()) priorityQueue.poll();//开始时间大于队首的结束时间，如果可以共用一个会议室，那么队首出队
+            //开始时间大于队首的结束时间，如果可以共用一个会议室，那么队首出队
+            //eg [5,10],[15,20] -->可以使用一个大的会议室
+            if (intervals[i][0] >= priorityQueue.peek()) priorityQueue.poll();
             priorityQueue.offer(intervals[i][1]);     //无论是否共用,都是要将入队的结束时间
         }
         return priorityQueue.size();
     }
+
 
 
 }

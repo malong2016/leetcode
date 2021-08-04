@@ -252,7 +252,7 @@ public class Dfs_Hot100_01 {
      * 描述: 给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
      * 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
      */
-    Map<Character, String> phoneMap = new HashMap<Character, String>() {{
+    Map<Character,String> map = new HashMap<Character, String>(){{
         put('2', "abc");
         put('3', "def");
         put('4', "ghi");
@@ -262,24 +262,26 @@ public class Dfs_Hot100_01 {
         put('8', "tuv");
         put('9', "wxyz");
     }};
-    List<String> res = new ArrayList<>();
 
-    public List<String> letterCombinations(String digits) { //回溯法(官方)
-        if (digits.length() == 0) return res;
-        dfs01(digits, 0, new StringBuffer());
+
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new LinkedList<>();
+        if(digits.length() == 0) return res;
+        StringBuilder path = new StringBuilder();
+        dfs(0, digits, path, res);       //注意，如果digits.len为0是不可以
         return res;
     }
 
-    public void dfs01(String digits, int index, StringBuffer combination) {
-        if (index == digits.length()) res.add(combination.toString());
-        else {
-            char digit = digits.charAt(index);
-            String letters = phoneMap.get(digit);
-            int lettersConut = letters.length();
-            for (int i = 0; i < lettersConut; i++) {
-                combination.append(letters.charAt(i));
-                dfs01(digits, index + 1, combination);
-                combination.deleteCharAt(combination.length() - 1);
+    void dfs(int index, String digits, StringBuilder path, List<String> res){
+        if(index == digits.length()) res.add(path.toString());   //注意这里是溢出
+        else{
+            char tempChar = digits.charAt(index);
+            String str = map.get(tempChar);    //拿到数字对应的字母
+            int len = str.length();      //拿到字母的长度
+            for(int i = 0; i < len; i++){
+                path.append(str.charAt(i));
+                dfs(index + 1, digits, path, res);     //递归到下一层是index!!,这里是特使
+                path.deleteCharAt(path.length() - 1);
             }
         }
     }

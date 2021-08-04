@@ -9,3 +9,4 @@
 7 注意，如果是new LinkedList<>(Collection) 不需要传入泛型,默认就是collections里面的泛型
 8 如果是List<String> list, list.add(index,element)
 这里插入元素如果该index有元素，就把新element插入到这里
+9     stringBuilder.deleteCharAt(stringBuilder.length())

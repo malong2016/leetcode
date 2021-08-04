@@ -59,6 +59,8 @@ public class String_Hot100_01 {
      * <p>
      * 输入：s = "3[a2[c]]"
      * 输出："accaccacc"
+     *
+     * 思路: 设置一个栈，对s进行遍历，当匹配到]要特殊的处理。
      */
     public String decodeString(String s) {
         Stack<String> stack = new Stack<>();    //这里要设置为string,当有3*a会转化为string类型
@@ -67,18 +69,18 @@ public class String_Hot100_01 {
             if (c == ']') {        //先判断结束!!else就可以省略很多条件!!
                 String temp = "";
                 while (!stack.peek().equals("[")) {
-                    temp = stack.pop() + temp;     //注意后出栈的要放入在前面，因为后面要入栈
+                    temp = stack.pop() + temp;    //先出栈的放在前面
                 }
                 stack.pop();  //将"["出栈
                 String strNum = "";
-                //拿到倍数,注意这里数字可以有多个!!所以要循环
+                //拿到倍数,注意这里数字可以有多个!!比如234
                 while (!stack.isEmpty() && stack.peek().charAt(0) >= '0' && stack.peek().charAt(0) <= '9') {
                     strNum = stack.pop() + strNum;
                 }
                 int num = Integer.parseInt(strNum);
                 String res = "";      //转化最后的String
                 for (int j = 0; j < num; j++) res = res + temp;
-                stack.push(res);         //将转化好的字符串重新入栈
+                stack.push(res);         //将转化好的字符串重新入栈，可能下面还有[,还有乘积
             } else stack.push(String.valueOf(c)); //当时数字/字母/[直接入栈
         }
         String ans = "";

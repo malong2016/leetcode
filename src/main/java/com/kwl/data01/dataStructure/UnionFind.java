@@ -3,6 +3,8 @@ package com.kwl.data01.dataStructure;
 /**
  * 并查集 - unionFind
  *
+ * 处理连通性
+ *
  * @author kuang.weilin
  * @date 2021/7/12 18:56
  */

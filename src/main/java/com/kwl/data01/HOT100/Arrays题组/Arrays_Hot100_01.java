@@ -93,30 +93,58 @@ public class Arrays_Hot100_01 {
      * eg: nums = [5,7,7,8,8,10], target = 8 --> [3,4]
      * <p>
      * 思路01: 顺序查找,时间复杂度是o(n)
-     * 思路02: 二分查找,时间复杂度是o(log2n),left是第一个等于target的index,而right是第一个大于target的index
+     * 思路02: 二分查找
      */
     public int[] searchRange(int[] nums, int target) {
-        int left = binarySearch(nums, target, true);       //找第一个等于target的数
-        int right = binarySearch(nums, target, false) - 1;    //这个是找第一个大于target的数,-1就是最后一个数
-        if (left <= right && right <= nums.length && nums[left] == target && nums[right] == target) {
-            return new int[]{left, right};
+        //二次循环，查找二次的index，一次l，一次r
+        int[] res = new int[]{-1, -1};
+        if (nums.length == 0) return res;     //注意nums为0的情况
+        int l = 0, r = nums.length - 1;
+        while (l < r) {         //这里和二分查找不一样
+            int mid = (l + r) / 2;
+            //目标值小，r向下靠
+            if (nums[mid] >= target) r = mid;     //r不断向左靠近mid,而且在mid等l
+            else l = mid + 1;
         }
-        return new int[]{-1, -1};
-    }
-
-    int binarySearch(int[] nums, int target, boolean flag) {
-        int low = 0, high = nums.length - 1, res = nums.length;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (nums[mid] > target || (flag && nums[mid] >= target)) {
-                high = mid - 1;
-                res = mid;
-            } else {          //向上找
-                low = mid + 1;
-            }
+        if (nums[l] != target) return res;      //没有找到直接返回res
+        res[0] = l;
+        r = nums.length;     //可以缩小范围,前面已经找到第一个index.注意l最后的落值可能是len,最后拿到的长度是l-1
+        while (l < r) {
+            int mid = (l + r) / 2;
+            //目标值大，l向上靠
+            if (nums[mid] <= target) l = mid + 1;      //l在比mid+1的地方等r,向左靠近目标值
+            else r = mid;
         }
+        res[1] = l - 1;
         return res;
     }
+
+//    public int[] search01(int[] nums, int target) {
+//        int[] res = new int[]{-1, -1};
+//        if (nums.length == 0) return res;     //注意nums为0的情况
+//        // 搜索右边界 right
+//        int i = 0, j = nums.length - 1;
+//        while (i <= j) {
+//            int m = (i + j) / 2;
+//            if (nums[m] <= target) i = m + 1;
+//            else j = m - 1;
+//        }
+//        int right = i;
+//        // 若数组中无 target ，则提前返回
+//        if (j >= 0 && nums[j] != target) return res;
+//        // 搜索左边界 right
+//        i = 0;
+////        j = nums.length - 1;
+//        j = right;        //是否可以
+//        while (i <= j) {
+//            int m = (i + j) / 2;
+//            if (nums[m] < target) i = m + 1;
+//            else j = m - 1;
+//        }
+//        int left = j;
+//        return new int[]{left, right};
+//    }
+
 
     /**
      * 题目05(leetcode 第560题): 和为k的子数组
@@ -217,7 +245,7 @@ public class Arrays_Hot100_01 {
 
     /**
      * 题目08(leetcode 第448题): 找到所有数组中消失的数字
-     * 描述: 给你一个含 n 个整数的数组 nums ，其中 nums[i] 在区间 [1, n] 内。
+     * 描述: 给你一个含 n 个整数（索引是0 ~ n-1）的数组 nums ，其中 nums[i] 在区间 [1, n] 内。
      * 请你找出所有在 [1, n] 范围内但没有出现在 nums 中的数字，并以数组的形式返回结果。
      * eg:
      * 输入：nums = [4,3,2,7,8,2,3,1]
@@ -234,12 +262,24 @@ public class Arrays_Hot100_01 {
         LinkedList<Integer> res = new LinkedList<>();
         int n = nums.length;
         for (int i = 0; i < n; i++) {
-            System.out.println("测试i = " + (nums[i] - 1));
             int temp = (nums[i] - 1) % n;
-            nums[temp] += n;            //这里+n，在上面%n就不会影响后手
+            nums[temp] += n;            //这里+n，在上面%n就不会影响前面的操作
         }
         for (int i = 0; i < n; i++) {
-            if (nums[i] <= n) res.add(i + 1); //注意这里可以==,如果前面是num[i] == 1
+            //如果该点index没有被加，所以不存在index+1的值
+            if (nums[i] <= n) res.add(i + 1);
+        }
+        return res;
+    }
+
+    public List<Integer> findDisappearedNumbers01(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        for (int i = 1; i <= nums.length; i++) {
+            if (!set.contains(i)) res.add(i);
         }
         return res;
     }

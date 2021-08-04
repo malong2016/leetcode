@@ -34,7 +34,7 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目02(swordOffer 第53题-I): 数字在排序数组中出现的次数  todo 暂时只能想到暴力解
+     * 题目02(swordOffer 第53题-I): 数字在排序数组中出现的次数  --本题和swordOffer的34题差不多
      * 描述: 统计一个数字在排序数组中出现的次数。例如,输入排序数组{1,2,3,3,3,3,4,5}和数字3,数组3出现了四次,因此输出4
      * <p>
      * <p>
@@ -42,8 +42,37 @@ public class ArraysSword_01 {
      * 思路02(最优解,时间复杂度o(log2n)): 先二分查到到3,如果k左边第一个元素不是k(或者改元素下标是0),那么这个元素就是第一个k,返回这个元素的index
      * 左边存在,在递归找左边,找到满足要求
      */
+    public int search01(int[] nums, int target) {      //这里是找最左边的值和最右边的值
+        //二次循环，查找二次的index，一次l，一次r
+        if(nums.length == 0) return 0;     //注意nums为0的情况
+        int l = 0, r = nums.length - 1;
+        int lIndex, rIndex;
+        while (l < r) {         //这里和二分查找不一样
+            int mid = (l + r) / 2;
+            //目标值小，r向下靠
+            if (nums[mid] >= target) r = mid;     //r不断向左靠近mid,而且在mid等l
+            else l = mid + 1;
+        }
+        if (nums[l] != target) return 0;      //没有找到直接返回res
+        lIndex = l;
+        r = nums.length;     //可以缩小范围,前面已经找到第一个index.注意l最后的落值可能是len,最后拿到的长度是l-1
+        while (l < r) {
+            int mid = (l + r) / 2;
+            //目标值大，l向上靠
+            if (nums[mid] <= target) l = mid + 1;      //l在比mid+1的地方等r,向左靠近目标值
+            else r = mid;
+        }
+        rIndex = l - 1;
+        return rIndex - lIndex + 1;    //找到就返回
+    }
+
     public int search(int[] nums, int target) {
-        return 0;
+        if(nums == null ||nums.length == 0 || nums[0] > target || nums[nums.length - 1] < target) return 0;
+        int left = 0;
+        int right = nums.length - 1;
+        while(nums[right] > target) right--;
+        while(nums[left] < target) left++;
+        return right - left + 1;
     }
 
     /**
