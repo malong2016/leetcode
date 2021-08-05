@@ -14,9 +14,9 @@ class Data01ApplicationTests {
 
     @Test
     void test() {
-        StringBuilder stringBuilder = new StringBuilder("woshi");
-        stringBuilder.insert(0, "kwl");
-        System.out.println("stringBuilder = " + stringBuilder);
+        System.out.println((int)' '); //32
     }
+
+
 
 }

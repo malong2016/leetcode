@@ -29,13 +29,13 @@ public class dpSword_Hot100_01 {
         return dp[m - 1][n - 1];
     }
     /**
-     * 题目02(leetcode 第64题): 最小路径和
+     * 题目02(leetcode 第64题): 最小路径和  --   swordOffer 第47 礼物的最大价值 差不多
      * 描述:给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
      * 每次只能[向下或者向右]移动一步。
      * 思路01: 动态规划
      * 初始状态: i == 0,dp[i][j] = dp[0][j-1] + grid[0][j]      //这是第一行
      * j ==0时候,dp[i][j] = dp[i-1][0] + grid[i][0]     //这是第一列
-     * 状态转移方程式: dp[i][j] = Math.max(dp[i - 1][j] + dp[i][j - 1]) + grid[i][j]
+     * 状态转移方程式: dp[i][j] = Math.min(dp[i - 1][j] + dp[i][j - 1]) + grid[i][j]
      */
     public int minPathSum(int[][] grid) {
         int m = grid.length, n = grid[0].length;

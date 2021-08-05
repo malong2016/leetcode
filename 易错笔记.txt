@@ -4,9 +4,11 @@
 3 注意区分遍历指针和原头节点!!!!
 4 如果队列或者栈，是不断入队或者出栈，不能用stack/queue.size()来判断！！！
 5 对于长度为0
-  matrix[0].length //这个要在res[m][n] res.length != 0的情况下来计算,否则就是空指针
+  matrix[0].length  matrix.length != 0的情况下来计算,否则就是空指针
 6 数组是[],方法是()
 7 注意，如果是new LinkedList<>(Collection) 不需要传入泛型,默认就是collections里面的泛型
 8 如果是List<String> list, list.add(index,element)
 这里插入元素如果该index有元素，就把新element插入到这里
 9     stringBuilder.deleteCharAt(stringBuilder.length())
+9 Math.abs(a - b);
+10 注意数组传入0

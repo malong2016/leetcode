@@ -21,26 +21,14 @@ public class dpSword_Hot100_02 {
      * 思路01: 设置一个pre维护,当前数的前序,然后pre+arr[i]和arr[i]比较,取最大值
      * 用max记录最大值
      */
-    public int maxSubArray(int[] nums) {   //直接累计
-        int pre = 0, res = nums[0];
-        for (int num : nums) {
-            pre = Math.max(pre + num, num);
+    public int maxSubArray(int[] nums) {
+        int pre = nums[0], res = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            pre = Math.max(nums[i], nums[i] + pre);   //可以选择pre，或者就是本身
             res = Math.max(res, pre);
         }
         return res;
     }
-
-    public int maxSubArray01(int[] nums) {    //dp法
-        int[] dp = new int[nums.length];
-        dp[0] = nums[0];
-        int res = nums[0];
-        for (int i = 1; i < dp.length; i++) {
-            dp[i] = Math.max(dp[i - 1], 0) + nums[i];
-            res = Math.max(res, dp[i]);
-        }
-        return res;
-    }
-
     /**
      * 题目02(leetcode 第70题): 爬楼梯
      * 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。

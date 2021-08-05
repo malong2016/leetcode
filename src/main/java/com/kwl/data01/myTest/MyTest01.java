@@ -14,12 +14,28 @@ import java.util.*;
 public class MyTest01 {
 
 
-    /**
-     * 给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。
-     *
-     * 输入:nums = [1,1,1], k = 2
-     * 输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。
-     */
+    public boolean exist(char[][] board, String word) {
+        int m = board.length, n = board[0].length;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if (dfs(board,word,i,j,0)) return true;   //只要一个返回true,就直接返回true
+            }
+        }
+        return false;
+    }
+
+    boolean dfs(char[][] board, String word, int i, int j,int index){
+        if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1 || board[i][j] != word.charAt(index)){
+            return false;           //越界或者不匹配
+        }
+        if (index == word.length() - 1) return true;
+        board[i][j] = '\0';        //设置为空额
+        boolean res = dfs(board,word,i - 1,j,index + 1) || dfs(board,word,i + 1,j,index + 1)
+                || dfs(board,word,i,j - 1,index + 1) || dfs(board,word,i,j + 1,index + 1);
+        board[i][j] = word.charAt(index);    //这里是一定等于的
+        return res;
+    }
+
 
 
 

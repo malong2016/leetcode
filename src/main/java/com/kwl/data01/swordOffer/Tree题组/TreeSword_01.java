@@ -4,8 +4,6 @@ import com.kwl.data01.dataStructure.TreeNode;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 剑指offer_树(tree)题组01 本题组一共是8到题目
@@ -65,13 +63,13 @@ public class TreeSword_01 {
         //当A和B同时不是null的时候,A和B是子结构,A的左右子树和B是子结构a满足其中之一就可以.
         //isSubStructure(A.left, B) 也不一定是A.left做root(A.left子树满足就可以),所以还是要继续递归
         //注意后手要括号起来,因为如果前面出现A为null,后手所有的都不会执行，如果没有括号,后面会执行！！！
-        return (A != null && B != null) && (recur(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
+        return (A != null && B != null) && (dfs(A, B) || isSubStructure(A.left, B) || isSubStructure(A.right, B));
     }
 
-    Boolean recur(TreeNode A, TreeNode B) {       //判断从A的root节点出发，节点B是不是A的子树
+    Boolean dfs(TreeNode A, TreeNode B) {       //判断从A的root节点出发，节点B是不是A的子树
         if (B == null) return true;
-        if (A == null || A.val != B.val) return false;
-        return recur(A.left, B.left) && recur(A.right, B.right);
+        if (A == null ) return false;
+        return A.val == B.val && dfs(A.left, B.left) && dfs(A.right, B.right);
     }
 
     /**

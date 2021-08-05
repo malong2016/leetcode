@@ -27,14 +27,16 @@ public class ArraysSword_03 {
     public  int spanMin(int[] nums) {
         if (nums == null) return -1; //如果arr是null,就返回null
         int low = 0, high = nums.length - 1;
-        while (low < high) {
-            int mid = (low + high) / 2;
+        while (low < high) {       //这里和二分查找不一样，注意
+            int mid = (low + high) / 2;    //注意，因为low < high是循环体,所以，mid不可能和high相等
             if (nums[mid] > nums[high]) low = mid + 1;    //上半区,注意这里一定是在上半区，所以mid+1(最差就是high)
             else if (nums[mid] < nums[high]) high = mid;  //下半区，可能就是mid
-            else --high;         //向下逼近,mid一定是小于high的
+            else --high;         //向下逼近
         }
         return nums[high];
     }
+
+
 
     /**
      * 题目02(swordOffer 第44题): 数字序列中某一位的数字

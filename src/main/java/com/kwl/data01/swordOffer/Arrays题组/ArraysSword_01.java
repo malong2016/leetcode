@@ -15,22 +15,22 @@ public class ArraysSword_01 {
      * <p>
      * 思路01:暴力解,就是顺序扫描数组,遇到奇数就让前面的数前面向后移动一位,在将这个数插入到开头
      * 时间复杂度是0(n2)不推荐
-     * 思路02:设置一个首尾指针,pEnd>pBegin之前,pBegin从头开始扫描,pEnd从尾部向前扫描,pBegin扫描到偶数,pEnd扫描到奇数
+     * 思路02:设置一个首尾指针,l>r,r从头开始扫描,r从尾部向前扫描,r扫描到偶数,r扫描到奇数
      * 就交互数组
      */
-    public static void reorderOddEven(int[] arr) {
-        if (arr == null || arr.length == 0) return;
-        int begin = 0, end = arr.length - 1;
-        while (begin < end) {
-            while (begin < end && arr[begin] % 2 == 1) begin++;     //是奇数就右移动
-            while (begin < end && arr[begin] % 2 == 0) end--;          //是偶数就左移动
+    public int[] exchange(int[] nums) {
+        int l  = 0, r = nums.length - 1;
+        while(l < r){
+            while(l < r && nums[r] % 2 == 0) r--;
+            while(l < r && nums[l] % 2 == 1) l++;
 
-            if (begin < end) {        //pBegin == end时候，不需要交换
-                int temp = arr[begin];
-                arr[begin] = arr[end];
-                arr[end] = temp;
+            if (l < r) {                //如果等于是不需要交换的
+                int temp = nums[l];
+                nums[l] = nums[r];
+                nums[r] = temp;
             }
         }
+        return nums;
     }
 
     /**
@@ -94,25 +94,23 @@ public class ArraysSword_01 {
     }
 
     /**
-     * 题目04(swordOffer 第57题-I): 和为s的二个数字
+     * 题目04(swordOffer 第57题-I): 和为s的二个数字    --leetcode二数之后是无序，返回index,这里是有序，返回值
      * 描述:输入一个递增排序的数组和一个数字s(s>0),在数组中查找二个数,
      * 使得他们的和正好是s。如果有多对数字的和等于s,就输出任意一对就可以
      * eg: {1,2,4,7,11,15}和数字15 => 输入 {4,11} (因为4+11=15)
      * <p>
      * 思路01(时间复杂度o(n)):设置l/r指针,计算之和,大于目标值,r指针右移动,小于目标值,l左移动
      * 等于就返回头尾指针指向的数
-     * 思路02: 如果set里面存在target-nums[i],就直接输出，如果不存在就把nums[i] add到set里面
+     * 思路02: 如果set里面存在target-nums[i],就直接输出，如果不存在就把nums[i] add到set里面(没有必要使用HashMap,不需要记录index)
      */
-    public int[] findNumbersWithSum(int[] nums, int target) {
+    public int[] twoSum(int[] nums, int target) {
         if (nums == null || nums.length == 1) return new int[0];
         int l = 0, r = nums.length - 1;
-        while (l < r) {
+        while(l < r){
             int sum = nums[l] + nums[r];
-            if (sum > target) r--;
-            else if (sum < target) l++;
-            else {
-                return new int[]{nums[l], nums[r]};
-            }
+            if(sum == target) return new int[]{nums[l], nums[r]};
+            else if(sum > target) r--;
+            else l++;
         }
         return new int[0];
     }

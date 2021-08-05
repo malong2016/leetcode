@@ -7,34 +7,9 @@ import java.util.Arrays;
  * @date 2021/2/23
  */
 public class dpSword_01 {
-    /**
-     * 题目01(swordOffer 第14题-I): 剪绳子
-     * 描述: 给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），
-     * 每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？
-     * 例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18
-     * <p>
-     * <p>
-     * 思路01(动态规划法):从下到上进行计算,先计算到f(1)max(绳子长度为1的最大值),f(2)max...f(length)max
-     * 状态转移方程式: f(length)max = f(i)max*f(length-i)max
-     */
-    public int maxProductAfterCutting01(int n) {        //思路01,使用动态规划求解!!!
-        if (n <= 3) return n - 1;  //3 = 2 * 1,2 = 1*1;
-        int[] dp = new int[n + 1];
-        dp[1] = 1;          //因为如果大于4，不分割1,2，3是更大的，这三种情况要分开讨论
-        dp[2] = 2;
-        dp[3] = 3;
-        for (int i = 4; i < dp.length; i++) {
-            // for (int j = 1; j < i; j++) {
-            for (int j = 1; j <= i / 2; j++) { //优化，比较前半段就可以了
-                dp[i] = Math.max(dp[i], dp[j] * dp[i - j]);
-            }
-        }
-        return dp[n];
-    }
-
 
     /**
-     * 题目02(swordOffer 第10题-I):求斐波那契数列的第n项
+     * 题目01(swordOffer 第10题-I):求斐波那契数列的第n项
      * 描述: 写一个函数,输入n,求斐波那契(Fibonacci)数列的第n项,斐波那契数列定义如下
      * f(n)={
      * 0   n=0;
@@ -44,16 +19,6 @@ public class dpSword_01 {
      * 思路01: 传统递归
      * 思路02: 从下到上的动态规划,求f(3),f(4),f(5)....f(n)
      */
-    public long fibonacci(int n) {
-        if (n == 0 || n == 1) return n;
-        int[] dp = new int[n + 1];
-        dp[0] = 0;
-        dp[1] = 1;
-        for (int i = 2; i < dp.length; i++) {   //第一次和最后一次临界
-            dp[i] = (dp[i - 1] + dp[i - 2]) % 1000000007;
-        }
-        return dp[n];
-    }
 
     public int fibonacci01(int n) {     //注意:测试需要,要/1000000007求余数
         if (n == 0) return 0;
@@ -66,6 +31,25 @@ public class dpSword_01 {
         }
         return p2;
     }
+
+    /**
+     * 题目02(swordOffer 第10题-II): 青蛙跳台阶问题
+     * 描述: 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
+     * <p>
+     * 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+     */
+    public int numWays(int n) {
+        if (n == 0 || n == 1) return 1;
+        if (n == 2) return 2;
+        int a = 1, b = 2;
+        for (int i = 3; i <= n; i++) {
+            int temp = (a + b) % 1000000007;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
+
 
     /**
      * 题目03(swordOffer 第19题):正则表达式的匹配        --本题和leetcode 第10题一样
@@ -197,7 +181,7 @@ public class dpSword_01 {
      * 输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
      * 输入: 2
      * 输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
-     *
+     * <p>
      * 情况01: 一维数组的情况
      * 情况02: 二维数组求解
      */
@@ -245,15 +229,12 @@ public class dpSword_01 {
      */
     public int maxValue(int[][] grid) {
         int m = grid.length, n = grid[0].length;
-        for (int i = 1; i < m; i++) {         //初始化第一列
-            grid[i][0] += grid[i - 1][0];
-        }
-        for (int i = 1; i < n; i++) {         //初始化第一行
-            grid[0][i] += grid[0][i - 1];
-        }
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                grid[i][j] += Math.max(grid[i - 1][j], grid[i][j - 1]);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) continue;
+                else if (i == 0) grid[i][j] += grid[i][j - 1];
+                else if (j == 0) grid[i][j] += grid[i - 1][j];
+                else grid[i][j] += Math.max(grid[i - 1][j], grid[i][j - 1]);     //上左只能选择一条路
             }
         }
         return grid[m - 1][n - 1];
@@ -267,12 +248,13 @@ public class dpSword_01 {
      * 思路: 动态规划
      */
     public int maxProfit(int[] prices) {
-        if(prices.length == 0) return 0;
+        if (prices.length == 0) return 0;
         int res = 0, pre = prices[0];        //这里res如果只有一天，就返回0
-        for(int i = 1; i < prices.length; i++){
+        for (int i = 1; i < prices.length; i++) {
             res = Math.max(res, prices[i] - pre);
             pre = Math.min(pre, prices[i]);
         }
         return res;
     }
+
 }

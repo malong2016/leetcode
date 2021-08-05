@@ -10,24 +10,32 @@ import java.util.List;
  */
 public class dpSword_02 {
 
-    /**
-     * 题目01(swordOffer 第10题-II): 青蛙跳台阶问题
-     * 描述: 一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
-     * <p>
-     * 答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
-     */
-    public int numWays(int n) {
-        if (n == 0 || n == 1) return 1;      //这里注意青蛙跳，n==0要特别处理!!
-        if (n == 2) return 2;
-        int p1 = 1, p2 = 2;
-        for (int i = 3; i <= n; i++) {
-            int temp = (p1 + p2) % 1000000007;
-            p1 = p2;
-            p2 = temp;
-        }
-        return p2;
-    }
 
+
+    /**
+     * 题目01(swordOffer 第14题-I): 剪绳子
+     * 描述: 给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），
+     * 每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？
+     * 例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18
+     * <p>
+     * <p>
+     * 思路01(动态规划法):从下到上进行计算,先计算到f(1)max(绳子长度为1的最大值),f(2)max...f(length)max
+     * 状态转移方程式: f(length)max = f(i)max*f(length-i)max
+     */
+    public int maxProductAfterCutting01(int n) {        //思路01,使用动态规划求解!!!
+        if (n <= 3) return n - 1;  //3 = 2 * 1,2 = 1*1;
+        int[] dp = new int[n + 1];
+        dp[1] = 1;          //因为如果大于4，不分割1,2，3是更大的，这三种情况要分开讨论
+        dp[2] = 2;
+        dp[3] = 3;
+        for (int i = 4; i < dp.length; i++) {
+            // for (int j = 1; j < i; j++) {
+            for (int j = 1; j <= i / 2; j++) { //优化，比较前半段就可以了
+                dp[i] = Math.max(dp[i], dp[j] * dp[i - j]);
+            }
+        }
+        return dp[n];
+    }
     /**
      * 题目02(swordOffer 第12题): 矩阵中的路径
      * 描述: 给定一个n*m的矩阵,可以从任意一格开始沿着上下左右移动一格,但是如果已经经过了某一格就不能再次
@@ -97,22 +105,12 @@ public class dpSword_02 {
      * 思路01(leetcode): 利用动态规划,先求出上一个i-1的最大子数列,和0进行比较,小于等于0就取0
      * 大于0就取本值
      */
-    public int maxSubArray(int[] nums) {        //标准做法，不断更新pre
-        int pre = 0, res = Integer.MIN_VALUE;     //
-        for(int num : nums){
-            pre = Math.max(pre + num, num);   //选与不选,pre指向当前
-            res = Math.max(res,pre);         //更新res
+    public int maxSubArray(int[] nums) {
+        int pre = nums[0], res = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            pre = Math.max(nums[i], nums[i] + pre);   //可以选择pre，或者就是本身
+            res = Math.max(res, pre);
         }
         return res;
     }
-    public int maxSubArray02(int[] arr) {      //原地改变数组
-        int res = arr[0];    //默认是res是arr[0]
-        for (int i = 1; i < arr.length; i++) {
-            arr[i] += Math.max(arr[i - 1], 0);
-            res = Math.max(arr[i], res);
-        }
-        return res;
-    }
-
-
 }

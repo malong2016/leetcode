@@ -14,7 +14,7 @@ public class TreeSword_03 {
 
 
     /**
-     * 题目07(swordOffer 第37题): 序列化二叉树
+     * 题目01(swordOffer 第37题): 序列化二叉树
      * 描述: 请实现二个函数,分别用来序列化和反序列化!!!
      * leetcode是层序遍历,空指针用null表示,[1,2,null,null]
      * <p>
@@ -62,16 +62,6 @@ public class TreeSword_03 {
     }
 
 
-    public static void main(String[] args) {
-        TreeSword_03 treeSword_03 = new TreeSword_03();
-        TreeNode treeNode = new TreeNode(1);
-        treeNode.left = new TreeNode(2);
-        treeNode.right = new TreeNode(3);
-        treeNode.right.left = new TreeNode(4);
-        treeNode.right.left = new TreeNode(4);
-        treeNode.right.right = new TreeNode(5);
-        System.out.println(treeSword_03.serialize(treeNode));
-    }
 
 
 

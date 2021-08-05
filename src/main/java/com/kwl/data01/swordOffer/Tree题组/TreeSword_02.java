@@ -20,10 +20,10 @@ public class TreeSword_02 {
      */
     public int[] levelOrder10(TreeNode root) {  //方法一: 使用一个队列
         if (root == null) return new int[0];
-        Queue<TreeNode> queue = new LinkedList<>(); //设置一个队列
-        LinkedList<Integer> res = new LinkedList<>(); //返回List
+        Queue<TreeNode> queue = new LinkedList<>();     //一定要注意是TreeNode
+        List<Integer> res = new LinkedList<>();
         queue.offer(root);
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             TreeNode pollNode = queue.poll();
             res.add(pollNode.val);
             if (pollNode.left != null) queue.offer(pollNode.left);
@@ -37,22 +37,22 @@ public class TreeSword_02 {
     }
 
     /**
-     * 题目02(swordOffer 第32题-I) 从上到下打印二叉树
+     * 题目02(swordOffer 第32题-II) 从上到下打印二叉树
      * 描述: [
-     *   [3],
-     *   [9,20],
-     *   [15,7]
+     * [3],
+     * [9,20],
+     * [15,7]
      * ]
      */
     public List<List<Integer>> levelOrder04(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
         Queue<TreeNode> queue = new LinkedList<>();
         if (root != null) queue.offer(root);
-        while(!queue.isEmpty()){
-            List<Integer> path = new LinkedList<>();   //每次都是要新的path
-            int size =queue.size();
+        while (!queue.isEmpty()) {
+            List<Integer> path = new LinkedList<>();
+            int size = queue.size();
             for (int i = 0; i < size; i++) {
-                TreeNode pollNode =  queue.poll();
+                TreeNode pollNode = queue.poll();
                 path.add(pollNode.val);
                 if (pollNode.left != null) queue.offer(pollNode.left);
                 if (pollNode.right != null) queue.offer(pollNode.right);
@@ -140,6 +140,7 @@ public class TreeSword_02 {
         }
         return root;
     }
+
     /**
      * 题目06(swordOffer 第68题 - I): 二叉树的最近公共节点
      * 思路01: 最后q和p一定会落在root二端
@@ -194,25 +195,15 @@ public class TreeSword_02 {
      * 左子树:(i-1)  右子树:（i...length-2)   root: length-1
      */
     public boolean verifySquenceOfBSF(int[] postOrder) {
-    return recur03(postOrder, 0, postOrder.length - 1);
-}
-
-    public boolean recur03(int[] postOrder, int l, int r) {        //数组和起始index和结束index
-        if (l >= r) return true;       //注意如果没有右子树, j == m
-        int p = l;
-        while (postOrder[p] < postOrder[r]) p++;      //这个是找到第一个>=root元素的值,不需要设置边界
-        int m = p;
-        while (postOrder[p] > postOrder[r]) p++;     //p指针右移动,如果是搜索树,会顺利移动到最后一个root元素,如果不能到达就是错误的
-        return p == r && recur03(postOrder, l, m - 1) && recur03(postOrder, m, r - 1);
+        return recur03(postOrder, 0, postOrder.length - 1);
     }
 
-    public boolean recur04(int[] postOrder, int l, int r) {        //数组和起始index和结束index
-        if (l >= r) return true;       //注意如果没有右子树, j == m
-        int p = l;
-        while (postOrder[p] < postOrder[r]) p++;      //这个是找到第一个>=root元素的值
-        for (int i = p; i < r; i++) {
-            if (postOrder[i] < postOrder[r]) return false;
-        }
-        return recur04(postOrder, l, p - 1) && recur04(postOrder, p, r - 1);
+    public boolean recur03(int[] postOrder, int l, int r) {        //数组和起始index和结束index
+        if (l >= r) return true;       //说明此时子树节点数量<=1,无序判断，直接返回
+        int i = l;
+        while (postOrder[i] < postOrder[r]) i++;      //这个是找到第一个>=root元素的值,不需要设置边界
+        int mid = i;
+        while (postOrder[i] > postOrder[r]) i++;     //p指针右移动,如果是搜索树,会顺利移动到最后一个root元素,如果不能到达就是错误的
+        return i == r && recur03(postOrder, l, mid - 1) && recur03(postOrder, mid, r - 1);    //注意mid - 1和r-1
     }
 }

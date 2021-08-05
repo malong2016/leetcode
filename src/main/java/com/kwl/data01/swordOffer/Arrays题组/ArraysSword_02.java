@@ -147,7 +147,7 @@ public class ArraysSword_02 {
      * 思路01: 从左下角(i,j)开始遍历,如果该值>targetValue,i--,如果该值<targetValue,j++
      */
     public boolean findNumberIn2DArray(int[][] arr, int targetValue) {
-        if (arr == null) return false;
+        if (arr == null) return false;        //注意这里如果是null，就做不了
         int i = arr.length - 1, j = 0;
         while (i >= 0 && j < arr[0].length) {
             if (arr[i][j] > targetValue) i--;

@@ -85,16 +85,18 @@ public class StringSword_01 {
      * 思路02:设置一个HashMap(key,boolean) 不断的加入,boolean判断是否是已经加入,在扫描到第一个true
      * 思路03(假设是字母最大'z'是122):先将0-123全部设置为new int[123]然后扫描arr[char[i]]++进行计数,第一个arr[char[i]]==1就可以输出
      */
-    public char firstNotRepeatingChar(String str) {       //思路02
-        HashMap<Character, Boolean> hashMap = new HashMap<>();
-        char[] charArray = str.toCharArray();
-        for (char c : charArray) {
-            hashMap.put(c, !hashMap.containsKey(c));  //第一次放入hashMap,一定返回true,第二次放入就是重置到false(表明有重复)
+    public char firstUniqChar(String s) {
+        //设置一个HashMap,key存放字符，value存放是否重复false,true;
+        Map<Character, Boolean> map = new HashMap<>();
+        for(int i = 0; i < s.length(); i++){
+            map.put(s.charAt(i), !map.containsKey(s.charAt(i)));     //第一次来设置为true
         }
-        for (char c : charArray) {
-            if (hashMap.get(c)) return c;
+        for(int i = 0; i < s.length(); i++){
+            if(map.get(s.charAt(i))){
+                return s.charAt(i);
+            }
         }
-        return ' ';     //如果不存在就返回null
+        return ' ';
     }
 
     public char firstNotRepeatingChar01(String str) {       //思路03
