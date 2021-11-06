@@ -1,4 +1,4 @@
-package Java面试题.Java_208题.JavaCore.JavaBasic;
+package com.kwl.data01.Java面试题.Java_208题.JavaCore.JavaBasic;
 
 //本包包括java经典面试题208道中的第一章java基础(一共17道题目)
     /*

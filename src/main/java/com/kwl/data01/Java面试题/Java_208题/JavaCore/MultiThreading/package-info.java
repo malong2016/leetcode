@@ -1,4 +1,4 @@
-package Java面试题.Java_208题.JavaCore.MultiThreading;
+package com.kwl.data01.Java面试题.Java_208题.JavaCore.MultiThreading;
 
 
 //本包包括java经典面试题208道中的第三章多线程(一共22道题目)

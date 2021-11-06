@@ -1,4 +1,4 @@
-package Java面试题.Java_208题.JavaCore.Exception;
+package com.kwl.data01.Java面试题.Java_208题.JavaCore.Exception;
 
 /**
  * java核心_异常

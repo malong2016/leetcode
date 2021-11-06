@@ -1,4 +1,4 @@
-package Java面试题.Java_208题.JavaCore.JavaWeb;
+package com.kwl.data01.Java面试题.Java_208题.JavaCore.JavaWeb;
 
 //本包包括java经典面试题208道中的第六章JavaWeb(一共10道题目)
 

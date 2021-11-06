@@ -1,4 +1,4 @@
-package Java面试题.Java_208题.JavaCore;
+package com.kwl.data01.Java面试题.Java_208题.JavaCore;
 //JAVA大类:89道题目
     /*1. Java 基础(17道)
     2. 容器(17道)
